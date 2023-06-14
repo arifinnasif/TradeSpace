@@ -1,3 +1,9 @@
 1. Communication system: a messaging system that enables direct communication between buyers and sellers. This facilitates smoother    negotiations, allows for questions and clarifications 	and enhances the overall transaction experience.
 2. One can filter item based on category, price-range (like someone wants buy an used phone. he can just filter his search for phones)
 3. speecific detailing of a particular category: like for laptop (ram:--, ssd: --, gpu:--)
+
+Supervisor's further suggestions for improvements:
+1. Fraud Detection: A method that allows the system to detect fraudulent activities and take necessary measures.
+2. Price Recommendation: A technique that assists a user in determining an appropriate asking price.
+3. Customer Requirements: A mechanism via which a buyer can use the system to post for what (s)he needs, potentially attracting sellers.
+4. Safe Transaction: A technique that allows the buyer and seller to conduct a secure transaction.

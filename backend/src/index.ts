@@ -1,8 +1,5 @@
-import express from "express";
+import app from "./app";
 
-console.log("hello world from typescript");
-
-const app = express(); // create express app
 const port = 3000;
 
 app.get("/", (req, res) => {

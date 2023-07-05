@@ -131,4 +131,4 @@ dist
 
 # custom
 .vscode
-prisma/migrations/
+*/prisma/migrations/*

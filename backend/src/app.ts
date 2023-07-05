@@ -4,6 +4,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
+import apiRouter from "./routers";
 
 
 
@@ -16,6 +17,8 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+app.use("/api", apiRouter);
 
 
 

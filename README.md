@@ -24,4 +24,13 @@ Check out our mock UI [here](https://www.figma.com/file/8mDkiKaoGi2AWoaePVHrh5/T
         yarn dev
         ```
         Now the backend server will be available at `localhost:3000`
+    3. To start the initial migration of the database, run the following command
+        ```
+        yarn prisma migrate dev --name init --create-only
+        ```
+        This will create the database and the required tables in the database. You dont have to run this command again unless you delete the entire database. After any changes in the database schema, you can run the following command to update the database
+        ```
+        yarn prisma migrate deploy
+        ```
+
 

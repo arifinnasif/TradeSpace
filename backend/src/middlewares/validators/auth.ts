@@ -18,22 +18,14 @@ const password = check('password')
 
 //check if email exists
 const emailExists = check('email').custom(async (value: any) => {
-  //const { rows } = await db.query('SELECT * from users WHERE email = $1', [value,])
-
-  //console.log("checking if email exists"+ value)
   const user = await prisma.users.findUnique({
     where: { email: value },
   });
 
-  console.log(user);
 
   if (user) {
     throw new Error('Email already exists.')
   }
-
-  // if (rows.length) {
-  //   throw new Error('Email already exists.')
-  // }
 })
 
 export let registerValidation = [email, password, emailExists]

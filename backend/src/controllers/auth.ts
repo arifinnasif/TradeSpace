@@ -10,9 +10,14 @@ const prisma = new PrismaClient();
 // DELETE later
 let getUsers = async (req:Request, res:Response) => {
     try {
-        const userList = await prisma.users.findMany();
-        console.log(userList);
-        res.json(userList);
+        const userList = await prisma.users.findMany({
+            select: {
+                user_id: true,
+                name: true,
+                email: true,
+            }
+        });
+        return res.json(userList);
     } catch (error) {
         console.log(error)
     }

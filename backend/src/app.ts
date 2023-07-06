@@ -18,6 +18,7 @@ app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// initialize backend router
 app.use("/api", apiRouter);
 
 

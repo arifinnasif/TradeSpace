@@ -1,9 +1,12 @@
 import express from "express";
-import thingsRouter from "./things/things";
+const router = express.Router();
 
 
-let router = express.Router();
+//import routers
+import authRouter from "./auth/auth";
 
-router.use("/things", thingsRouter);
+
+// initialize routers
+router.use("/auth", authRouter);
 
 export default router;

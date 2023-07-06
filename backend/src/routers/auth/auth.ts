@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers, loginUser, protectedRoute, registerUser } from "../../controllers/auth";
+import { getUsers, loginUser, logoutUser, protectedRoute, registerUser } from "../../controllers/auth";
 import { loginValidation, registerValidation }  from "../../middlewares/validators/auth";
 import { validationMiddleware } from "../../middlewares/validations-middleware";
 import { userAuth } from "../../middlewares/auth-middleware";
@@ -16,14 +16,18 @@ router.route("/register")
 
 
 
-
 router.route("/login")
     .post(loginValidation, validationMiddleware, loginUser)
 
 
 
 
-    
+// logout is a protected route
+router.route("/logout")
+    .get(userAuth, logoutUser)
+
+
+
 
 router.route("/get-users")
     .get(getUsers)
@@ -31,7 +35,6 @@ router.route("/get-users")
 
 
 
-    
 /*
     protected route: only authorized users can access this route.
     protected route will always contain userAuth middleware.

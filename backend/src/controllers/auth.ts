@@ -100,6 +100,24 @@ let loginUser = async (req:Request, res:Response) => {
 
 
 
+let logoutUser = async (req:Request, res:Response) => {
+    try {
+        return res.status(200).clearCookie('token', {httpOnly : true}).json({
+            success: true,
+            message: 'Logged out successfully!'
+       });
+    } catch (error:any) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
+
+
+
+
 
 
 let protectedRoute = async (req:Request, res:Response) => {
@@ -117,4 +135,4 @@ let protectedRoute = async (req:Request, res:Response) => {
 
 
 
-export { getUsers, registerUser, loginUser, protectedRoute}
+export { getUsers, registerUser, loginUser, protectedRoute, logoutUser}

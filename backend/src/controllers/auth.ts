@@ -72,9 +72,9 @@ let loginUser = async (req:Request, res:Response) => {
     const user:any = req.user;
 
     // create a payload
+    // user_id will be used for passport-jwt
     let payload = {
         user_id: user.user_id,
-        name: user.name,
         email: user.email
     }
 

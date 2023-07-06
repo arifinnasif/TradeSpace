@@ -1,5 +1,6 @@
 import { Request, Response} from 'express';
 import { hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 
 // import prisma
 import { PrismaClient } from '@prisma/client';
@@ -52,7 +53,27 @@ let registerUser = async (req:Request, res:Response) => {
 
 // login user: /api/auth/login
 let loginUser = async (req:Request, res:Response) => {
+    // catch the user from the loginCheck middleware
+    const user:any = req.user;
 
+    // create a payload
+    let payload = {
+        user_id: user.user_id,
+        name: user.name,
+        email: user.email
+    }
+
+    try {
+       return res.status(200).json({
+            payload,
+       }); 
+    } catch (error: any) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
 }
 
 

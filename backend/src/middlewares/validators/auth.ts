@@ -52,6 +52,10 @@ const loginCheck = check('email').custom(async (value: any, {req}) => {
     throw new Error('Invalid password.')
   }
 
+  // if everything is ok
+  req.user = user;
+  // pass the user to the next middleware(login function)
+
 })
 
 export const registerValidation = [email, password, emailExists]

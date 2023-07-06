@@ -72,9 +72,9 @@ let loginUser = async (req:Request, res:Response) => {
     const user:any = req.user;
 
     // create a payload
+    // user_id will be used for passport-jwt
     let payload = {
         user_id: user.user_id,
-        name: user.name,
         email: user.email
     }
 
@@ -100,7 +100,39 @@ let loginUser = async (req:Request, res:Response) => {
 
 
 
+let logoutUser = async (req:Request, res:Response) => {
+    try {
+        return res.status(200).clearCookie('token', {httpOnly : true}).json({
+            success: true,
+            message: 'Logged out successfully!'
+       });
+    } catch (error:any) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
 
 
 
-export { getUsers, registerUser, loginUser}
+
+
+
+let protectedRoute = async (req:Request, res:Response) => {
+    try {
+        return res.status(200).json({
+            data: 'This is a protected route'
+        })
+    } catch (error:any) {
+        console.log(error.message)
+    }
+}
+
+
+
+
+
+
+export { getUsers, registerUser, loginUser, protectedRoute, logoutUser}

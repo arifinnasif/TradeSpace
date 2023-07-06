@@ -42,21 +42,6 @@ const opts = {
 passport.use(
   new Strategy(opts, async ({ user_id }, done) => {
     try {
-    //   const { rows } = await db.query(
-    //     'SELECT user_id, email FROM users WHERE user_id = $1',
-    //     [id]
-    //   )
-
-    //   if (!rows.length) {
-    //     throw new Error('401 not authorized')
-    //   }
-
-    //   let user = { id: rows[0].user_id, email: rows[0].email }
-
-    //   return await done(null, user)
-
-
-
         const user = await prisma.users.findUnique({
             where: {
                 user_id: user_id
@@ -71,7 +56,6 @@ passport.use(
         if (!user) {
             throw new Error('401 not authorized')
         }
-
 
         
         return await done(null, user)

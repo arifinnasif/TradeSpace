@@ -1,5 +1,5 @@
 import { check } from 'express-validator';
-import { Request } from 'express';
+import { compare } from 'bcryptjs';
 
 // import prisma
 import { PrismaClient } from '@prisma/client';
@@ -35,8 +35,23 @@ const emailExists = check('email').custom(async (value: any) => {
 // ------------------ Login Validation ------------------ //
 
 const loginCheck = check('email').custom(async (value: any, {req}) => {
-  console.log(req.body)
-  console.log(value)
+  // check if email exists
+  const user = await prisma.users.findUnique({
+    where: { email: value },
+  });
+
+  if (!user) {
+    throw new Error('Email does not exist.')
+  }
+
+
+  // check if password is correct
+  const isMatch = await compare(req.body.password, user.password);
+
+  if (!isMatch) {
+    throw new Error('Invalid password.')
+  }
+
 })
 
 export const registerValidation = [email, password, emailExists]

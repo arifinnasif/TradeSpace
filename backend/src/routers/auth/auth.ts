@@ -12,7 +12,7 @@ router.route("/register")
 
 
 router.route("/login")
-    .post(loginValidation, loginUser)
+    .post(loginValidation, validationMiddleware, loginUser)
 
 
 

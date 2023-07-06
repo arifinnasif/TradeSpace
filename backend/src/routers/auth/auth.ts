@@ -4,10 +4,10 @@ import express from "express";
 const router = express.Router();
 
 
-router.route("/")
+router.route("/register")
 
     .get((req, res) => {
-        res.send("working!");
+        res.send("register route works!");
     })
 
     // .post(create_a_thing)

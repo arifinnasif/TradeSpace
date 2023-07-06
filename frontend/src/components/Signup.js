@@ -28,7 +28,7 @@ export default function SignIn() {
         sx={{
           marginTop: 8,
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
           alignItems: 'center',
         }}
       >

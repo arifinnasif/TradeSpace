@@ -57,3 +57,4 @@ Check out our mock UI [here](https://www.figma.com/file/8mDkiKaoGi2AWoaePVHrh5/T
      ```
      yarn start
      ```
+     Now the frontend server will be available at `localhost:3000`

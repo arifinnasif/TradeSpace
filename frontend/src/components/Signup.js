@@ -15,7 +15,18 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#00bfa5',
+    },
+    secondary: {
+      main: '#00bfa5',
+    },
+  },
+});
+
+// const defaultTheme = createTheme();
 
 export default function SignIn() {
   const handleSubmit = (event) => {

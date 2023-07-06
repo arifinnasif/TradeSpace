@@ -1,4 +1,5 @@
-const {check} = require('express-validator');
+import { check } from 'express-validator';
+import { Request } from 'express';
 
 // import prisma
 import { PrismaClient } from '@prisma/client';
@@ -28,5 +29,16 @@ const emailExists = check('email').custom(async (value: any) => {
   }
 })
 
-export let registerValidation = [email, password, emailExists]
+
+
+
+// ------------------ Login Validation ------------------ //
+
+const loginCheck = check('email').custom(async (value: any, {req}) => {
+  console.log(req.body)
+  console.log(value)
+})
+
+export const registerValidation = [email, password, emailExists]
+export const loginValidation = [loginCheck]
 

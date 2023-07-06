@@ -50,5 +50,10 @@ let registerUser = async (req:Request, res:Response) => {
     }
 }
 
+// login user: /api/auth/login
+let loginUser = async (req:Request, res:Response) => {
 
-export { getUsers, registerUser}
+}
+
+
+export { getUsers, registerUser, loginUser}

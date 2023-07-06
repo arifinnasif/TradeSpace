@@ -29,6 +29,11 @@ Check out our mock UI [here](https://www.figma.com/file/8mDkiKaoGi2AWoaePVHrh5/T
         yarn prisma migrate dev --name init --create-only
         ```
         This will create the database and the required tables in the database. You dont have to run this command again unless you delete the entire database. After any changes in the database schema, you can run the following command to update the database
+        After creating a table:
+        ```
+        yarn prisma generate
+        ```
+        
         ```
         yarn prisma migrate deploy
         ```

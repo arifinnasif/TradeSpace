@@ -11,12 +11,14 @@ import apiRouter from "./routers";
 const app = express();
 
 
+// initialize middleware
 app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 
 // initialize backend router
 app.use("/api", apiRouter);

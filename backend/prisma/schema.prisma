@@ -22,5 +22,6 @@ model users {
     email      String   @unique
     password   String
     name       String?
+    verified   Boolean  @default(false)
     createdAt  DateTime @default(now())
 }

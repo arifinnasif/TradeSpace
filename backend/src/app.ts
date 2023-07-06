@@ -5,19 +5,31 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import apiRouter from "./routers";
+import passport from "passport";
+
+const { CLIENT_URL } = require("./constants");
+
 
 
 
 const app = express();
 
 
+
+// import passport-middleware
+import "./middlewares/passport-middleware";
+
+
+
+
 // initialize middleware
-app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors({ origin: CLIENT_URL, credentials: true}))
+app.use(passport.initialize());
 
 
 // initialize backend router

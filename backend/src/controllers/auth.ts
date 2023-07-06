@@ -102,5 +102,19 @@ let loginUser = async (req:Request, res:Response) => {
 
 
 
+let protectedRoute = async (req:Request, res:Response) => {
+    try {
+        return res.status(200).json({
+            data: 'This is a protected route'
+        })
+    } catch (error:any) {
+        console.log(error.message)
+    }
+}
 
-export { getUsers, registerUser, loginUser}
+
+
+
+
+
+export { getUsers, registerUser, loginUser, protectedRoute}

@@ -1,5 +1,6 @@
 import {validationResult} from 'express-validator';
 
+
 export let validationMiddleware = (req:any, res:any, next:any) => {
     let errors = validationResult(req);
 

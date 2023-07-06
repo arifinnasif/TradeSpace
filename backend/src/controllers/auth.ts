@@ -3,9 +3,13 @@ import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 const { SECRET } = require('../constants')
 
+
 // import prisma
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
+
+
+
 
 
 // get user list: /api/auth/getUsers
@@ -24,6 +28,10 @@ let getUsers = async (req:Request, res:Response) => {
         console.log(error)
     }
 }
+
+
+
+
 
 
 // register user: /api/auth/register
@@ -51,6 +59,12 @@ let registerUser = async (req:Request, res:Response) => {
         });
     }
 }
+
+
+
+
+
+
 
 // login user: /api/auth/login
 let loginUser = async (req:Request, res:Response) => {
@@ -82,6 +96,11 @@ let loginUser = async (req:Request, res:Response) => {
         });
     }
 }
+
+
+
+
+
 
 
 export { getUsers, registerUser, loginUser}

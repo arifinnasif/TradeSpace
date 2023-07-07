@@ -2,6 +2,8 @@ import { Request, Response} from 'express';
 import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 const { SECRET } = require('../constants')
+import { sendRandomMail, sendVerificationMail } from '../services/mailService';
+import crypto from 'crypto';
 
 
 // import prisma
@@ -47,6 +49,29 @@ let registerUser = async (req:Request, res:Response) => {
                 password: hashedPassword
             }
         });
+
+        
+        // token creation for email verification
+        let token = crypto.randomBytes(32).toString('hex');
+
+        // find user_id using email
+        let user = await prisma.users.findUnique({
+            where: {
+                email: email
+            }
+        });
+
+        // entry to tokenEmail table
+        await prisma.emailtoken.create({
+            data: {
+                user_id: user!.user_id, // https://stackoverflow.com/questions/40349987/how-to-suppress-error-ts2533-object-is-possibly-null-or-undefined
+                                        // non-null assertion operator. WHAT'S THAT NASIF? WHY TYPESCRIPT?
+                token: token
+            }
+        });
+        // send verification-email
+        await sendVerificationMail(name, user!.user_id, email, token)
+
         return res.status(201).json({ 
             success: true,
             message: 'User created!'
@@ -133,6 +158,79 @@ let protectedRoute = async (req:Request, res:Response) => {
 
 
 
+let verifyEmail = async (req:Request, res:Response) => {
+    const user_id: number = +req.params.user_id; //convert string to number
+    const token = req.params.token;
 
 
-export { getUsers, registerUser, loginUser, protectedRoute, logoutUser}
+    // find user from "users" table.
+    // here users.verified will be false
+    const user = await prisma.users.findUnique({
+        where: {
+            user_id: user_id
+        }
+    });
+
+
+    // if user does not exist, return error
+    if(!user) {
+        return res.status(401).json({
+            success: false,
+            message: 'User does not exist!'
+        })
+    }
+
+
+    // find the token from "tokenEmail" table
+    const tokenObj = await prisma.emailtoken.findUnique({
+        where: {
+            user_id: user_id
+        }
+    });
+
+
+
+    // if tokenFromDB does not match with tokenFromRoute, return error
+    if(token != tokenObj!.token) {
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid Link!'
+        })
+    } 
+    else {
+        // user is verified
+        // update the "users" table
+        await prisma.users.update({
+            where: {
+                user_id: user_id
+            },
+            data: {
+                verified: true
+            }
+        })
+
+
+        // now delete the token from tokenEmail table
+        await prisma.emailtoken.delete({
+            where: {
+                user_id: user_id
+            }
+        })
+
+
+        // send successful response
+        return res.status(200).json({
+            success: true,
+            message: 'Email verified!'
+        })
+
+    }
+
+}
+
+
+
+
+
+
+export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail}

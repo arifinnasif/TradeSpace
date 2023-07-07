@@ -61,6 +61,11 @@ const loginCheck = check('email').custom(async (value: any, {req}) => {
     throw new Error('Invalid password.')
   }
 
+  // check if user has verified email
+  if (!user.verified) {
+    throw new Error('Please verify your email.')
+  }
+
   // if everything is ok
   req.user = user;
   // pass the user to the next middleware(login function)

@@ -2,7 +2,8 @@ import { Request, Response} from 'express';
 import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 const { SECRET } = require('../constants')
-import { sendRandomMail } from '../services/mailService';
+import { sendRandomMail, sendVerificationMail } from '../services/mailService';
+import crypto from 'crypto';
 
 
 // import prisma
@@ -49,8 +50,27 @@ let registerUser = async (req:Request, res:Response) => {
             }
         });
 
+        
+        // token creation for email verification
+        let token = crypto.randomBytes(32).toString('hex');
+
+        // find user_id using email
+        let user = await prisma.users.findUnique({
+            where: {
+                email: email
+            }
+        });
+
+        // entry to tokenEmail table
+        await prisma.emailToken.create({
+            data: {
+                user_id: user!.user_id, // https://stackoverflow.com/questions/40349987/how-to-suppress-error-ts2533-object-is-possibly-null-or-undefined
+                                        // non-null assertion operator. WHAT'S THAT NASIF? WHY TYPESCRIPT?
+                token: token
+            }
+        });
         // send verification-email
-        await sendRandomMail(email, 'Email Verification', 'This is a random email');
+        await sendVerificationMail(name, user!.user_id, email, token)
 
         return res.status(201).json({ 
             success: true,

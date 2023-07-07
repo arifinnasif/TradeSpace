@@ -2,6 +2,7 @@ import { Request, Response} from 'express';
 import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 const { SECRET } = require('../constants')
+import { sendRandomMail } from '../services/mailService';
 
 
 // import prisma
@@ -47,6 +48,10 @@ let registerUser = async (req:Request, res:Response) => {
                 password: hashedPassword
             }
         });
+
+        // send email
+        await sendRandomMail(email, 'Email Verification', 'This is a random email');
+
         return res.status(201).json({ 
             success: true,
             message: 'User created!'

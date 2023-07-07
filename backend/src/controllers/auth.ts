@@ -49,7 +49,7 @@ let registerUser = async (req:Request, res:Response) => {
             }
         });
 
-        // send email
+        // send verification-email
         await sendRandomMail(email, 'Email Verification', 'This is a random email');
 
         return res.status(201).json({ 

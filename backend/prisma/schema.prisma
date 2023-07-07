@@ -25,3 +25,8 @@ model users {
     verified   Boolean  @default(false)
     createdAt  DateTime @default(now())
 }
+
+model emailToken {
+    user_id   Int      @id
+    token     String   
+}

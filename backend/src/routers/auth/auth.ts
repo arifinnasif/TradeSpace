@@ -1,5 +1,5 @@
 import express from "express";
-import { getUsers, loginUser, logoutUser, protectedRoute, registerUser } from "../../controllers/auth";
+import { getUsers, loginUser, logoutUser, protectedRoute, registerUser, verifyEmail } from "../../controllers/auth";
 import { loginValidation, registerValidation }  from "../../middlewares/validators/auth";
 import { validationMiddleware } from "../../middlewares/validations-middleware";
 import { userAuth } from "../../middlewares/auth-middleware";
@@ -43,6 +43,14 @@ router.route("/get-users")
 */
 router.route("/protected")
     .get(userAuth, protectedRoute)
+
+
+
+
+
+
+router.route("/verify-email/:user_id/:token")
+    .get(verifyEmail)
 
 
 

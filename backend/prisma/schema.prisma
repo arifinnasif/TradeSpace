@@ -26,7 +26,7 @@ model users {
     createdAt  DateTime @default(now())
 }
 
-model emailToken {
+model emailtoken {
     user_id   Int      @id
     token     String   
 }

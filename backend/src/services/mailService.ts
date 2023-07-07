@@ -48,9 +48,9 @@ export const sendVerificationMail = async(name: string, user_id: number, email: 
             subject: 'Email Verification',
             html: `
                 <h1>Hello ${name}</h1>
-                <p>Thank you for registering on our site.</p>
+                <p>Thank you for registering on TradeSpace.</p>
                 <p>Please click the link below to verify your email.</p>
-                <a href="${SERVER_URL}/verify-email/${user_id}/${token}">Verify Email</a>
+                <a href="${SERVER_URL}/api/auth/verify-email/${user_id}/${token}">Verify Email</a>
             `
         }
 

@@ -62,7 +62,7 @@ let registerUser = async (req:Request, res:Response) => {
         });
 
         // entry to tokenEmail table
-        await prisma.emailToken.create({
+        await prisma.emailtoken.create({
             data: {
                 user_id: user!.user_id, // https://stackoverflow.com/questions/40349987/how-to-suppress-error-ts2533-object-is-possibly-null-or-undefined
                                         // non-null assertion operator. WHAT'S THAT NASIF? WHY TYPESCRIPT?
@@ -158,6 +158,79 @@ let protectedRoute = async (req:Request, res:Response) => {
 
 
 
+let verifyEmail = async (req:Request, res:Response) => {
+    const user_id: number = +req.params.user_id; //convert string to number
+    const token = req.params.token;
 
 
-export { getUsers, registerUser, loginUser, protectedRoute, logoutUser}
+    // find user from "users" table.
+    // here users.verified will be false
+    const user = await prisma.users.findUnique({
+        where: {
+            user_id: user_id
+        }
+    });
+
+
+    // if user does not exist, return error
+    if(!user) {
+        return res.status(401).json({
+            success: false,
+            message: 'User does not exist!'
+        })
+    }
+
+
+    // find the token from "tokenEmail" table
+    const tokenObj = await prisma.emailtoken.findUnique({
+        where: {
+            user_id: user_id
+        }
+    });
+
+
+
+    // if tokenFromDB does not match with tokenFromRoute, return error
+    if(token != tokenObj!.token) {
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid Link!'
+        })
+    } 
+    else {
+        // user is verified
+        // update the "users" table
+        await prisma.users.update({
+            where: {
+                user_id: user_id
+            },
+            data: {
+                verified: true
+            }
+        })
+
+
+        // now delete the token from tokenEmail table
+        await prisma.emailtoken.delete({
+            where: {
+                user_id: user_id
+            }
+        })
+
+
+        // send successful response
+        return res.status(200).json({
+            success: true,
+            message: 'Email verified!'
+        })
+
+    }
+
+}
+
+
+
+
+
+
+export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail}

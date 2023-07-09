@@ -6,7 +6,11 @@
   "scripts": {
     "start": "ts-node-dev --respawn src/index.ts",
     "dev": "nodemon --exec ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "lint": "tsc --noEmit && eslint \"src/**/*.ts\" --quiet --fix",
+    "prisma:init": "yarn prisma migrate dev --name init",
+    "test": "jest -i"
   },
   "keywords": [],
   "author": "",

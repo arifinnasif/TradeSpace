@@ -6,7 +6,7 @@ datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
 }
-
+     
 model stuffs {
     id          Int      @id @default(autoincrement())
     name        String

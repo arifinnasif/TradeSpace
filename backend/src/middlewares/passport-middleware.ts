@@ -42,6 +42,7 @@ const opts = {
 passport.use(
   new Strategy(opts, async ({ user_id }, done) => {
     try {
+
         const user = await prisma.users.findUnique({
             where: {
                 user_id: user_id

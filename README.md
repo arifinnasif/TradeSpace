@@ -8,6 +8,8 @@ TradeSpace is an online platform that aims to provide a convenient and user-frie
 
 Check out our mock UI [here](https://www.figma.com/file/8mDkiKaoGi2AWoaePVHrh5/TradeSpace)
 
+Check out our API Documentation [here](https://documenter.getpostman.com/view/28353860/2s946cguHS?fbclid=IwAR2H4V2NoiC5wJvJWfPUqBlB8gQYco-GkMmdz2dstf2EYkmYSH8DUBHHY34)
+
 ## Things to do after pulling or cloning
 
 - For backend

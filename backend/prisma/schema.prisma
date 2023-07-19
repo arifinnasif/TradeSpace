@@ -1,32 +1,172 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
-     
+
 model stuffs {
-    id          Int      @id @default(autoincrement())
-    name        String
-    description String?
-    price       Float?
-    image       String?
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float?
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model users {
-    user_id    Int      @id @default(autoincrement())
-    email      String   @unique
-    password   String
-    name       String?
-    verified   Boolean  @default(false)
-    createdAt  DateTime @default(now())
+  username        String          @id
+  name            String
+  email           String          @unique
+  password        String
+  dob             DateTime
+  gender          String
+  phone           String
+  email_verified  Boolean         @default(false)
+  phone_verified  Boolean         @default(false)
+  profile_pic     Bytes?
+  verified        Boolean         @default(false)
+  createdAt       DateTime        @default(now())
+  posted_sell_ads sell_ads[]      @relation("OP")
+  posted_buy_ads  buy_ads[]       @relation("BUY_OP")
+  notifications   notifications[]
+  transactions    transactions[]
+  threads_op         threads[]      @relation("THREAD_OP")
+  threads_client         threads[]      @relation("THREAD_CLIENT")
+  text_chats_sender text_chats[]   @relation("TEXT_CHAT_SENDER")
+  text_chats_receiver text_chats[] @relation("TEXT_CHAT_RECEIVER")
+
 }
 
-model emailtoken {
-    user_id   Int      @id
-    token     String   
+model temp_emailtoken {
+  username String @id
+  token    String
+}
+
+model sell_ads {
+  id              Int        @id @default(autoincrement())
+  op              users      @relation("OP", fields: [op_username], references: [username])
+  op_username     String
+  category        category   @relation("SELL_CAT", fields: [category_name], references: [name])
+  category_name   String
+  title           String
+  description     String?
+  price           Float
+  is_negotiable   Boolean    @default(false)
+  is_used         Boolean    @default(true)
+  days_used       Int?
+  image1          Bytes?
+  image2          Bytes?
+  image3          Bytes?
+  image4          Bytes?
+  image5          Bytes?
+  receipt_image   Bytes?
+  is_phone_public Boolean    @default(false)
+  address         String
+  promotion       promotions @relation(fields: [promotion_type], references: [promotion_type])
+  promotion_type  String
+  ticket          Int        @default(1)
+  status          String     @default("pending")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  threads         threads[] @relation("SELL_ADS_THREAD")
+}
+
+model buy_ads {
+  id                Int      @id @default(autoincrement())
+  op                users    @relation("BUY_OP", fields: [op_username], references: [username])
+  op_username       String
+  category          category @relation("BUY_CAT", fields: [category_name], references: [name])
+  category_name     String
+  title             String
+  description       String?
+  price_range_start Float
+  price_range_end   Float
+  image1            Bytes?
+  is_phone_public   Boolean  @default(false)
+  address           String
+  status            String   @default("pending")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model archived_ads {
+  id          Int      @id @default(autoincrement())
+  op_username String
+  title       String
+  description String?
+  price       Float?
+  image1      Bytes?
+  address     String
+  createdAt   DateTime @default(now())
+}
+
+model category {
+  name     String     @id
+  sell_ads sell_ads[] @relation("SELL_CAT")
+  buy_ads  buy_ads[]  @relation("BUY_CAT")
+}
+
+model promotions {
+  promotion_type String     @id
+  description    String
+  cost           Float
+  validity_days  Int
+  ticket         Int
+  sell_ads       sell_ads[]
+}
+
+model admins {
+  username String @id
+  name     String
+  email    String @unique
+  password String
+}
+
+model notifications {
+  id          Int      @id @default(autoincrement())
+  user        users    @relation(fields: [username], references: [username])
+  username    String
+  type        String   @default("general")
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model transactions {
+  trx_id    Int      @id @default(autoincrement())
+  user      users    @relation(fields: [username], references: [username])
+  username  String
+  promotion String
+  amount    Float
+  method    String
+  createdAt DateTime @default(now())
+}
+
+
+model threads {
+  id        String      @id
+  op users @relation("THREAD_OP", fields: [op_username], references: [username])
+  op_username String
+  client users @relation("THREAD_CLIENT", fields: [client_username], references: [username])
+  client_username String
+  ad sell_ads @relation("SELL_ADS_THREAD", fields: [ad_id], references: [id])
+  ad_id Int
+  text_chats text_chats[] @relation("THREADS_TEXT_CHAT")
+}
+
+
+model text_chats {
+  id        Int      @id @default(autoincrement())
+  thread threads @relation("THREADS_TEXT_CHAT", fields: [thread_id], references: [id])
+  thread_id String
+  sender users @relation("TEXT_CHAT_SENDER", fields: [sender_username], references: [username])
+  sender_username String
+  receiver users @relation("TEXT_CHAT_RECEIVER", fields: [receiver_username], references: [username])
+  receiver_username String
+  text String
+  createdAt DateTime @default(now())
 }

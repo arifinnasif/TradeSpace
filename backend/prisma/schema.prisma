@@ -30,8 +30,7 @@ model users {
   profile_pic     Bytes?
   verified        Boolean         @default(false)
   createdAt       DateTime        @default(now())
-  posted_sell_ads sell_ads[]      @relation("OP")
-  posted_buy_ads  buy_ads[]       @relation("BUY_OP")
+  posted_ads ads[]      @relation("OP")
   notifications   notifications[]
   transactions    transactions[]
   threads_op         threads[]      @relation("THREAD_OP")
@@ -46,15 +45,16 @@ model temp_emailtoken {
   token    String
 }
 
-model sell_ads {
+
+model ads {
   id              Int        @id @default(autoincrement())
   op              users      @relation("OP", fields: [op_username], references: [username])
   op_username     String
-  category        category   @relation("SELL_CAT", fields: [category_name], references: [name])
+  category        category   @relation("AD_CAT", fields: [category_name], references: [name])
   category_name   String
   title           String
   description     String?
-  price           Float
+  price           Float?
   is_negotiable   Boolean    @default(false)
   is_used         Boolean    @default(true)
   days_used       Int?
@@ -72,26 +72,55 @@ model sell_ads {
   status          String     @default("pending")
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
-  threads         threads[] @relation("SELL_ADS_THREAD")
+  threads         threads[] @relation("ADS_THREAD")
 }
 
-model buy_ads {
-  id                Int      @id @default(autoincrement())
-  op                users    @relation("BUY_OP", fields: [op_username], references: [username])
-  op_username       String
-  category          category @relation("BUY_CAT", fields: [category_name], references: [name])
-  category_name     String
-  title             String
-  description       String?
-  price_range_start Float
-  price_range_end   Float
-  image1            Bytes?
-  is_phone_public   Boolean  @default(false)
-  address           String
-  status            String   @default("pending")
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-}
+// model sell_ads {
+//   id              Int        @id @default(autoincrement())
+//   op              users      @relation("SELL_OP", fields: [op_username], references: [username])
+//   op_username     String
+//   category        category   @relation("SELL_CAT", fields: [category_name], references: [name])
+//   category_name   String
+//   title           String
+//   description     String?
+//   price           Float
+//   is_negotiable   Boolean    @default(false)
+//   is_used         Boolean    @default(true)
+//   days_used       Int?
+//   image1          Bytes?
+//   image2          Bytes?
+//   image3          Bytes?
+//   image4          Bytes?
+//   image5          Bytes?
+//   receipt_image   Bytes?
+//   is_phone_public Boolean    @default(false)
+//   address         String
+//   promotion       promotions @relation(fields: [promotion_type], references: [promotion_type])
+//   promotion_type  String
+//   ticket          Int        @default(1)
+//   status          String     @default("pending")
+//   createdAt       DateTime   @default(now())
+//   updatedAt       DateTime   @updatedAt
+//   threads         threads[] @relation("SELL_ADS_THREAD")
+// }
+
+// model buy_ads {
+//   id                Int      @id @default(autoincrement())
+//   op                users    @relation("BUY_OP", fields: [op_username], references: [username])
+//   op_username       String
+//   category          category @relation("BUY_CAT", fields: [category_name], references: [name])
+//   category_name     String
+//   title             String
+//   description       String?
+//   price_range_start Float
+//   price_range_end   Float
+//   image1            Bytes?
+//   is_phone_public   Boolean  @default(false)
+//   address           String
+//   status            String   @default("pending")
+//   createdAt         DateTime @default(now())
+//   updatedAt         DateTime @updatedAt
+// }
 
 model archived_ads {
   id          Int      @id @default(autoincrement())
@@ -106,8 +135,7 @@ model archived_ads {
 
 model category {
   name     String     @id
-  sell_ads sell_ads[] @relation("SELL_CAT")
-  buy_ads  buy_ads[]  @relation("BUY_CAT")
+  ads ads[] @relation("AD_CAT")
 }
 
 model promotions {
@@ -116,7 +144,7 @@ model promotions {
   cost           Float
   validity_days  Int
   ticket         Int
-  sell_ads       sell_ads[]
+  ads       ads[]
 }
 
 model admins {
@@ -153,7 +181,7 @@ model threads {
   op_username String
   client users @relation("THREAD_CLIENT", fields: [client_username], references: [username])
   client_username String
-  ad sell_ads @relation("SELL_ADS_THREAD", fields: [ad_id], references: [id])
+  ad ads @relation("ADS_THREAD", fields: [ad_id], references: [id])
   ad_id Int
   text_chats text_chats[] @relation("THREADS_TEXT_CHAT")
 }

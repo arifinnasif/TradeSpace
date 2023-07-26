@@ -132,3 +132,13 @@ dist
 # custom
 .vscode
 */prisma/migrations/*
+
+# from vite
+*.local
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -20,7 +20,7 @@ let getUsers = async (req:Request, res:Response) => {
     try {
         const userList = await prisma.users.findMany({
             select: {
-                user_id: true,
+                username: true,
                 name: true,
                 email: true,
             }
@@ -38,14 +38,18 @@ let getUsers = async (req:Request, res:Response) => {
 
 // register user: /api/auth/register
 let registerUser = async (req:Request, res:Response) => {
-    const { name, email, password } = req.body;
+    const { username, name, email, phone, gender, dob, password } = req.body;
 
     try {
         const hashedPassword = await hash(password, 12);    
         await prisma.users.create({
             data: {
+                username: username,
                 name: name,
                 email: email,
+                phone: phone,
+                gender: gender,
+                dob: dob,
                 password: hashedPassword
             }
         });
@@ -54,23 +58,19 @@ let registerUser = async (req:Request, res:Response) => {
         // token creation for email verification
         let token = crypto.randomBytes(32).toString('hex');
 
-        // find user_id using email
-        let user = await prisma.users.findUnique({
-            where: {
-                email: email
-            }
-        });
 
         // entry to tokenEmail table
-        await prisma.emailtoken.create({
+        await prisma.temp_emailtoken.create({
             data: {
-                user_id: user!.user_id, // https://stackoverflow.com/questions/40349987/how-to-suppress-error-ts2533-object-is-possibly-null-or-undefined
-                                        // non-null assertion operator. WHAT'S THAT NASIF? WHY TYPESCRIPT?
+                username: username,
                 token: token
             }
         });
+
         // send verification-email
-        await sendVerificationMail(name, user!.user_id, email, token)
+        await sendVerificationMail(name, username, email, token)
+
+        // 
 
         return res.status(201).json({ 
             success: true,
@@ -159,7 +159,7 @@ let protectedRoute = async (req:Request, res:Response) => {
 
 
 let verifyEmail = async (req:Request, res:Response) => {
-    const user_id: number = +req.params.user_id; //convert string to number
+    const username = req.params.username;
     const token = req.params.token;
 
 
@@ -167,7 +167,7 @@ let verifyEmail = async (req:Request, res:Response) => {
     // here users.verified will be false
     const user = await prisma.users.findUnique({
         where: {
-            user_id: user_id
+            username: username
         }
     });
 
@@ -182,9 +182,9 @@ let verifyEmail = async (req:Request, res:Response) => {
 
 
     // find the token from "tokenEmail" table
-    const tokenObj = await prisma.emailtoken.findUnique({
+    const tokenObj = await prisma.temp_emailtoken.findUnique({
         where: {
-            user_id: user_id
+            username: username
         }
     });
 
@@ -202,7 +202,7 @@ let verifyEmail = async (req:Request, res:Response) => {
         // update the "users" table
         await prisma.users.update({
             where: {
-                user_id: user_id
+                username: username
             },
             data: {
                 verified: true
@@ -211,9 +211,9 @@ let verifyEmail = async (req:Request, res:Response) => {
 
 
         // now delete the token from tokenEmail table
-        await prisma.emailtoken.delete({
+        await prisma.temp_emailtoken.delete({
             where: {
-                user_id: user_id
+                username: username
             }
         })
 

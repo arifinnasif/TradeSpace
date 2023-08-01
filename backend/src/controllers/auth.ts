@@ -3,11 +3,13 @@ import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 const { SECRET } = require('../constants')
 import { sendRandomMail, sendVerificationMail } from '../services/mailService';
+import { request_to_send_opt } from '../services/twilio_phone_verification';
 import crypto from 'crypto';
 
 
 // import prisma
 import { PrismaClient } from '@prisma/client';
+import { request } from 'http';
 const prisma = new PrismaClient();
 
 
@@ -20,7 +22,7 @@ let getUsers = async (req:Request, res:Response) => {
     try {
         const userList = await prisma.users.findMany({
             select: {
-                user_id: true,
+                username: true,
                 name: true,
                 email: true,
             }
@@ -38,41 +40,45 @@ let getUsers = async (req:Request, res:Response) => {
 
 // register user: /api/auth/register
 let registerUser = async (req:Request, res:Response) => {
-    const { name, email, password } = req.body;
+    const { username, name, email, phone, gender, dob, password } = req.body;
 
     try {
         const hashedPassword = await hash(password, 12);    
         await prisma.users.create({
             data: {
+                username: username,
                 name: name,
                 email: email,
+                phone: phone,
+                gender: gender,
+                dob: new Date(dob),
                 password: hashedPassword
             }
         });
 
         
         // token creation for email verification
-        let token = crypto.randomBytes(32).toString('hex');
+        let email_token = crypto.randomBytes(32).toString('hex');
 
-        // find user_id using email
-        let user = await prisma.users.findUnique({
-            where: {
-                email: email
-            }
-        });
 
         // entry to tokenEmail table
-        await prisma.emailtoken.create({
+        await prisma.temp_emailtoken.create({
             data: {
-                user_id: user!.user_id, // https://stackoverflow.com/questions/40349987/how-to-suppress-error-ts2533-object-is-possibly-null-or-undefined
-                                        // non-null assertion operator. WHAT'S THAT NASIF? WHY TYPESCRIPT?
-                token: token
+                username: username,
+                token: email_token
             }
         });
-        // send verification-email
-        await sendVerificationMail(name, user!.user_id, email, token)
 
-        return res.status(201).json({ 
+        // send verification-email and otp-message
+        await Promise.all([sendVerificationMail(name, username, email, email_token),
+                           request_to_send_opt(phone)]);
+
+        let payload = {
+            username: username,
+            email: email
+        }
+        const jwt_token = await sign(payload, SECRET);
+        return res.status(201).cookie('token', jwt_token, {httpOnly : true}).json({ 
             success: true,
             message: 'User created!'
         });
@@ -97,9 +103,9 @@ let loginUser = async (req:Request, res:Response) => {
     const user:any = req.user;
 
     // create a payload
-    // user_id will be used for passport-jwt
+    // username will be used for passport-jwt
     let payload = {
-        user_id: user.user_id,
+        username: user.username,
         email: user.email
     }
 
@@ -159,7 +165,7 @@ let protectedRoute = async (req:Request, res:Response) => {
 
 
 let verifyEmail = async (req:Request, res:Response) => {
-    const user_id: number = +req.params.user_id; //convert string to number
+    const username = req.params.username;
     const token = req.params.token;
 
 
@@ -167,7 +173,7 @@ let verifyEmail = async (req:Request, res:Response) => {
     // here users.verified will be false
     const user = await prisma.users.findUnique({
         where: {
-            user_id: user_id
+            username: username
         }
     });
 
@@ -182,9 +188,9 @@ let verifyEmail = async (req:Request, res:Response) => {
 
 
     // find the token from "tokenEmail" table
-    const tokenObj = await prisma.emailtoken.findUnique({
+    const tokenObj = await prisma.temp_emailtoken.findUnique({
         where: {
-            user_id: user_id
+            username: username
         }
     });
 
@@ -202,18 +208,18 @@ let verifyEmail = async (req:Request, res:Response) => {
         // update the "users" table
         await prisma.users.update({
             where: {
-                user_id: user_id
+                username: username
             },
             data: {
-                verified: true
+                email_verified: true
             }
         })
 
 
         // now delete the token from tokenEmail table
-        await prisma.emailtoken.delete({
+        await prisma.temp_emailtoken.delete({
             where: {
-                user_id: user_id
+                username: username
             }
         })
 

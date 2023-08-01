@@ -40,7 +40,7 @@ export const sendRandomMail = async(email: string, subject: string, text: string
 
 // ------------------ email verification during registration ------------------
 
-export const sendVerificationMail = async(name: string, user_id: number, email: string, token: string) => {
+export const sendVerificationMail = async(name: string, username: string, email: string, token: string) => {
     try {
         const message = {
             from: USER_EMAIL,
@@ -50,7 +50,7 @@ export const sendVerificationMail = async(name: string, user_id: number, email: 
                 <h1>Hello ${name}</h1>
                 <p>Thank you for registering on TradeSpace.</p>
                 <p>Please click the link below to verify your email.</p>
-                <a href="${SERVER_URL}/api/auth/verify-email/${user_id}/${token}">Verify Email</a>
+                <a href="${SERVER_URL}/api/auth/verify-email/${username}/${token}">Verify Email</a>
             `
         }
 

@@ -3,11 +3,13 @@ import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 const { SECRET } = require('../constants')
 import { sendRandomMail, sendVerificationMail } from '../services/mailService';
+import { request_to_send_opt_message } from '../services/twilio_phone_verification';
 import crypto from 'crypto';
 
 
 // import prisma
 import { PrismaClient } from '@prisma/client';
+import { request } from 'http';
 const prisma = new PrismaClient();
 
 
@@ -67,10 +69,9 @@ let registerUser = async (req:Request, res:Response) => {
             }
         });
 
-        // send verification-email
-        await sendVerificationMail(name, username, email, token)
-
-        // 
+        // send verification-email and otp-message
+        await Promise.all([sendVerificationMail(name, username, email, token),
+                           request_to_send_opt_message(phone)]);
 
         return res.status(201).json({ 
             success: true,

@@ -2,7 +2,8 @@ import express from "express";
 import { getUsers, loginUser, logoutUser, protectedRoute, registerUser, verifyEmail } from "../../controllers/auth";
 import { loginValidation, registerValidation }  from "../../middlewares/validators/auth";
 import { validationMiddleware } from "../../middlewares/validations-middleware";
-import { userAuth } from "../../middlewares/auth-middleware";
+import { nonPhoneVerifiedUserAuth, userAuth } from "../../middlewares/auth-middleware";
+import { verify_phone } from "../../controllers/phone_verification.controller";
 
 
 const router = express.Router();
@@ -54,6 +55,6 @@ router.route("/verify-email/:username/:token")
 
 
 
-
+router.post('/verify-phone', nonPhoneVerifiedUserAuth, verify_phone);
 
 export default router;

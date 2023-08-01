@@ -39,7 +39,7 @@ const opts = {
 
     we will use this id from the jwt-token to find the user
 */
-passport.use(
+passport.use( 'user-rule',
   new Strategy(opts, async ({ username }, done) => {
     try {
 
@@ -61,6 +61,37 @@ passport.use(
         }
 
         if(user.phone_verified === false || user.email_verified === false) {
+            throw new Error('401 not authorized')
+        }
+
+        
+        return await done(null, user)
+        // will use this user for protected routes
+    } catch (error:any) {
+      console.log(error.message)
+      done(null, false)
+    }
+  })
+);
+
+passport.use( 'non-phone-verified-user-rule',
+  new Strategy(opts, async ({ username }, done) => {
+    try {
+
+        const user = await prisma.users.findUnique({
+            where: {
+                username: username
+            },
+
+            select: {
+                username: true,
+                email: true,
+                phone_verified: true,
+                email_verified: true,
+            }
+        })
+
+        if (!user) {
             throw new Error('401 not authorized')
         }
 

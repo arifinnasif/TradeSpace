@@ -18,33 +18,31 @@ model stuffs {
 }
 
 model users {
-  username        String          @id
-  name            String
-  email           String          @unique
-  password        String
-  dob             DateTime
-  gender          String
-  phone           String
-  email_verified  Boolean         @default(false)
-  phone_verified  Boolean         @default(false)
-  profile_pic     Bytes?
-  verified        Boolean         @default(false)
-  createdAt       DateTime        @default(now())
-  posted_ads ads[]      @relation("OP")
-  notifications   notifications[]
-  transactions    transactions[]
-  threads_op         threads[]      @relation("THREAD_OP")
-  threads_client         threads[]      @relation("THREAD_CLIENT")
-  text_chats_sender text_chats[]   @relation("TEXT_CHAT_SENDER")
-  text_chats_receiver text_chats[] @relation("TEXT_CHAT_RECEIVER")
-
+  username            String          @id
+  name                String
+  email               String          @unique
+  password            String
+  dob                 DateTime
+  gender              String
+  phone               String          @unique
+  email_verified      Boolean         @default(false)
+  phone_verified      Boolean         @default(false)
+  profile_pic         Bytes?
+  // verified            Boolean         @default(false) // do we need this?
+  createdAt           DateTime        @default(now())
+  posted_ads          ads[]           @relation("OP")
+  notifications       notifications[]
+  transactions        transactions[]
+  threads_op          threads[]       @relation("THREAD_OP")
+  threads_client      threads[]       @relation("THREAD_CLIENT")
+  text_chats_sender   text_chats[]    @relation("TEXT_CHAT_SENDER")
+  text_chats_receiver text_chats[]    @relation("TEXT_CHAT_RECEIVER")
 }
 
 model temp_emailtoken {
   username String @id
   token    String
 }
-
 
 model ads {
   id              Int        @id @default(autoincrement())
@@ -72,7 +70,7 @@ model ads {
   status          String     @default("pending")
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
-  threads         threads[] @relation("ADS_THREAD")
+  threads         threads[]  @relation("ADS_THREAD")
 }
 
 // model sell_ads {
@@ -134,17 +132,17 @@ model archived_ads {
 }
 
 model category {
-  name     String     @id
-  ads ads[] @relation("AD_CAT")
+  name String @id
+  ads  ads[]  @relation("AD_CAT")
 }
 
 model promotions {
-  promotion_type String     @id
+  promotion_type String @id
   description    String
   cost           Float
   validity_days  Int
   ticket         Int
-  ads       ads[]
+  ads            ads[]
 }
 
 model admins {
@@ -174,27 +172,25 @@ model transactions {
   createdAt DateTime @default(now())
 }
 
-
 model threads {
-  id        String      @id
-  op users @relation("THREAD_OP", fields: [op_username], references: [username])
-  op_username String
-  client users @relation("THREAD_CLIENT", fields: [client_username], references: [username])
+  id              String       @id
+  op              users        @relation("THREAD_OP", fields: [op_username], references: [username])
+  op_username     String
+  client          users        @relation("THREAD_CLIENT", fields: [client_username], references: [username])
   client_username String
-  ad ads @relation("ADS_THREAD", fields: [ad_id], references: [id])
-  ad_id Int
-  text_chats text_chats[] @relation("THREADS_TEXT_CHAT")
+  ad              ads          @relation("ADS_THREAD", fields: [ad_id], references: [id])
+  ad_id           Int
+  text_chats      text_chats[] @relation("THREADS_TEXT_CHAT")
 }
 
-
 model text_chats {
-  id        Int      @id @default(autoincrement())
-  thread threads @relation("THREADS_TEXT_CHAT", fields: [thread_id], references: [id])
-  thread_id String
-  sender users @relation("TEXT_CHAT_SENDER", fields: [sender_username], references: [username])
-  sender_username String
-  receiver users @relation("TEXT_CHAT_RECEIVER", fields: [receiver_username], references: [username])
+  id                Int      @id @default(autoincrement())
+  thread            threads  @relation("THREADS_TEXT_CHAT", fields: [thread_id], references: [id])
+  thread_id         String
+  sender            users    @relation("TEXT_CHAT_SENDER", fields: [sender_username], references: [username])
+  sender_username   String
+  receiver          users    @relation("TEXT_CHAT_RECEIVER", fields: [receiver_username], references: [username])
   receiver_username String
-  text String
-  createdAt DateTime @default(now())
+  text              String
+  createdAt         DateTime @default(now())
 }

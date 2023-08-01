@@ -49,7 +49,7 @@ router.route("/protected")
 
 
 
-router.route("/verify-email/:user_id/:token")
+router.route("/verify-email/:username/:token")
     .get(verifyEmail)
 
 

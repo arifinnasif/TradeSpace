@@ -58,22 +58,27 @@ let registerUser = async (req:Request, res:Response) => {
 
         
         // token creation for email verification
-        let token = crypto.randomBytes(32).toString('hex');
+        let email_token = crypto.randomBytes(32).toString('hex');
 
 
         // entry to tokenEmail table
         await prisma.temp_emailtoken.create({
             data: {
                 username: username,
-                token: token
+                token: email_token
             }
         });
 
         // send verification-email and otp-message
-        await Promise.all([sendVerificationMail(name, username, email, token),
+        await Promise.all([sendVerificationMail(name, username, email, email_token),
                            request_to_send_opt_message(phone)]);
 
-        return res.status(201).json({ 
+        let payload = {
+            username: username,
+            email: email
+        }
+        const jwt_token = await sign(payload, SECRET);
+        return res.status(201).cookie('token', jwt_token, {httpOnly : true}).json({ 
             success: true,
             message: 'User created!'
         });
@@ -98,9 +103,9 @@ let loginUser = async (req:Request, res:Response) => {
     const user:any = req.user;
 
     // create a payload
-    // user_id will be used for passport-jwt
+    // username will be used for passport-jwt
     let payload = {
-        user_id: user.user_id,
+        username: user.username,
         email: user.email
     }
 
@@ -206,7 +211,7 @@ let verifyEmail = async (req:Request, res:Response) => {
                 username: username
             },
             data: {
-                verified: true
+                email_verified: true
             }
         })
 

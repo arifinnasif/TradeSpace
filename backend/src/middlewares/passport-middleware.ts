@@ -34,27 +34,33 @@ const opts = {
 /*
     In the next passport.use() function:
     
-    user_id is the payload from jwt --
+    username is the payload from jwt --
     created in the login controller.
 
     we will use this id from the jwt-token to find the user
 */
 passport.use(
-  new Strategy(opts, async ({ user_id }, done) => {
+  new Strategy(opts, async ({ username }, done) => {
     try {
 
         const user = await prisma.users.findUnique({
             where: {
-                user_id: user_id
+                username: username
             },
 
             select: {
-                user_id: true,
-                email: true
+                username: true,
+                email: true,
+                phone_verified: true,
+                email_verified: true,
             }
         })
 
         if (!user) {
+            throw new Error('401 not authorized')
+        }
+
+        if(user.phone_verified === false || user.email_verified === false) {
             throw new Error('401 not authorized')
         }
 

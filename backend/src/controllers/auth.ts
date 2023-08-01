@@ -3,7 +3,7 @@ import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 const { SECRET } = require('../constants')
 import { sendRandomMail, sendVerificationMail } from '../services/mailService';
-import { request_to_send_opt_message } from '../services/twilio_phone_verification';
+import { request_to_send_opt } from '../services/twilio_phone_verification';
 import crypto from 'crypto';
 
 
@@ -51,7 +51,7 @@ let registerUser = async (req:Request, res:Response) => {
                 email: email,
                 phone: phone,
                 gender: gender,
-                dob: dob,
+                dob: new Date(dob),
                 password: hashedPassword
             }
         });
@@ -71,7 +71,7 @@ let registerUser = async (req:Request, res:Response) => {
 
         // send verification-email and otp-message
         await Promise.all([sendVerificationMail(name, username, email, email_token),
-                           request_to_send_opt_message(phone)]);
+                           request_to_send_opt(phone)]);
 
         let payload = {
             username: username,

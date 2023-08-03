@@ -18,6 +18,12 @@ let postAd = async (req: Request, res: Response) => {
             is_negotiable, is_used, is_phone_public,
             days_used, address, promotion_type } = req.body;
 
+    // retrieve ticket count for promotion type
+    const promotion = await prisma.promotions.findUnique({
+        where: { promotion_type: promotion_type },
+
+    });
+
     try {
         
         // create a new ad
@@ -37,7 +43,10 @@ let postAd = async (req: Request, res: Response) => {
                 
                 days_used: Number(days_used),
                 address: address,
-                promotion_type: promotion_type
+                promotion_type: promotion_type,
+                
+                ticket: promotion!.ticket, // promotion is not null here. Validated in validators/ads.ts
+                                           // Hence, ! is used. 
             }
         });
 

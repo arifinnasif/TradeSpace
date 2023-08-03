@@ -52,7 +52,28 @@ const days_used = check('days_used').optional().isInt()
                             .withMessage('days_used should be an integer.')
 
 
+// check if is_phone_public is valid. is_phone_public is optional and defaults to false
+const is_phone_public = check('is_phone_public').optional().isBoolean()
+                            .withMessage('is_phone_public should be true/false.')
+
+
+// check if address is valid.
+const address = check('address').isLength({ min: 5, max: 100 })
+                            .withMessage('Address length should be between 5 and 100 characters.')
+    
+
+// check if promotion_type is valid.
+const promotion_type = check('promotion_type').custom(async (value: string) => {
+    const promotion = await prisma.promotions.findUnique({
+        where: { promotion_type: value },
+    });
+
+    if (!promotion) {
+        throw new Error('Promotion does not exist.')
+    }
+})
 
 
 
-export const postAdValidation = [category, title, description, price, is_negotiable, is_used, days_used]
+export const postAdValidation = [category, title, description, price, is_negotiable, 
+                                is_used, days_used, is_phone_public, address, promotion_type]

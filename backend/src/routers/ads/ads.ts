@@ -20,4 +20,10 @@ router.route("/")
     .get(get_all_ads)
 
 
+
+// ad-details
+router.route("/:adId")
+    .get()
+
+
 export default router;

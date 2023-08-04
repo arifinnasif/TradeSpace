@@ -74,20 +74,50 @@ let postAd = async (req: Request, res: Response) => {
 
 // get all ads: /api/ads
 let get_all_ads = async (req:Request, res:Response) => {
+    const search_string = req.query.search_string;
+
     try {
-        const ad_list = await prisma.ads.findMany({
-            select: {
-                id: true,
-                op_username: true,
-                category_name: true,
-                title: true,
-                price: true,
-                is_negotiable: true,
-                is_used: true,
-                promotion_type: true,
-                createdAt: true,
-            }
-        });
+        let ad_list = [];
+
+        // if search_string is present, search for ads containing search_string in title or description
+        if(search_string) {
+            ad_list = await prisma.ads.findMany({
+                where: {
+                    OR: [
+                        { title: { contains: String(search_string) } },
+                        { description: { contains: String(search_string) } },
+                    ]
+                },
+                select: {
+                    id: true,
+                    op_username: true,
+                    category_name: true,
+                    title: true,
+                    price: true,
+                    is_negotiable: true,
+                    is_used: true,
+                    promotion_type: true,
+                    createdAt: true,
+                }
+            });
+        }
+
+        // else, fetch all ads
+        else{
+            ad_list = await prisma.ads.findMany({
+                select: {
+                    id: true,
+                    op_username: true,
+                    category_name: true,
+                    title: true,
+                    price: true,
+                    is_negotiable: true,
+                    is_used: true,
+                    promotion_type: true,
+                    createdAt: true,
+                }
+            });
+        }
         
         return res.json(ad_list);
     } catch (error: any) {

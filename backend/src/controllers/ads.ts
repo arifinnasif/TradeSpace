@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import Fuse from 'fuse.js';
 
 
 // import prisma client
@@ -6,6 +7,26 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
+const fuseOptions = {
+	// isCaseSensitive: false,
+	// includeScore: false,
+	// shouldSort: true,
+	// includeMatches: false,
+	// findAllMatches: false,
+	// minMatchCharLength: 1,
+	// location: 0,
+	threshold: 0.5,
+	distance: 1000,
+	// useExtendedSearch: false,
+	// ignoreLocation: false,
+	// ignoreFieldNorm: false,
+	// fieldNormWeight: 1,
+	keys: [
+		"title",
+		"description",
+        "category_name"
+	]
+};
 
 
 // post ad: /api/ads/post-ad
@@ -94,7 +115,7 @@ let get_ads = async (req:Request, res:Response) => {
     const page = Number(req.query.page)-1 || 0;
     const limit = Number(req.query.limit) || 5;
 
-    //const search_string = req.query.search_string || '';
+    const search_string = req.query.search_string || '';
 
     const promo_types_q = req.query.promo_types || [];
     let cat_q = req.query.cat || [];
@@ -186,6 +207,14 @@ let get_ads = async (req:Request, res:Response) => {
             ad_list = ad_list.filter((ad: any) => ad.is_sell_ad === is_sell_ad);
         }
 
+
+        
+        // search for ads containing search_string in title or description or category_name
+        if(search_string) {
+            const fuse = new Fuse(ad_list, fuseOptions)
+            // @ts-ignore
+            ad_list = fuse.search(String(search_string))
+        }
         
 
         // get total number of ads

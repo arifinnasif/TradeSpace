@@ -2,7 +2,7 @@ import express from "express";
 import { userAuth } from "../../middlewares/auth-middleware";
 import { postAdValidation } from "../../middlewares/validators/ads";
 import { validationMiddleware } from "../../middlewares/validations-middleware";
-import { get_all_ads, postAd } from "../../controllers/ads";
+import { get_ad_details, get_all_ads, postAd } from "../../controllers/ads";
 
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.route("/")
 
 // ad-details
 router.route("/:adId")
-    .get()
+    .get(get_ad_details)
 
 
 export default router;

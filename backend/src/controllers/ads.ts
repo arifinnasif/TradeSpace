@@ -81,7 +81,7 @@ let postAd = async (req: Request, res: Response) => {
 3. filter ads : api/ads/?
                         promo_types[]=promo1&promo_types[]=promo2&
                         cat[]=cat1&cat[]=cat2&
-                        sort=price,asc/desc& // sort=usage_time,desc
+                        sort=price,asc/desc& // sort=days_used,desc
                         geo=lat:long&
                         ad_type=sell/buy&
                         page=x&
@@ -94,7 +94,7 @@ let get_ads = async (req:Request, res:Response) => {
     const page = Number(req.query.page)-1 || 0;
     const limit = Number(req.query.limit) || 5;
 
-    const search_string = req.query.search_string || '';
+    //const search_string = req.query.search_string || '';
 
     const promo_types_q = req.query.promo_types || [];
     let cat_q = req.query.cat || [];
@@ -103,8 +103,9 @@ let get_ads = async (req:Request, res:Response) => {
     let ad_type = req.query.ad_type || '';
 
     
-    const promo_types = Array.isArray(promo_types_q) ? promo_types_q : [promo_types_q];
-    const categories = Array.isArray(cat_q) ? cat_q : [cat_q];
+    let promo_types = Array.isArray(promo_types_q) ? promo_types_q : [promo_types_q];
+    let categories = Array.isArray(cat_q) ? cat_q : [cat_q];
+
     
     let sort_by = '';
     let sort_order = '';
@@ -123,7 +124,58 @@ let get_ads = async (req:Request, res:Response) => {
 
     try {
         // Now get ads with corresoponding promo-types, categories, sort, ad-type
-                
+        let ad_list = await prisma.ads.findMany({
+            where: {
+                AND: [
+                    //@ts-ignore
+                    { promotion_type: { in: promo_types } },
+                    //@ts-ignore
+                    { category_name: { in: categories } },
+                    { is_sell_ad: is_sell_ad }
+                ]
+            },
+            orderBy: {
+                [sort_by]: sort_order
+            },
+            skip: page*limit,
+            take: limit,
+            select: {
+                id: true,
+                op_username: true,
+                category_name: true,
+                title: true,
+                price: true,
+                is_negotiable: true,
+                is_used: true,
+                promotion_type: true,
+                createdAt: true,
+            }
+        });
+
+        // get total number of ads
+        const total_ads = await prisma.ads.count({
+            where: {
+                AND: [
+                    //@ts-ignore
+                    { promotion_type: { in: promo_types } },
+                    //@ts-ignore
+                    { category_name: { in: categories } },
+                    { is_sell_ad: is_sell_ad }
+                ]
+            }
+        });
+
+        // get total number of pages
+        const total_pages = Math.ceil(total_ads/limit);
+
+        const response = {
+            success: true,
+            total_pages: total_pages,
+            total_ads: total_ads,
+            ad_list: ad_list
+        }
+
+        return res.status(200).json(response);
 
     }
     catch (error: any) {

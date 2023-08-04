@@ -101,14 +101,16 @@ let get_ads = async (req:Request, res:Response) => {
     let sort = req.query.sort || '';
     let geo = req.query.geo || '';
     let ad_type = req.query.ad_type || '';
+    
 
     
     let promo_types = Array.isArray(promo_types_q) ? promo_types_q : [promo_types_q];
     let categories = Array.isArray(cat_q) ? cat_q : [cat_q];
 
     
-    let sort_by = '';
-    let sort_order = '';
+    // sort by price, asc by default
+    let sort_by = 'price';
+    let sort_order = 'asc';
     if(sort) {
         const sort_arr = String(sort).split(',');
         sort_by = sort_arr[0];
@@ -116,13 +118,36 @@ let get_ads = async (req:Request, res:Response) => {
     }
 
     //if ad-type is sell, set is_sell_ad to true
-    let is_sell_ad = false;
-    if(ad_type === 'sell') {
-        is_sell_ad = true;
+    let is_sell_ad = true;
+    if(ad_type === 'buy') {
+        is_sell_ad = false;
     }
 
 
     try {
+        // if categories is empty, get all categories
+        if(categories.length === 0) {
+            categories = await prisma.category.findMany({
+                select: {
+                    name: true
+                }
+            });
+            categories = categories.map((category: any) => category.name);
+        }
+
+        // if promo_types is empty, get all promo_types
+        if(promo_types.length === 0) {
+            promo_types = await prisma.promotions.findMany({
+                select: {
+                    promotion_type: true
+                }
+            });
+            promo_types = promo_types.map((promo_type: any) => promo_type.promotion_type);
+        }
+
+        
+
+
         // Now get ads with corresoponding promo-types, categories, sort, ad-type
         let ad_list = await prisma.ads.findMany({
             where: {
@@ -130,8 +155,7 @@ let get_ads = async (req:Request, res:Response) => {
                     //@ts-ignore
                     { promotion_type: { in: promo_types } },
                     //@ts-ignore
-                    { category_name: { in: categories } },
-                    { is_sell_ad: is_sell_ad }
+                    { category_name: { in: categories } }
                 ]
             },
             orderBy: {
@@ -159,8 +183,7 @@ let get_ads = async (req:Request, res:Response) => {
                     //@ts-ignore
                     { promotion_type: { in: promo_types } },
                     //@ts-ignore
-                    { category_name: { in: categories } },
-                    { is_sell_ad: is_sell_ad }
+                    { category_name: { in: categories } }
                 ]
             }
         });
@@ -179,6 +202,7 @@ let get_ads = async (req:Request, res:Response) => {
 
     }
     catch (error: any) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             error: error.message

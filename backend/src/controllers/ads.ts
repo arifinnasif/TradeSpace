@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import Fuse from 'fuse.js';
 
 
 // import prisma client
@@ -6,6 +7,26 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
+const fuseOptions = {
+	// isCaseSensitive: false,
+	// includeScore: false,
+	// shouldSort: true,
+	// includeMatches: false,
+	// findAllMatches: false,
+	// minMatchCharLength: 1,
+	// location: 0,
+	threshold: 0.5,
+	distance: 1000,
+	// useExtendedSearch: false,
+	// ignoreLocation: false,
+	// ignoreFieldNorm: false,
+	// fieldNormWeight: 1,
+	keys: [
+		"title",
+		"description",
+        "category_name"
+	]
+};
 
 
 // post ad: /api/ads/post-ad
@@ -72,10 +93,93 @@ let postAd = async (req: Request, res: Response) => {
 
 
 
-// get all ads: /api/ads
-let get_all_ads = async (req:Request, res:Response) => {
+/*
+ 
+1. get all ads: api/ads/
+
+2. search ads : api/ads/?search=keyword
+
+3. filter ads : api/ads/?
+                        promo_types[]=promo1&promo_types[]=promo2&
+                        cat[]=cat1&cat[]=cat2&
+                        sort=price,asc/desc& // sort=days_used,desc
+                        geo=lat:long&
+                        ad_type=sell/buy&
+                        page=x&
+                        limit=y
+
+ */
+
+
+let get_ads = async (req:Request, res:Response) => {
+    const page = Number(req.query.page)-1 || 0;
+    const limit = Number(req.query.limit) || 5;
+
+    const search_string = req.query.search_string || '';
+
+    const promo_types_q = req.query.promo_types || [];
+    let cat_q = req.query.cat || [];
+    let sort = req.query.sort || '';
+    let geo = req.query.geo || '';
+    let ad_type = req.query.ad_type || '';
+    
+
+    
+    let promo_types = Array.isArray(promo_types_q) ? promo_types_q : [promo_types_q];
+    let categories = Array.isArray(cat_q) ? cat_q : [cat_q];
+
+    
+    // sort by price, asc by default
+    let sort_by = 'price';
+    let sort_order = 'asc';
+    if(sort) {
+        const sort_arr = String(sort).split(',');
+        sort_by = sort_arr[0];
+        sort_order = sort_arr[1];
+    }
+
+
+
+
     try {
-        const ad_list = await prisma.ads.findMany({
+        // if categories is empty, get all categories
+        if(categories.length === 0) {
+            categories = await prisma.category.findMany({
+                select: {
+                    name: true
+                }
+            });
+            categories = categories.map((category: any) => category.name);
+        }
+
+        // if promo_types is empty, get all promo_types
+        if(promo_types.length === 0) {
+            promo_types = await prisma.promotions.findMany({
+                select: {
+                    promotion_type: true
+                }
+            });
+            promo_types = promo_types.map((promo_type: any) => promo_type.promotion_type);
+        }
+
+        
+
+
+        // Now get ads with corresoponding promo-types, categories, sort, ad-type
+        let ad_list = await prisma.ads.findMany({
+            where: {
+                AND: [
+                    //@ts-ignore
+                    { promotion_type: { in: promo_types } },
+                    //@ts-ignore
+                    { category_name: { in: categories } }
+                ]
+            },
+            orderBy: {
+                [sort_by]: sort_order
+            },
+            skip: page*limit,
+            take: limit,
             select: {
                 id: true,
                 op_username: true,
@@ -84,19 +188,62 @@ let get_all_ads = async (req:Request, res:Response) => {
                 price: true,
                 is_negotiable: true,
                 is_used: true,
+                is_sell_ad: true,
                 promotion_type: true,
                 createdAt: true,
             }
         });
+
+
+        // filter by ad-type if specified
+        if(ad_type) {
+            // set is_sell_ad
+            let is_sell_ad = true;
+            if(ad_type === 'buy') {
+                is_sell_ad = false;
+            }
+
+            // filter
+            ad_list = ad_list.filter((ad: any) => ad.is_sell_ad === is_sell_ad);
+        }
+
+
         
-        return res.json(ad_list);
-    } catch (error: any) {
+        // search for ads containing search_string in title or description or category_name
+        if(search_string) {
+            const fuse = new Fuse(ad_list, fuseOptions)
+            // @ts-ignore
+            ad_list = fuse.search(String(search_string))
+        }
+        
+
+        // get total number of ads
+        const total_ads = ad_list.length;
+        
+
+        // get total number of pages
+        const total_pages = Math.ceil(total_ads/limit);
+
+        const response = {
+            success: true,
+            total_pages: total_pages,
+            total_ads: total_ads,
+            ad_list: ad_list
+        }
+
+        return res.status(200).json(response);
+
+    }
+    catch (error: any) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             error: error.message
         });
     }
+
 }
+
 
 
 
@@ -114,6 +261,7 @@ let get_ad_details = async (req:Request, res:Response) => {
                 price: true,
                 is_negotiable: true,
                 is_used: true,
+                is_sell_ad: true,
                 is_phone_public: true,
                 days_used: true,
                 address: true,
@@ -173,4 +321,4 @@ let get_ad_details = async (req:Request, res:Response) => {
 }
 
 
-export { postAd, get_all_ads, get_ad_details }
+export { postAd, get_ads, get_ad_details }

@@ -73,7 +73,8 @@ let postAd = async (req: Request, res: Response) => {
 
 
 // get all ads: /api/ads
-let get_all_ads = async (req:Request, res:Response) => {
+// search ads : /api/ads?search_string=...
+let get_ads = async (req:Request, res:Response) => {
     const search_string = req.query.search_string;
 
     try {
@@ -84,8 +85,14 @@ let get_all_ads = async (req:Request, res:Response) => {
             ad_list = await prisma.ads.findMany({
                 where: {
                     OR: [
-                        { title: { contains: String(search_string) } },
-                        { description: { contains: String(search_string) } },
+                        { title: { 
+                            contains: String(search_string),
+                            mode: 'insensitive' 
+                        } },
+                        { description: { 
+                            contains: String(search_string),
+                            mode: 'insensitive'
+                         } },
                     ]
                 },
                 select: {
@@ -203,4 +210,4 @@ let get_ad_details = async (req:Request, res:Response) => {
 }
 
 
-export { postAd, get_all_ads, get_ad_details }
+export { postAd, get_ads, get_ad_details }

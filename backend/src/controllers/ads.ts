@@ -117,11 +117,7 @@ let get_ads = async (req:Request, res:Response) => {
         sort_order = sort_arr[1];
     }
 
-    //if ad-type is sell, set is_sell_ad to true
-    let is_sell_ad = true;
-    if(ad_type === 'buy') {
-        is_sell_ad = false;
-    }
+
 
 
     try {
@@ -171,22 +167,30 @@ let get_ads = async (req:Request, res:Response) => {
                 price: true,
                 is_negotiable: true,
                 is_used: true,
+                is_sell_ad: true,
                 promotion_type: true,
                 createdAt: true,
             }
         });
 
-        // get total number of ads
-        const total_ads = await prisma.ads.count({
-            where: {
-                AND: [
-                    //@ts-ignore
-                    { promotion_type: { in: promo_types } },
-                    //@ts-ignore
-                    { category_name: { in: categories } }
-                ]
+
+        // filter by ad-type if specified
+        if(ad_type) {
+            // set is_sell_ad
+            let is_sell_ad = true;
+            if(ad_type === 'buy') {
+                is_sell_ad = false;
             }
-        });
+
+            // filter
+            ad_list = ad_list.filter((ad: any) => ad.is_sell_ad === is_sell_ad);
+        }
+
+        
+
+        // get total number of ads
+        const total_ads = ad_list.length;
+        
 
         // get total number of pages
         const total_pages = Math.ceil(total_ads/limit);
@@ -287,6 +291,7 @@ let get_ad_details = async (req:Request, res:Response) => {
                 price: true,
                 is_negotiable: true,
                 is_used: true,
+                is_sell_ad: true,
                 is_phone_public: true,
                 days_used: true,
                 address: true,

@@ -69,4 +69,108 @@ let postAd = async (req: Request, res: Response) => {
     
 }
 
-export { postAd }
+
+
+
+// get all ads: /api/ads
+let get_all_ads = async (req:Request, res:Response) => {
+    try {
+        const ad_list = await prisma.ads.findMany({
+            select: {
+                id: true,
+                op_username: true,
+                category_name: true,
+                title: true,
+                price: true,
+                is_negotiable: true,
+                is_used: true,
+                promotion_type: true,
+                createdAt: true,
+            }
+        });
+        
+        return res.json(ad_list);
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
+
+
+
+// get ad details: /api/ads/:adId
+let get_ad_details = async (req:Request, res:Response) => {
+    try {
+        let ad_details = await prisma.ads.findUnique({
+            where: { id: Number(req.params.adId) },
+            select: {
+                id: true,
+                op_username: true,
+                category_name: true,
+                title: true,
+                description: true,
+                price: true,
+                is_negotiable: true,
+                is_used: true,
+                is_phone_public: true,
+                days_used: true,
+                address: true,
+                promotion_type: true,
+                createdAt: true,
+            }
+        });
+
+        
+        // ad not found
+        if (!ad_details) {
+            return res.status(404).json({
+                success: false,
+                error: 'Ad not found!'
+            });
+        }
+    
+        
+        // calculate usage time(years, months, days) from days_used
+        let usage_time = {
+            years: Math.floor(ad_details.days_used / 365),
+            months: Math.floor((ad_details.days_used % 365) / 30),
+            days: Math.floor((ad_details.days_used % 365) % 30),
+        }
+
+        
+        // if is_phone_public is true, fetch phone number from user table
+        let phone = '';
+        if (ad_details.is_phone_public) {
+            const user = await prisma.users.findUnique({
+                where: { username: ad_details.op_username },
+                select: { phone: true }
+            });
+            phone = user.phone;
+        }
+
+
+        // remove days_used from ad_details
+        delete ad_details.days_used;
+
+        // add usage_time and phone to ad_details
+        const ad_details_json = {
+            ...ad_details,
+            usage_time: usage_time,
+            phone: phone
+        }
+        
+
+        
+        return res.json(ad_details_json);
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
+
+
+export { postAd, get_all_ads, get_ad_details }

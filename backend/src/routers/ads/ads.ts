@@ -14,8 +14,23 @@ router.route("/post-ad")
 
 
 
+/*
+ 
+1. get all ads: api/ads/
 
-// get all ads
+2. search ads : api/ads/?search=keyword
+
+3. filter ads : api/ads/?
+                        promo_types[]=promo1&promo_types[]=promo2&
+                        cat[]=cat1&cat[]=cat2&
+                        sort=high-to-low/low-to-high&
+                        geo=lat:long&
+                        ad_type=sell/buy&
+                        page=x&
+                        limit=y
+
+ */
+
 router.route("/")
     .get(get_ads)
 

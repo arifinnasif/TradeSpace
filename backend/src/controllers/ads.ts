@@ -72,68 +72,128 @@ let postAd = async (req: Request, res: Response) => {
 
 
 
-// get all ads: /api/ads
-// search ads : /api/ads?search_string=...
+/*
+ 
+1. get all ads: api/ads/
+
+2. search ads : api/ads/?search=keyword
+
+3. filter ads : api/ads/?
+                        promo_types[]=promo1&promo_types[]=promo2&
+                        cat[]=cat1&cat[]=cat2&
+                        sort=price,asc/desc& // sort=usage_time,desc
+                        geo=lat:long&
+                        ad_type=sell/buy&
+                        page=x&
+                        limit=y
+
+ */
+
+
 let get_ads = async (req:Request, res:Response) => {
-    const search_string = req.query.search_string;
+    const page = Number(req.query.page)-1 || 0;
+    const limit = Number(req.query.limit) || 5;
+
+    const search_string = req.query.search_string || '';
+
+    const promo_types_q = req.query.promo_types || [];
+    let cat_q = req.query.cat || [];
+    let sort = req.query.sort || '';
+    let geo = req.query.geo || '';
+    let ad_type = req.query.ad_type || '';
+
+    
+    const promo_types = Array.isArray(promo_types_q) ? promo_types_q : [promo_types_q];
+    const categories = Array.isArray(cat_q) ? cat_q : [cat_q];
+    
+    let sort_by = '';
+    let sort_order = '';
+    if(sort) {
+        const sort_arr = String(sort).split(',');
+        sort_by = sort_arr[0];
+        sort_order = sort_arr[1];
+    }
+
+    //if ad-type is sell, set is_sell_ad to true
+    let is_sell_ad = false;
+    if(ad_type === 'sell') {
+        is_sell_ad = true;
+    }
+
 
     try {
-        let ad_list = [];
+        // Now get ads with corresoponding promo-types, categories, sort, ad-type
+                
 
-        // if search_string is present, search for ads containing search_string in title or description
-        if(search_string) {
-            ad_list = await prisma.ads.findMany({
-                where: {
-                    OR: [
-                        { title: { 
-                            contains: String(search_string),
-                            mode: 'insensitive' 
-                        } },
-                        { description: { 
-                            contains: String(search_string),
-                            mode: 'insensitive'
-                         } },
-                    ]
-                },
-                select: {
-                    id: true,
-                    op_username: true,
-                    category_name: true,
-                    title: true,
-                    price: true,
-                    is_negotiable: true,
-                    is_used: true,
-                    promotion_type: true,
-                    createdAt: true,
-                }
-            });
-        }
-
-        // else, fetch all ads
-        else{
-            ad_list = await prisma.ads.findMany({
-                select: {
-                    id: true,
-                    op_username: true,
-                    category_name: true,
-                    title: true,
-                    price: true,
-                    is_negotiable: true,
-                    is_used: true,
-                    promotion_type: true,
-                    createdAt: true,
-                }
-            });
-        }
-        
-        return res.json(ad_list);
-    } catch (error: any) {
+    }
+    catch (error: any) {
         return res.status(500).json({
             success: false,
             error: error.message
         });
     }
+
 }
+// let get_ads = async (req:Request, res:Response) => {
+//     const search_string = req.query.search_string;
+
+//     try {
+//         let ad_list = [];
+
+//         // if search_string is present, search for ads containing search_string in title or description
+//         if(search_string) {
+//             ad_list = await prisma.ads.findMany({
+//                 where: {
+//                     OR: [
+//                         { title: { 
+//                             contains: String(search_string),
+//                             mode: 'insensitive' 
+//                         } },
+//                         { description: { 
+//                             contains: String(search_string),
+//                             mode: 'insensitive'
+//                          } },
+//                     ]
+//                 },
+//                 select: {
+//                     id: true,
+//                     op_username: true,
+//                     category_name: true,
+//                     title: true,
+//                     price: true,
+//                     is_negotiable: true,
+//                     is_used: true,
+//                     promotion_type: true,
+//                     createdAt: true,
+//                 }
+//             });
+//         }
+
+//         // else, fetch all ads
+//         else{
+//             ad_list = await prisma.ads.findMany({
+//                 select: {
+//                     id: true,
+//                     op_username: true,
+//                     category_name: true,
+//                     title: true,
+//                     price: true,
+//                     is_negotiable: true,
+//                     is_used: true,
+//                     promotion_type: true,
+//                     createdAt: true,
+//                 }
+//             });
+//         }
+        
+//         return res.json(ad_list);
+//     } catch (error: any) {
+//         return res.status(500).json({
+//             success: false,
+//             error: error.message
+//         });
+//     }
+// }
 
 
 

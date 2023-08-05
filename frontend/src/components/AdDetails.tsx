@@ -14,6 +14,7 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
+import { FunctionComponent, useEffect, useState } from "react";
 import {
   FaUser,
   FaThList,
@@ -21,10 +22,39 @@ import {
   FaDollarSign,
   FaCalendarDay,
   FaMapMarkerAlt,
+  FaMedal,
 } from "react-icons/fa";
-import { SlBadge } from "react-icons/sl";
+import { useParams } from "react-router-dom";
+import { adService, AdDetailsType } from "../services/ad.service";
 
-export default function AdDetils() {
+// interface AdDetailsProps {
+//   ad_id: number
+// op_username: string,
+// op_fullname: string,
+// category_name: string,
+// title: string,
+// description?: string,
+// price?: string,
+// is_used: boolean,
+// days_used?: number,
+// phone?: string,
+// promotion_type?: string,
+// createdAt: string,
+// }
+
+const AdDetils = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [ad, setAd] = useState<AdDetailsType>();
+  const { id } = useParams();
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const ad_details = await adService.getAdDetails(+id!);
+      setAd(ad_details);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, [id]);
   return (
     // <Box>
 
@@ -52,26 +82,27 @@ export default function AdDetils() {
         area={"adtype_section"}
       >
         <Text fontWeight="bold" fontSize="2xl">
-          Sell Ad
+          {ad?.is_sell_ad ? "Sell" : "Buy"} Ad
         </Text>
-        <Divider/>
+        <Divider />
       </GridItem>
       <GridItem pl="2" fontWeight="bold" area={"header_section"}>
         <HStack>
-          <Text fontSize="4xl">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero quod
-            cum nobis.
-          </Text>
-          <Tag
-            size="lg"
-            key="lg"
-            variant="solid"
-            fontWeight="bold"
-            colorScheme="yellow"
-          >
-            <TagLeftIcon as={SlBadge} />
-            <TagLabel>Gold</TagLabel>
-          </Tag>
+          <Text fontSize="4xl">{ad?.title}</Text>
+          {ad?.promotion_type !== "normal" ? (
+            <>
+              <Tag
+                size="lg"
+                key="lg"
+                variant="solid"
+                fontWeight="bold"
+                colorScheme="yellow"
+              >
+                <TagLeftIcon as={FaMedal} />
+                <TagLabel>{ad?.promotion_type}</TagLabel>
+              </Tag>
+            </>
+          ) : null}
         </HStack>
       </GridItem>
       <GridItem pl="2" area={"image_section"}>
@@ -85,58 +116,64 @@ export default function AdDetils() {
         <VStack align="left">
           <HStack>
             <Icon as={FaUser} />
-            <Text>@johndoe</Text>
-            <Text>(John Doe)</Text>
+            <Text>@{ad?.op_username}</Text>
+            <Text>({ad?.op_fullname})</Text>
           </HStack>
           <HStack>
             <Icon as={FaCalendarDay} />
-            <Text>4 June, 2023</Text>
+            <Text>{ad?.createdAt}</Text>
           </HStack>
           <HStack>
             <Icon as={FaThList} />
-            <Text>Laptop</Text>
+            <Text>{ad?.category_name}</Text>
           </HStack>
-          <HStack>
-            <Icon as={FaDollarSign} />
-            <Text>BDT 25,000</Text>
-            <Badge colorScheme="green" borderRadius="md">
-              Negotiable
-            </Badge>
-          </HStack>
-          <HStack>
-            <Icon as={FaClock} />
-            <Text>2 years</Text>
-          </HStack>
+          {ad?.price ? (
+            <>
+              <HStack>
+                <Icon as={FaDollarSign} />
+                <Text>BDT {ad?.price}</Text>
+                {ad.is_negotiable ? (
+                  <Badge colorScheme="green" borderRadius="md">
+                    Negotiable
+                  </Badge>
+                ) : null}
+              </HStack>
+            </>
+          ) : null}
+
+          {ad?.days_used ? (
+            <HStack>
+              <Icon as={FaClock} />
+              {ad.days_used.years !== 0 ? (
+                <Text>{ad.days_used.years} years</Text>
+              ) : null}
+              {ad.days_used.months !== 0 ? (
+                <Text>{ad.days_used.months} months</Text>
+              ) : null}
+              {ad.days_used.days !== 0 ? (
+                <Text>{ad.days_used.days} days</Text>
+              ) : null}
+            </HStack>
+          ) : null}
         </VStack>
       </GridItem>
       <GridItem pl="2" area={"details_section"}>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Est delectus
-        totam aliquid quis, culpa iste ratione esse ipsum hic sint possimus
-        vitae aliquam perspiciatis consequuntur quibusdam ex accusantium
-        suscipit recusandae adipisci dolor nulla? Voluptates est temporibus
-        repellendus porro totam debitis excepturi sed, voluptatem numquam eum
-        corporis mollitia soluta pariatur, modi dignissimos voluptatum ducimus
-        rem, ipsum sit labore corrupti. Sequi ducimus accusamus laborum magni
-        repudiandae pariatur, delectus aut voluptatum at vel quis, nisi
-        laboriosam! Temporibus facere reiciendis officia ratione eos, illo error
-        molestiae dicta. Facere, eaque nemo? Aspernatur dolor beatae
-        perspiciatis repellat natus voluptatem, quos eum. Accusamus vero vel
-        atque labore pariatur impedit sequi ad! Vel quos, architecto distinctio
-        quasi, quae corrupti non omnis ipsam maxime consectetur, vitae sequi.
-        Ipsa, esse.
+        {ad?.description}
       </GridItem>
 
       <GridItem area={"button_section"}>
-        <Divider/>
+        <Divider />
         <HStack py="4" spacing={4} direction="row" justify="right">
-          <Button leftIcon={<ChatIcon/>} colorScheme="teal" size="lg">
+          <Button leftIcon={<ChatIcon />} colorScheme="teal" size="lg">
             Chat
           </Button>
-          <Button leftIcon={<FaMapMarkerAlt/>} colorScheme="teal" size="lg">
+          <Button leftIcon={<FaMapMarkerAlt />} colorScheme="teal" size="lg">
             Address
           </Button>
         </HStack>
       </GridItem>
     </Grid>
   );
-}
+};
+
+export default AdDetils;

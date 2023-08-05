@@ -3,8 +3,9 @@ import { Suspense } from "react";
 import { Spinner } from "@chakra-ui/react";
 
 import Things from "./components/Things";
-// import GetAds from "./components/Ads/GetAds";
+import GetAds from "./components/Ads/GetAds";
 import Register from "./components/Register/RegisterSteps";
+import PostAd from "./components/Ads/PostAd";
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
       <Suspense fallback={<Spinner />}>
         <Routes>
           <Route path="/things/:id/" element={<Things />} />
-          {/* <Route path="/ads/" element={<GetAds />} /> */}
-          <Route path="/register/" element= {<div><Register /></div>} />
+          <Route path="/ads/" element={<GetAds />} />
+          <Route path="/register/" element= {<Register />} />
+          <Route path="/ads/post-ad/" element = {<PostAd />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

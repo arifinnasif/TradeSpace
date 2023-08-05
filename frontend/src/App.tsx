@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { Spinner } from '@chakra-ui/react';
 
 import Things from './components/Things';
+import AdDetils from "./components/AdDetails";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           
           <Route path="/things/:id/" element={<Things />} />
+          <Route path="/ads/:id/" element={<AdDetils />} />
           
         </Routes>
       </Suspense>

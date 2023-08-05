@@ -33,3 +33,23 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
     }
 }
 
+
+export const get_pending_review_details = async (req: Request, res: Response) => {
+    try {
+        const pending_review = await prisma.ads.findUnique({
+            where: {
+                id: Number(req.params.id!)
+            }
+        });
+
+        if(pending_review?.status !== 'pending') return res.status(404).json({});
+
+        return res.status(200).json(pending_review);
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
+

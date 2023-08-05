@@ -6,10 +6,14 @@ import {
   Heading,
   Text,
   Box,
+  Icon,
+  HStack,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import Negotiable from "./Negotiable";
 import IsUsed from "./IsUsed";
+import { FaThList } from "react-icons/fa";
+import BuyOrSellTag from "./BuyOrSellTag";
 
 interface AdCardProps {
   title: string;
@@ -17,6 +21,7 @@ interface AdCardProps {
   price: string;
   is_used: boolean;
   is_negotiable: boolean;
+  is_sell_ad: boolean;
 }
 
 const AdCard: FunctionComponent<AdCardProps> = ({
@@ -25,6 +30,7 @@ const AdCard: FunctionComponent<AdCardProps> = ({
   price,
   is_used,
   is_negotiable,
+  is_sell_ad,
 }) => {
   return (
     <Box height={"40"} width={"700px"} p={"1"}>
@@ -47,11 +53,18 @@ const AdCard: FunctionComponent<AdCardProps> = ({
               {title} <IsUsed is_used={is_used} />
             </Heading>
             {/* Category */}
-            <Text py={2}>{category}</Text>
+            <HStack>
+              <Icon as={FaThList} />
+              <Text gap={"10"} py={2}>
+                {category}
+              </Text>
+              <BuyOrSellTag is_sell_ad={is_sell_ad} />
+            </HStack>
             {/* Price */}
-            <Text>
-              {price} Tk {is_negotiable && <Negotiable />}
-            </Text>
+            <HStack>
+              <Text>{price} Tk</Text>
+              {is_negotiable && <Negotiable />}
+            </HStack>
           </CardBody>
         </Stack>
       </Card>

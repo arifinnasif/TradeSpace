@@ -15,6 +15,7 @@ import {
 import RegisterStep2 from './RegisterStep2'
 import RegisterForm from './RegisterForm'
 import Step1 from './RegisterStep1Components'
+import Step2 from './RegisterStep2Components'
 
 
 const Register = () => {
@@ -40,8 +41,8 @@ const Register = () => {
     <>
         <Progress value={progress} size='xs' colorScheme='teal' />
         {step === 1 && <RegisterForm header="Provide your information" formContent={<Step1 onNext={handleNextStep}/>} />}
-        {/* {step === 2 && <RegisterStep2 onNext={handleNextStep} onPrev={handlePrevStep}/>}
-        {step === 3 && <RegisterStep2 onNext={handleNextStep} onPrev={handlePrevStep}/>} */}
+        {step === 2 && <RegisterForm header="Register your Account" formContent={<Step2 onNext={handleNextStep} onPrev={handlePrevStep}/>} />}
+        {step === 3 && <RegisterStep2 onNext={handleNextStep} onPrev={handlePrevStep}/>}
         <ButtonGroup mt="5%" w="100%">
           <Flex w="100%" justifyContent="space-between" alignItems='center'>
             {step === 3 ? (

@@ -39,6 +39,7 @@ const AdCard: FunctionComponent<AdCardProps> = ({
         overflow="hidden"
         variant="outline"
         colorScheme="teal"
+        width={"700px"}
       >
         <Image
           objectFit="cover"
@@ -49,17 +50,20 @@ const AdCard: FunctionComponent<AdCardProps> = ({
 
         <Stack>
           <CardBody>
-            <Heading size="md">
+            <Heading size="md" paddingBottom={"2"}>
               {title} <IsUsed is_used={is_used} />
             </Heading>
+
+            <BuyOrSellTag is_sell_ad={is_sell_ad} />
+
             {/* Category */}
             <HStack>
               <Icon as={FaThList} />
               <Text gap={"10"} py={2}>
                 {category}
               </Text>
-              <BuyOrSellTag is_sell_ad={is_sell_ad} />
             </HStack>
+
             {/* Price */}
             <HStack>
               <Text>{price} Tk</Text>

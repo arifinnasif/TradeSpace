@@ -78,7 +78,7 @@ function GetAds() {
     >
       <GridItem area={"filter_section"}>Filter</GridItem>
       <GridItem area={"ad_section"}>
-        <VStack spacing={"0"}>
+        <VStack spacing={"2"}>
           {ads.map((p) => (
             <Link to={`/ads/${p.id}`}>
               <AdCard key={p.id} {...p} />

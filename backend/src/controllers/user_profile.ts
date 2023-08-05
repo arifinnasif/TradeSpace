@@ -49,8 +49,7 @@ let get_user_profile = async (req: Request, res: Response) => {
 // update user profile: /api/profile
 let update_user_profile = async (req: Request, res: Response) => {
     const user: any = req.user;
-    console.log(req.body);
-    console.log(user);
+    
 }
 
 export { get_user_profile, update_user_profile }

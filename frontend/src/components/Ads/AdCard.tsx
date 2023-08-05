@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import Negotiable from "./Negotiable";
+import IsUsed from "./IsUsed";
 
 interface AdCardProps {
   title: string;
@@ -42,7 +43,9 @@ const AdCard: FunctionComponent<AdCardProps> = ({
 
         <Stack>
           <CardBody>
-            <Heading size="md">{title}(Used)</Heading>
+            <Heading size="md">
+              {title} <IsUsed is_used={is_used} />
+            </Heading>
             {/* Category */}
             <Text py={2}>{category}</Text>
             {/* Price */}

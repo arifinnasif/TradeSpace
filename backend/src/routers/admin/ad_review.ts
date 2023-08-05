@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { get_all_pending_reviews, get_pending_review_details } from "../../controllers/ad_review.controller";
+import { approve_pending_review, get_all_pending_reviews, get_pending_review_details } from "../../controllers/ad_review.controller";
 
 const router = Router();
 
@@ -21,7 +21,9 @@ router.route("/")
 
 router.route("/:id")
 
-    .get(get_pending_review_details);
+    .get(get_pending_review_details)
+
+    .put(approve_pending_review);
 
 
 export default router;

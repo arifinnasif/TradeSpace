@@ -294,14 +294,6 @@ const Register = () => {
 
   return (
     <>
-      <Box
-        borderWidth="1px"
-        rounded="lg"
-        shadow="1px 1px 3px rgba(0,0,0,0.3)"
-        p={6}
-        m="10px auto"
-        as="form"
-      >
         <Progress value={progress} size='xs' colorScheme='teal' />
         {step === 1 ? <RegisterStep1 /> : step === 2 ? <RegisterStep2 /> : <Form3 />}
         <ButtonGroup mt="5%" w="100%">
@@ -354,7 +346,6 @@ const Register = () => {
             ) : null}
           </Flex>
         </ButtonGroup>
-      </Box>
     </>
   )
 }

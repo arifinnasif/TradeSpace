@@ -22,7 +22,6 @@ const Register = () => {
   const [value, setValue] = React.useState('1')
   return (
     <Flex
-      minH={'85vh'}
       minW={'85vw'}
 
       align={'center'}
@@ -55,21 +54,16 @@ const Register = () => {
               <Input type="date" />
             </FormControl>
             {/* gender selector radio */}
-            <RadioGroup onChange={setValue} value={value}>
+            <FormControl id="dob">
+              <FormLabel>Gender</FormLabel>
+              <RadioGroup onChange={setValue} value={value}>
             <Stack direction='row'>
-                <Radio value='1'>First</Radio>
-                <Radio value='2'>Second</Radio>
-                <Radio value='3'>Third</Radio>
+                <Radio value='1'>Male</Radio>
+                <Radio value='2'>Female</Radio>
             </Stack>
             </RadioGroup>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                align={'start'}
-                justify={'space-between'}>
-                <Checkbox>Remember me</Checkbox>
-                <Text color={'blue.400'}>Forgot password?</Text>
-              </Stack>
+            </FormControl>
+            
               <Button
                 bg={'teal.400'}
                 color={'white'}
@@ -78,7 +72,6 @@ const Register = () => {
                 }}>
                 Sign in
               </Button>
-            </Stack>
           </Stack>
         </Box>
       </Stack>

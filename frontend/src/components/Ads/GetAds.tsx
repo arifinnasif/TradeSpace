@@ -1,7 +1,8 @@
 // import { Link } from "react-router-dom";
 
-import { Grid, GridItem, Link, VStack } from "@chakra-ui/react";
+import { Grid, GridItem, VStack } from "@chakra-ui/react";
 import AdCard from "./AdCard";
+import { Link } from "react-router-dom";
 
 const ads = [
   {
@@ -60,8 +61,6 @@ const ads = [
   },
 ];
 
-console.log(ads);
-
 function GetAds() {
   return (
     <Grid
@@ -75,7 +74,7 @@ function GetAds() {
       <GridItem area={"ad_section"}>
         <VStack spacing={"0"}>
           {ads.map((p) => (
-            <Link>
+            <Link to={`/ads/${p.id}`}>
               <AdCard key={p.id} {...p} />
             </Link>
           ))}

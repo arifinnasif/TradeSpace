@@ -8,14 +8,23 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
+import Negotiable from "./Negotiable";
 
 interface AdCardProps {
   title: string;
   category: string;
   price: string;
+  is_used: boolean;
+  is_negotiable: boolean;
 }
 
-const AdCard: FunctionComponent<AdCardProps> = ({ title, category, price }) => {
+const AdCard: FunctionComponent<AdCardProps> = ({
+  title,
+  category,
+  price,
+  is_used,
+  is_negotiable,
+}) => {
   return (
     <Box height={"40"} width={"700px"} p={"1"}>
       <Card
@@ -37,7 +46,9 @@ const AdCard: FunctionComponent<AdCardProps> = ({ title, category, price }) => {
             {/* Category */}
             <Text py={2}>{category}</Text>
             {/* Price */}
-            <Text>{price} Tk (Negotiable)</Text>
+            <Text>
+              {price} Tk {is_negotiable && <Negotiable />}
+            </Text>
           </CardBody>
         </Stack>
       </Card>

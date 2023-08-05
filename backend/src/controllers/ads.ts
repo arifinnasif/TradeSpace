@@ -7,6 +7,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 
+// for search functionality
 const fuseOptions = {
 	// isCaseSensitive: false,
 	// includeScore: false,

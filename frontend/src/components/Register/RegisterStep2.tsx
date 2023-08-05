@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 'use client'
 
 import {
@@ -14,7 +16,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 
-const Register = () => {
+const Register = ({ onNext, onPrev }) => {
   return (
     <Flex
       minH={'85vh'}
@@ -24,7 +26,15 @@ const Register = () => {
       justify={'center'}
       
       bg={useColorModeValue('teal.50', 'gray.800')}>
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+      <Stack 
+        spacing={8} 
+        mx={'auto'} 
+        maxW={'lg'} 
+        py={12} 
+        px={6} 
+        minW={'35vw'}
+        minH={'100vh'}
+      >
         <Stack align={'center'}>
           <Heading fontSize={'4xl'}>Register your account</Heading>
           <Text fontSize={'lg'}>
@@ -45,23 +55,26 @@ const Register = () => {
               <FormLabel>Password</FormLabel>
               <Input type="password" />
             </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                align={'start'}
-                justify={'space-between'}>
-                <Checkbox>Remember me</Checkbox>
-                <Text color={'blue.400'}>Forgot password?</Text>
-              </Stack>
+            <Flex justifyContent={'space-between'}>
               <Button
-                bg={'teal.400'}
-                color={'white'}
-                _hover={{
-                  bg: 'blue.500',
-                }}>
-                Sign in
+                  onClick={onPrev}
+                  bg={'teal.400'}
+                  color={'white'}
+                  _hover={{
+                    bg: 'blue.500',
+                  }}>
+                  Previous
               </Button>
-            </Stack>
+              <Button
+                  onClick={onNext}
+                  bg={'teal.400'}
+                  color={'white'}
+                  _hover={{
+                    bg: 'blue.500',
+                  }}>
+                  Register
+              </Button>
+            </Flex>
           </Stack>
         </Box>
       </Stack>

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 'use client'
 
 import {
@@ -18,7 +20,7 @@ import React from 'react'
 
 import { Radio, RadioGroup } from '@chakra-ui/react'
 
-const Register = () => {
+const Register = ({ onNext, onPrev }) => {
   const [value, setValue] = React.useState('1')
   return (
     <Flex
@@ -28,7 +30,15 @@ const Register = () => {
       justify={'center'}
       
       bg={useColorModeValue('teal.50', 'gray.800')}>
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+      <Stack 
+        spacing={8} 
+        mx={'auto'} 
+        maxW={'lg'} 
+        py={12} 
+        px={6} 
+        minW={'35vw'}
+        minH={'100vh'}
+      >
         <Stack align={'center'}>
           <Heading fontSize={'4xl'}>Provide your information</Heading>
           <Text fontSize={'lg'}>
@@ -65,12 +75,13 @@ const Register = () => {
             </FormControl>
             
               <Button
+                onClick={onNext}
                 bg={'teal.400'}
                 color={'white'}
                 _hover={{
                   bg: 'blue.500',
                 }}>
-                Sign in
+                Next
               </Button>
           </Stack>
         </Box>

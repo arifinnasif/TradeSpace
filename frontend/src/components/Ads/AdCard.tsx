@@ -17,7 +17,7 @@ interface AdCardProps {
 
 const AdCard: FunctionComponent<AdCardProps> = ({ title, category, price }) => {
   return (
-    <Box height={"40"} width={"xl"} justifyItems={"end"} alignContent={"end"}>
+    <Box height={"40"} width={"700px"} p={"1"}>
       <Card
         direction={{ base: "column", sm: "row" }}
         overflow="hidden"

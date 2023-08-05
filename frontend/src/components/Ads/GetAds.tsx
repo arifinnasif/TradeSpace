@@ -1,6 +1,7 @@
 // import { Link } from "react-router-dom";
-import AdCard from "./AdCard.tsx";
-import { VStack } from "@chakra-ui/react";
+
+import { Grid, GridItem, Link, VStack } from "@chakra-ui/react";
+import AdCard from "./AdCard";
 
 const ads = [
   {
@@ -9,6 +10,8 @@ const ads = [
     category: "category",
     imageSrc: "https://picsum.photos/seed/picsum6/420/260",
     price: "$23.00",
+    is_used: true,
+    is_negotiable: false,
   },
   {
     id: "2",
@@ -16,6 +19,8 @@ const ads = [
     category: "category",
     imageSrc: "https://picsum.photos/seed/picsum5/421/261",
     price: "$15.00",
+    is_used: true,
+    is_negotiable: true,
   },
   {
     id: "3",
@@ -23,6 +28,8 @@ const ads = [
     category: "category",
     imageSrc: "https://picsum.photos/seed/picsum4/422/262",
     price: "$10.25",
+    is_used: false,
+    is_negotiable: true,
   },
   {
     id: "4",
@@ -30,6 +37,8 @@ const ads = [
     category: "category",
     imageSrc: "https://picsum.photos/seed/picsum3/420/260",
     price: "$23.00",
+    is_used: true,
+    is_negotiable: true,
   },
   {
     id: "5",
@@ -37,6 +46,8 @@ const ads = [
     category: "category",
     imageSrc: "https://picsum.photos/seed/picsum2/421/261",
     price: "$15.00",
+    is_used: false,
+    is_negotiable: true,
   },
   {
     id: "6",
@@ -44,16 +55,33 @@ const ads = [
     category: "category",
     imageSrc: "https://picsum.photos/seed/picsum1/422/262",
     price: "$10.25",
+    is_used: true,
+    is_negotiable: false,
   },
 ];
 
+console.log(ads);
+
 function GetAds() {
   return (
-    <VStack spacing={"0"}>
-      {ads.map((p) => (
-        <AdCard key={p.id} {...p} />
-      ))}
-    </VStack>
+    <Grid
+      templateAreas={`"filter_section ad_section"`}
+      gridTemplateColumns={"1fr 700px"}
+      color={"teal.600"}
+      mx={"70px"}
+      my={"10px"}
+    >
+      <GridItem area={"filter_section"}>Filter</GridItem>
+      <GridItem area={"ad_section"}>
+        <VStack spacing={"0"}>
+          {ads.map((p) => (
+            <Link>
+              <AdCard key={p.id} {...p} />
+            </Link>
+          ))}
+        </VStack>
+      </GridItem>
+    </Grid>
   );
 }
 

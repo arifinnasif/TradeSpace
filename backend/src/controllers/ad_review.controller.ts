@@ -83,3 +83,43 @@ export const approve_pending_review = async (req: Request, res: Response) => {
     }
 }
 
+
+export const decline_pending_review = async (req: Request, res: Response) => {
+    try {
+        const pending_review = await prisma.ads.findUnique({
+            where: {
+                id: Number(req.params.id!)
+            }
+        });
+
+        if(!pending_review) return res.status(404).json({});
+
+        if(pending_review.status !== 'pending') return res.status(404).json({});
+
+        await prisma.ads.delete({
+            where: {
+                id: Number(req.params.id!)
+            }
+        });
+
+        const archived_review = await prisma.archived_ads.create({
+            data: {
+                op_username: pending_review.op_username,
+                title: pending_review.title,
+                description: pending_review.description,
+                price: pending_review.price,
+                image1: pending_review.image1,
+                address: pending_review.address,
+            }
+        });
+        
+
+
+        return res.status(200).json(archived_review);
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}

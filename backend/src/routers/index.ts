@@ -6,11 +6,13 @@ const router = express.Router();
 import authRouter from "./auth/auth";
 import thingsRouter from "./things/things"
 import adsRouter from "./ads/ads"
+import profileRouter from "./user/profile"
 
 
 // initialize routers
 router.use("/auth", authRouter);
 router.use("/things", thingsRouter);
 router.use("/ads", adsRouter);
+router.use("/profile",  profileRouter);
 
 export default router;

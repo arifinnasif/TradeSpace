@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../../prisma/prisma_client';
+import { notify_user } from './user_notification.controller';
 import * as dotenv from "dotenv";
 
 const limit = 10;
@@ -74,6 +75,11 @@ export const approve_pending_review = async (req: Request, res: Response) => {
             }
         });
 
+        await notify_user(pending_review.op_username,
+                          'ad_approved',
+                          'Ad Approved',
+                          'Your ad has been approved by the admin.');
+
         return res.status(200).json(updated_review);
     } catch (error: any) {
         return res.status(500).json({
@@ -114,6 +120,11 @@ export const decline_pending_review = async (req: Request, res: Response) => {
         });
         
 
+
+        await notify_user(pending_review.op_username,
+                          'ad_declined',
+                          'Ad Declined',
+                          'Your ad has been declined by the admin.');
 
         return res.status(200).json(archived_review);
     } catch (error: any) {

@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../../prisma/prisma_client';
-import { request_to_verify_opt } from '../services/twilio_phone_verification';
-import jwt from 'jsonwebtoken'
 import * as dotenv from "dotenv";
-import { get } from 'http';
+
+const limit = 10;
 
 
 dotenv.config();
@@ -13,7 +12,15 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
         const pending_reviews = await prisma.ads.findMany({
             where: {
                 status: 'pending'
-            }
+            },
+
+            orderBy: {
+                createdAt: 'desc'
+            },
+
+            skip: (Number(req.query.page||1) - 1) * limit,
+
+            take: limit,
         });
 
         // console.log(pending_reviews);

@@ -1,28 +1,22 @@
-// @ts-nocheck
-
 'use client'
 
 import {
   Flex,
   Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Checkbox,
   Stack,
-  Button,
   Heading,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
 
-import React from 'react'
+import { FunctionComponent } from 'react'
 
-import { Radio, RadioGroup } from '@chakra-ui/react'
+interface Props {
+    header: string
+    formContent: JSX.Element
+}
 
-import { Step1 } from './RegisterStep1Components'
-
-const RegisterForm = ({ header, formContent }) => {
+const RegisterForm:FunctionComponent<Props> = ({ header, formContent }) => {
   return (
     <Flex
       minW={'85vw'}
@@ -51,7 +45,9 @@ const RegisterForm = ({ header, formContent }) => {
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
           p={8}>
-          <Stack spacing={4}>
+          <Stack 
+            spacing={4}
+          >
             {formContent}
           </Stack>
         </Box>

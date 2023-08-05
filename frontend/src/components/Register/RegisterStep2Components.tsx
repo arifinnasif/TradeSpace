@@ -1,26 +1,21 @@
-// @ts-nocheck
-
 'use client'
 
 import {
   Flex,
-  Box,
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
-  Stack,
   Button,
-  Heading,
-  Text,
-  useColorModeValue,
-  Radio, 
-  RadioGroup,
 } from '@chakra-ui/react'
 
-import React from 'react'
+import { FunctionComponent } from "react";
 
-const Step2 = ({ onNext, onPrev}) => {
+interface Props {
+    onNext: () => void
+    onPrev: () => void
+}
+
+const Step2:FunctionComponent<Props> = ({ onNext, onPrev}) => {
     return(
         <>
             <FormControl id="email">

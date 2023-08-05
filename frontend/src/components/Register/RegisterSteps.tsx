@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 'use client'
 
 import { useState } from 'react'
@@ -10,8 +12,9 @@ import {
 } from '@chakra-ui/react'
 
 
-import RegisterStep1 from './RegisterStep1'
 import RegisterStep2 from './RegisterStep2'
+import RegisterForm from './RegisterForm'
+import Step1 from './RegisterStep1Components'
 
 
 const Register = () => {
@@ -36,9 +39,9 @@ const Register = () => {
   return (
     <>
         <Progress value={progress} size='xs' colorScheme='teal' />
-        {step === 1 && <RegisterStep1 onNext={handleNextStep} onPrev={handlePrevStep}/>}
-        {step === 2 && <RegisterStep2 onNext={handleNextStep} onPrev={handlePrevStep}/>}
-        {step === 3 && <RegisterStep2 />}
+        {step === 1 && <RegisterForm header="Provide your information" formContent={<Step1 onNext={handleNextStep}/>} />}
+        {/* {step === 2 && <RegisterStep2 onNext={handleNextStep} onPrev={handlePrevStep}/>}
+        {step === 3 && <RegisterStep2 onNext={handleNextStep} onPrev={handlePrevStep}/>} */}
         <ButtonGroup mt="5%" w="100%">
           <Flex w="100%" justifyContent="space-between" alignItems='center'>
             {step === 3 ? (

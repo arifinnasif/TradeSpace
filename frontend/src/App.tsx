@@ -4,7 +4,7 @@ import { Spinner } from "@chakra-ui/react";
 
 import Things from "./components/Things";
 // import GetAds from "./components/Ads/GetAds";
-import Register from "./components/Register/Register";
+import Register from "./components/Register/RegisterSteps";
 
 function App() {
   return (

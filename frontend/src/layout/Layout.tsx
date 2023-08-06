@@ -2,6 +2,7 @@ import { FunctionComponent } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Spinner from "../components/Spinner";
 import { Helmet } from "react-helmet-async";
+import FooterComponent from "../components/Footer/Footer";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -55,6 +56,7 @@ const Layout: FunctionComponent<LayoutProps> = ({
             <main>{children}</main>
           </div>
         )}
+        <FooterComponent />
       </div>
     </>
   );

@@ -5,10 +5,44 @@ import {
   Stack,
   Text,
   Flex,
-  Tag,
   useColorModeValue,
+  chakra,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+
+const SocialButton = ({
+  children,
+  label,
+  href,
+}: {
+  children: ReactNode;
+  label: string;
+  href: string;
+}) => {
+  return (
+    <chakra.button
+      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+      rounded={"full"}
+      w={8}
+      h={8}
+      cursor={"pointer"}
+      as={"a"}
+      href={href}
+      display={"inline-flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      transition={"background 0.3s ease"}
+      _hover={{
+        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
+      }}
+    >
+      <VisuallyHidden>{label}</VisuallyHidden>
+      {children}
+    </chakra.button>
+  );
+};
 
 const Logo = (props: any) => {
   return (
@@ -100,7 +134,20 @@ export default function FooterComponent() {
                 Follow TradeSpace
               </Text>
             </ListHeader>
-            <Stack direction={"row"} align={"center"} spacing={2}></Stack>
+            <Stack direction={"row"} align={"center"} spacing={3}>
+              <SocialButton label={"Twitter"} href={"#"}>
+                <FaTwitter />
+              </SocialButton>
+              <SocialButton label={"YouTube"} href={"#"}>
+                <FaYoutube />
+              </SocialButton>
+              <SocialButton label={"Instagram"} href={"#"}>
+                <FaInstagram />
+              </SocialButton>
+              <SocialButton label={"Facebook"} href={"#"}>
+                <FaFacebook />
+              </SocialButton>
+            </Stack>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>

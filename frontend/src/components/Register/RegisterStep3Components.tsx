@@ -7,13 +7,20 @@ import validator from "validator";
 import { FormEvent, FunctionComponent } from "react";
 
 interface Step3Props {
+  isVerifyPressable: boolean;
+  verifyButtonAction: () => void;
   otp?: string;
   setOtp: (otp: string) => void;
 }
 
-const Step3: FunctionComponent<Step3Props> = ({ otp, setOtp }) => {
+const Step3: FunctionComponent<Step3Props> = ({
+  isVerifyPressable,
+  verifyButtonAction,
+  otp,
+  setOtp,
+}) => {
   const isCurrentInputInValid = () => {
-    return otp == undefined || isOtpInValid();
+    return isVerifyPressable && (otp == undefined || isOtpInValid());
   };
   const isOtpInValid = () => {
     if (otp == undefined) return false;
@@ -33,6 +40,7 @@ const Step3: FunctionComponent<Step3Props> = ({ otp, setOtp }) => {
 
       <Button
         isDisabled={isCurrentInputInValid()}
+        onClick={verifyButtonAction}
         w={"full"}
         bg={"teal.400"}
         color={"white"}

@@ -14,6 +14,9 @@ import Step1 from "./RegisterStep1Components";
 import Step2 from "./RegisterStep2Components";
 import Step3 from "./RegisterStep3Components";
 import { registrationService } from "../../services/registration.service";
+import { useNavigate } from "react-router-dom";
+
+// import hist
 
 const Register = () => {
   const toast = useToast();
@@ -35,7 +38,7 @@ const Register = () => {
     }
   };
 
-  const register = async () => {
+  const registerButtonAction = async () => {
     try {
       const response_status = (
         await registrationService.register({
@@ -55,6 +58,32 @@ const Register = () => {
     }
   };
 
+  const verifyButtonAction = async () => {
+    setIsVerifyPressable(false);
+    try {
+      const response_status = (
+        await registrationService.verifyPhone({
+          phone: "+88" + phone,
+          otp: otp,
+        })
+      ).status;
+      if (response_status >= 200 && response_status < 300) {
+        // show toast
+        // wait for 3 seconds
+        // redirect to /
+
+        navigate("/");
+      } else {
+        // show error toast
+        setIsVerifyPressable(true);
+      }
+    } catch (error) {
+      console.log(error);
+      // show toast
+      setIsVerifyPressable(true);
+    }
+  };
+
   const handlePrevStep = () => {
     setStep(step - 1);
     setProgress(progress - 33.33);
@@ -68,6 +97,9 @@ const Register = () => {
   let [email, setEmail] = useState<string>();
   let [password, setPassword] = useState<string>();
   let [otp, setOtp] = useState<string>();
+  let [isVerifyPressable, setIsVerifyPressable] = useState<boolean>(true);
+
+  let navigate = useNavigate();
 
   return (
     <>
@@ -97,7 +129,7 @@ const Register = () => {
           header={header[1]}
           formContent={
             <Step2
-              onNext={register}
+              onNext={registerButtonAction}
               onPrev={handlePrevStep}
               email={email}
               password={password}
@@ -110,7 +142,14 @@ const Register = () => {
       {step === 3 && (
         <RegisterForm
           header={header[2]}
-          formContent={<Step3 otp={otp} setOtp={setOtp} />}
+          formContent={
+            <Step3
+              isVerifyPressable={isVerifyPressable}
+              verifyButtonAction={verifyButtonAction}
+              otp={otp}
+              setOtp={setOtp}
+            />
+          }
         />
       )}
       <ButtonGroup mt="5%" w="100%">

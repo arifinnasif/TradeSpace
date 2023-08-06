@@ -1,37 +1,57 @@
-'use client'
+"use client";
 
-import {
-  FormControl,
-  FormLabel,
-  Input,
-  Button,
-} from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 
-import { Link } from 'react-router-dom'
+import validator from "validator";
 
-const Step3 = () => {
-    return(
-        <>
-            <FormControl id="otp">
-                <FormLabel>Verification OTP:</FormLabel>
-                <Input type="number" />
-            </FormControl>
+import { FormEvent, FunctionComponent } from "react";
 
-            <Link to='/'>
-            <Button
-                w={'full'}
-                bg={'teal.400'}
-                color={'white'}
-                _hover={{
-                    bg: 'blue.500',
-                }}
-            >
-                Login
-            </Button>
-            </Link>
-        </>
-    )
-    
+interface Step3Props {
+  isVerifyPressable: boolean;
+  verifyButtonAction: () => void;
+  otp?: string;
+  setOtp: (otp: string) => void;
 }
 
-export default Step3
+const Step3: FunctionComponent<Step3Props> = ({
+  isVerifyPressable,
+  verifyButtonAction,
+  otp,
+  setOtp,
+}) => {
+  const isCurrentInputInValid = () => {
+    return isVerifyPressable && (otp == undefined || isOtpInValid());
+  };
+  const isOtpInValid = () => {
+    if (otp == undefined) return false;
+    if (otp.length !== 6) return true;
+    return !validator.isNumeric(otp);
+  };
+  const handleOtpChange = (e: FormEvent<HTMLInputElement>) => {
+    const tmp = e.currentTarget.value;
+    setOtp(tmp);
+  };
+  return (
+    <>
+      <FormControl id="otp" isInvalid={isOtpInValid()}>
+        <FormLabel>Verification OTP:</FormLabel>
+        <Input type="number" value={otp} onChange={handleOtpChange} />
+      </FormControl>
+
+      <Button
+        isDisabled={isCurrentInputInValid()}
+        onClick={verifyButtonAction}
+        w={"full"}
+        bg={"teal.400"}
+        color={"white"}
+        _hover={{
+          bg: "blue.500",
+        }}
+      >
+        Verify
+      </Button>
+    </>
+  );
+};
+
+export default Step3;

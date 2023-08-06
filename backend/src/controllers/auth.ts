@@ -1,4 +1,4 @@
-import { Request, Response} from 'express';
+import { Request, Response } from 'express';
 import { hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 const { SECRET } = require('../constants')
@@ -10,6 +10,7 @@ import crypto from 'crypto';
 // import prisma
 import { PrismaClient } from '@prisma/client';
 import { request } from 'http';
+import { token } from 'morgan';
 const prisma = new PrismaClient();
 
 
@@ -18,7 +19,7 @@ const prisma = new PrismaClient();
 
 // get user list: /api/auth/getUsers
 // DELETE later
-let getUsers = async (req:Request, res:Response) => {
+let getUsers = async (req: Request, res: Response) => {
     try {
         const userList = await prisma.users.findMany({
             select: {
@@ -39,11 +40,11 @@ let getUsers = async (req:Request, res:Response) => {
 
 
 // register user: /api/auth/register
-let registerUser = async (req:Request, res:Response) => {
+let registerUser = async (req: Request, res: Response) => {
     const { username, name, email, phone, gender, dob, password } = req.body;
 
     try {
-        const hashedPassword = await hash(password, 12);    
+        const hashedPassword = await hash(password, 12);
         await prisma.users.create({
             data: {
                 username: username,
@@ -56,7 +57,7 @@ let registerUser = async (req:Request, res:Response) => {
             }
         });
 
-        
+
         // token creation for email verification
         let email_token = crypto.randomBytes(32).toString('hex');
 
@@ -71,16 +72,17 @@ let registerUser = async (req:Request, res:Response) => {
 
         // send verification-email and otp-message
         await Promise.all([sendVerificationMail(name, username, email, email_token),
-                           request_to_send_opt(phone)]);
+        request_to_send_opt(phone)]);
 
         let payload = {
             username: username,
             email: email
         }
         const jwt_token = await sign(payload, SECRET);
-        return res.status(201).cookie('token', jwt_token, {httpOnly : true}).json({ 
+        return res.status(201).cookie('token', jwt_token, { httpOnly: true, sameSite: 'none', secure: true }).json({
             success: true,
-            message: 'User created!'
+            message: 'User created!',
+            token: jwt_token // this token is added as we cannot access the cookie in header axios
         });
     } catch (error: any) {
         console.log(error)
@@ -98,9 +100,9 @@ let registerUser = async (req:Request, res:Response) => {
 
 
 // login user: /api/auth/login
-let loginUser = async (req:Request, res:Response) => {
+let loginUser = async (req: Request, res: Response) => {
     // catch the user from the loginCheck middleware
-    const user:any = req.user;
+    const user: any = req.user;
 
     // create a payload
     // username will be used for passport-jwt
@@ -115,10 +117,10 @@ let loginUser = async (req:Request, res:Response) => {
         const token = await sign(payload, SECRET);
 
         // send the token in a HTTP-only cookie
-        return res.status(200).cookie('token', token, {httpOnly : true}).json({
+        return res.status(200).cookie('token', token, { httpOnly: true }).json({
             success: true,
             message: 'Logged in successfully!'
-       }); 
+        });
     } catch (error: any) {
         console.log(error)
         return res.status(500).json({
@@ -131,13 +133,13 @@ let loginUser = async (req:Request, res:Response) => {
 
 
 
-let logoutUser = async (req:Request, res:Response) => {
+let logoutUser = async (req: Request, res: Response) => {
     try {
-        return res.status(200).clearCookie('token', {httpOnly : true}).json({
+        return res.status(200).clearCookie('token', { httpOnly: true }).json({
             success: true,
             message: 'Logged out successfully!'
-       });
-    } catch (error:any) {
+        });
+    } catch (error: any) {
         console.log(error)
         return res.status(500).json({
             success: false,
@@ -151,12 +153,12 @@ let logoutUser = async (req:Request, res:Response) => {
 
 
 
-let protectedRoute = async (req:Request, res:Response) => {
+let protectedRoute = async (req: Request, res: Response) => {
     try {
         return res.status(200).json({
             data: 'This is a protected route'
         })
-    } catch (error:any) {
+    } catch (error: any) {
         console.log(error.message)
     }
 }
@@ -164,7 +166,7 @@ let protectedRoute = async (req:Request, res:Response) => {
 
 
 
-let verifyEmail = async (req:Request, res:Response) => {
+let verifyEmail = async (req: Request, res: Response) => {
     const username = req.params.username;
     const token = req.params.token;
 
@@ -179,7 +181,7 @@ let verifyEmail = async (req:Request, res:Response) => {
 
 
     // if user does not exist, return error
-    if(!user) {
+    if (!user) {
         return res.status(401).json({
             success: false,
             message: 'User does not exist!'
@@ -197,12 +199,12 @@ let verifyEmail = async (req:Request, res:Response) => {
 
 
     // if tokenFromDB does not match with tokenFromRoute, return error
-    if(token != tokenObj!.token) {
+    if (token != tokenObj!.token) {
         return res.status(401).json({
             success: false,
             message: 'Invalid Link!'
         })
-    } 
+    }
     else {
         // user is verified
         // update the "users" table
@@ -239,4 +241,4 @@ let verifyEmail = async (req:Request, res:Response) => {
 
 
 
-export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail}
+export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail }

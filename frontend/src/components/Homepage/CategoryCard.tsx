@@ -21,16 +21,18 @@ const CategoryCard: FunctionComponent<CategoryType> = ({ category, count }) => {
         overflow="hidden"
         variant="outline"
         colorScheme="teal"
-        width={"80"}
-        h={"100%"}
+        width={"100%"}
+        h={"100"}
         borderColor={"teal"}
       >
         <HStack spacing={"3"}>
           <Spacer />
-          <Icon h={"14"} w={"16"} as={FaThList} />
+          <Icon color={"teal.800"} h={"14"} w={"16"} as={FaThList} />
           <Stack>
             <CardBody>
-              <Heading size="md">{category}</Heading>
+              <Heading color={"teal.700"} size="md">
+                {category}
+              </Heading>
 
               <Text py="2">{count} Advertisements</Text>
             </CardBody>

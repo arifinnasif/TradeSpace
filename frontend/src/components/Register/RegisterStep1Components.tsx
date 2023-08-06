@@ -14,9 +14,9 @@ import { FormEvent, FunctionComponent } from "react";
 
 interface Step1Props {
   onNext: () => void;
-  username: string;
-  userfullname: string;
-  phone: string;
+  username?: string;
+  userfullname?: string;
+  phone?: string;
   dob: string;
   gender: string;
   setUsername: (name: string) => void;
@@ -41,6 +41,9 @@ const Step1: FunctionComponent<Step1Props> = ({
 }) => {
   const isCurrentInputInValid = () => {
     return (
+      userfullname == undefined ||
+      username == undefined ||
+      phone == undefined ||
       isUsernameInValid() ||
       isUserfullnameInValid() ||
       isPhoneInValid() ||
@@ -49,16 +52,19 @@ const Step1: FunctionComponent<Step1Props> = ({
     );
   };
   const isUsernameInValid = () => {
+    if (username == undefined) return false;
     if (username.length < 4) return true;
     return false;
   };
 
   const isUserfullnameInValid = () => {
+    if (userfullname == undefined) return false;
     if (userfullname.length < 4) return true;
     return false;
   };
 
   const isPhoneInValid = () => {
+    if (phone == undefined) return false;
     if (phone.length !== 10) return true;
     return false;
   };

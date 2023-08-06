@@ -40,9 +40,9 @@ const Register = () => {
     setProgress(progress - 33.33);
   };
 
-  let [username, setUsername] = useState("");
-  let [userfullname, setUserfullname] = useState("");
-  let [phone, setPhone] = useState("");
+  let [username, setUsername] = useState<string>();
+  let [userfullname, setUserfullname] = useState<string>();
+  let [phone, setPhone] = useState<string>();
   let [dob, setDob] = useState("1999-12-31");
   let [gender, setGender] = useState("male");
   let [email, setEmail] = useState<string>();

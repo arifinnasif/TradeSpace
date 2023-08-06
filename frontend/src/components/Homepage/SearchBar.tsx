@@ -13,7 +13,7 @@ const SearchComponent: React.FC = () => {
     <InputGroup>
       <Input
         type="text"
-        placeholder="Search..."
+        placeholder="What are you looking for?"
         onChange={handleInputChange}
         focusBorderColor="teal.400"
       />

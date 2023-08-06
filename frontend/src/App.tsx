@@ -15,7 +15,7 @@ function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
-        {/* <Navbar /> */}
+        <Navbar />
         <Routes>
           <Route path="/" element={<CategoryList />} />
           <Route path="/things/:id/" element={<Things />} />

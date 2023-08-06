@@ -184,25 +184,25 @@ const PostAd = () => {
     >
       {({ handleSubmit, values, errors, setFieldValue }) => (
         <Box
-        borderWidth="1px"
-        rounded="lg"
-        shadow="1px 1px 3px rgba(0,0,0,0.3)"
-        maxW={'75vw'}
-        p={6}
-        m="10px auto"
-        as="form"
-        onSubmit={handleSubmit as any}
+          borderWidth="1px"
+          rounded="lg"
+          shadow="1px 1px 3px rgba(0,0,0,0.3)"
+          maxW={"75vw"}
+          p={6}
+          m="10px auto"
+          as="form"
+          onSubmit={handleSubmit as any}
         >
           <SelectControl
             name="category"
             selectProps={{ placeholder: "Select Category" }}
             onChange={changeCategory}
           >
-          {categories.map((category, index) => (
-          <option key={index} value={category}>
-          {category}
-          </option>
-          ))}
+            {categories.map((category, index) => (
+              <option key={index} value={category}>
+                {category}
+              </option>
+            ))}
           </SelectControl>
           <br />
           
@@ -212,7 +212,7 @@ const PostAd = () => {
           <CheckboxSingleControl name="is_sell_ad" onChange={changeIs_sell_ad}>
             Is a sell Ad
           </CheckboxSingleControl>
-          
+
           <br />
 
           <TextareaControl name="description" label="Description(max 100 characters)" onChange={changeDescription}/>
@@ -237,10 +237,10 @@ const PostAd = () => {
 
           {/* take 5 images as input */}
           <label>Images (up to 5)</label>
-          
+
           <br />
           <br />
-          
+
           <input
             type="file"
             name="images"
@@ -264,7 +264,7 @@ const PostAd = () => {
           <CheckboxSingleControl name="is_phone_public" onChange={changeIs_phone_public}>
             Phone Number is public
           </CheckboxSingleControl>
-          
+
           <br />
           
           <InputControl name="address" label="Address" onChange={changeAddress}/>

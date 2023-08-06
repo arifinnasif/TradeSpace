@@ -1,20 +1,16 @@
-import { Box, ButtonGroup, Flex, Radio } from "@chakra-ui/react";
+import { Box, ButtonGroup, Flex } from "@chakra-ui/react";
 import { Formik } from "formik";
+
 import {
-  CheckboxContainer,
-  CheckboxControl,
   CheckboxSingleControl,
   InputControl,
-  NumberInputControl,
-  PercentComplete,
-  RadioGroupControl,
   ResetButton,
   SelectControl,
-  SliderControl,
   SubmitButton,
-  SwitchControl,
-  TextareaControl
+  TextareaControl,
 } from "formik-chakra-ui";
+
+
 import * as Yup from "yup";
 
 
@@ -38,14 +34,18 @@ const phone = 12345678912;
 
 
 const initialValues = {
+    select_category: "",
     title: "",
     is_sell_ad: false,
     description: "",
     is_negotiable: false,
     is_used: false,
     phone: phone,
+    days_used: "",
     is_phone_public: false,
     address: "",
+    price: "",
+    images: [],
 };
 
 
@@ -61,6 +61,7 @@ const validationSchema = Yup.object({
   phone: Yup.number().required().min(10000000000).max(99999999999),
   is_phone_public: Yup.boolean(),
   address: Yup.string().required().min(5).max(50),
+  images: Yup.array().max(5),
 });
 
 
@@ -72,13 +73,13 @@ const PostAd = () => {
       onSubmit={onSubmit}
       validationSchema={validationSchema}
     >
-      {({ handleSubmit, values, errors }) => (
+      {({ handleSubmit, values, errors, setFieldValue }) => (
         
         <Box
           borderWidth="1px"
           rounded="lg"
           shadow="1px 1px 3px rgba(0,0,0,0.3)"
-          maxWidth={800}
+          maxW={'75vw'}
           p={6}
           m="10px auto"
           as="form"
@@ -86,7 +87,7 @@ const PostAd = () => {
         >
 
           <SelectControl
-            name="select"
+            name="select_category"
             selectProps={{ placeholder: "Select Category" }}
           >
           {categories.map((category, index) => (
@@ -125,7 +126,26 @@ const PostAd = () => {
             Product is used
           </CheckboxSingleControl>
           </Flex>
+
+          <br />
+
+          {/* take 5 images as input */}
+          <label>Images (up to 5)</label>
           
+          <br />
+          <br />
+          
+          <input
+            type="file"
+            name="images"
+            accept="image/*"
+            multiple
+            onChange={(event) => {
+              setFieldValue("images", event.currentTarget.files);
+            }}
+          />
+
+          <br />
           <br />
           
           <InputControl name="days_used" label="Days Used(N/A for unused product)" isDisabled={!values.is_used}/>
@@ -143,6 +163,8 @@ const PostAd = () => {
           <br />
           
           <InputControl name="address" label="Address" />
+
+          <br />
           
           <ButtonGroup>
             <SubmitButton>Submit</SubmitButton>

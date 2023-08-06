@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { CategoryType, homeService } from "../../services/Home.service";
 import { Grid, GridItem, Heading } from "@chakra-ui/react";
 import CategoryCard from "./CategoryCard";
-import SearchComponent from "./SearchBar";
 
 function CategoryList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,10 +20,7 @@ function CategoryList() {
 
   return (
     <>
-      <Grid templateColumns="repeat(4, 1fr)" mx={"10"}>
-        <GridItem colSpan={4}>
-          <SearchComponent />
-        </GridItem>
+      <Grid templateColumns="repeat(4, 1fr)">
         <GridItem colSpan={4}>
           <Heading p={"3"}> Browse Ads by Category</Heading>
         </GridItem>

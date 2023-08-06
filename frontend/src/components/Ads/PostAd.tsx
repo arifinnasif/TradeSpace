@@ -63,7 +63,7 @@ price: Yup.number().required().min(0),
 is_negotiable: Yup.boolean(),
 is_used: Yup.boolean(),
 days_used: Yup.number().min(0),
-phone: Yup.number().required().min(10000000000).max(99999999999),
+phone: Yup.number().required(),
 is_phone_public: Yup.boolean(),
 address: Yup.string().required().min(5).max(50),
 images: Yup.array().max(5),
@@ -123,23 +123,56 @@ const PostAd = () => {
 
   const onSubmit = (e) => {
     e.preventDefault()
-    // if (!text) {
-    //   alert('Please add a task')
-    //   return
-    // }
-    onAdd({category, 
-           title, 
-           is_sell_ad, 
-           description, 
-           is_negotiable, 
-           is_used, 
-           days_used, 
-           phone, 
-           is_phone_public, 
-           address, 
-           price, 
-           images
-          })
+
+    if(title === '' || price === '' || address === '' || category === '' || phone === '') {
+      alert('Please fill in all the required fields')
+      return
+    }
+    if(title.length < 5 || title.length > 50) {
+      alert('Title must be between 5 and 50 characters')
+      return
+    }
+    if(description.length > 100) {
+      alert('Description must be less than 100 characters')
+      return
+    }
+    if(address.length < 5 || address.length > 50) {
+      alert('Address must be between 5 and 50 characters')
+      return
+    }
+    if(phone.length !== 11) {
+      alert('Phone number must be 11 digits')
+      return
+    }
+    if(price < 0) {
+      alert('Price must be greater than 0')
+      return
+    }
+    if(days_used < 0) {
+      alert('Days used must be greater than 0')
+      return
+    }
+    if(images.length > 5) {
+      alert('You can only upload 5 images')
+      return
+    }
+    
+
+    if (!isValid) {
+      onAdd({category, 
+              title, 
+              is_sell_ad, 
+              description, 
+              is_negotiable, 
+              is_used, 
+              days_used, 
+              phone, 
+              is_phone_public, 
+              address, 
+              price, 
+              images
+            })
+    }
 
   }
 

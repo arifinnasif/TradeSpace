@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useState } from "react";
 import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import { SubmitButton } from "formik-chakra-ui";
 import { Link } from "react-router-dom";
 
 const SearchComponent: React.FC = () => {

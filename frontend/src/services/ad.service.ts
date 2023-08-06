@@ -1,21 +1,21 @@
 export interface AdDetailsType {
-  ad_id: number
-  op_username: string,
-  op_fullname: string,
-  category_name: string,
-  title: string,
-  description?: string,
-  price?: number,
-  is_negotiable: boolean,
-  is_sell_ad: boolean,
-  days_used?:  {
-    years: number,
-    months: number,
-    days: number,
-  },
-  phone?: string,
-  promotion_type?: string,
-  createdAt: string,
+  ad_id: number;
+  op_username: string;
+  op_fullname: string;
+  category_name: string;
+  title: string;
+  description?: string;
+  price?: number;
+  is_negotiable: boolean;
+  is_sell_ad: boolean;
+  days_used?: {
+    years: number;
+    months: number;
+    days: number;
+  };
+  phone?: string;
+  promotion_type?: string;
+  createdAt: string;
 }
 
 class AdService {

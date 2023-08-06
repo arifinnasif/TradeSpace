@@ -7,13 +7,16 @@ import Things from "./components/Things";
 import GetAds from "./components/Ads/GetAds";
 import Register from "./components/Register/RegisterSteps";
 import PostAd from "./components/Ads/PostAd";
-import AdDetils from "./components/AdDetails";
 
+import Navbar from "./components/Navbar/Navbar";
+
+import AdDetils from "./components/AdDetails";
 
 function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
+        <Navbar />
         <Routes>
           <Route path="/things/:id/" element={<Things />} />
 

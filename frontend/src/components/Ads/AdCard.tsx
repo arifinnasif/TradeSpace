@@ -19,7 +19,7 @@ import { AdCardType } from "../../services/ad.service";
 
 const AdCard: FunctionComponent<AdCardType> = ({
   title,
-  category,
+  category_name,
   price,
   is_used,
   is_negotiable,
@@ -53,7 +53,7 @@ const AdCard: FunctionComponent<AdCardType> = ({
             <HStack>
               <Icon as={FaThList} />
               <Text gap={"10"} py={2}>
-                {category}
+                {category_name}
               </Text>
             </HStack>
 

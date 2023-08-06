@@ -4,6 +4,8 @@ import { Flex, FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 
 import { FormEvent, FunctionComponent } from "react";
 
+import validator from "validator";
+
 interface Step2Props {
   onNext: () => void;
   onPrev: () => void;
@@ -32,7 +34,7 @@ const Step2: FunctionComponent<Step2Props> = ({
   const isEmailInValid = () => {
     if (email == undefined) return false;
     if (email.length < 8) return true;
-    return false;
+    return !validator.isEmail(email);
   };
 
   const isPasswordInValid = () => {

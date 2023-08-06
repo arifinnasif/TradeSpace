@@ -47,6 +47,7 @@ const Register = () => {
   let [gender, setGender] = useState("male");
   let [email, setEmail] = useState<string>();
   let [password, setPassword] = useState<string>();
+  let [otp, setOtp] = useState<string>();
 
   return (
     <>
@@ -87,7 +88,10 @@ const Register = () => {
         />
       )}
       {step === 3 && (
-        <RegisterForm header={header[2]} formContent={<Step3 />} />
+        <RegisterForm
+          header={header[2]}
+          formContent={<Step3 otp={otp} setOtp={setOtp} />}
+        />
       )}
       <ButtonGroup mt="5%" w="100%">
         <Flex w="100%" justifyContent="space-between" alignItems="center">

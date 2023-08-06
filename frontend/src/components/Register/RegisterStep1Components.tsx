@@ -8,7 +8,11 @@ import {
   Button,
   Radio,
   RadioGroup,
+  InputLeftAddon,
+  InputGroup,
 } from "@chakra-ui/react";
+
+import validator from "validator";
 
 import { FormEvent, FunctionComponent } from "react";
 
@@ -54,19 +58,27 @@ const Step1: FunctionComponent<Step1Props> = ({
   const isUsernameInValid = () => {
     if (username == undefined) return false;
     if (username.length < 4) return true;
-    return false;
+    const allowed =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890._-".split(
+        ""
+      );
+
+    return !validator.isWhitelisted(username, allowed);
   };
 
   const isUserfullnameInValid = () => {
     if (userfullname == undefined) return false;
     if (userfullname.length < 4) return true;
-    return false;
+    const allowed = "abcdefghijklmnopqrstuvwxyz ".split("");
+
+    return !validator.isWhitelisted(userfullname.toLowerCase(), allowed);
   };
 
   const isPhoneInValid = () => {
     if (phone == undefined) return false;
-    if (phone.length !== 10) return true;
-    return false;
+    if (phone.length !== 11) return true;
+
+    return !validator.isNumeric(phone);
   };
 
   const isDobInValid = () => {
@@ -119,7 +131,10 @@ const Step1: FunctionComponent<Step1Props> = ({
       </FormControl>
       <FormControl id="phone" isInvalid={isPhoneInValid()}>
         <FormLabel>Phone</FormLabel>
-        <Input type="tel" value={phone} onChange={handlePhoneChange} />
+        <InputGroup>
+          <InputLeftAddon children="+88" />
+          <Input type="tel" value={phone} onChange={handlePhoneChange} />
+        </InputGroup>
       </FormControl>
       <FormControl id="dob" isInvalid={isDobInValid()}>
         <FormLabel>Birthdate</FormLabel>

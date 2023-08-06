@@ -7,17 +7,17 @@ import GetAds from "./components/Ads/GetAds";
 import Register from "./components/Register/RegisterSteps";
 import PostAd from "./components/Ads/PostAd";
 
-import Navbar from "./components/Navbar/Navbar";
 import AdDetailsPage from "./pages/AdDetails.page";
-import CategoryList from "./components/Homepage/CategoryList";
+// import CategoryList from "./components/Homepage/CategoryList";
+import HomePage from "./pages/Home.page";
 
 function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
-          <Route path="/" element={<CategoryList />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/things/:id/" element={<Things />} />
 
           <Route path="/ads/" element={<GetAds />} />

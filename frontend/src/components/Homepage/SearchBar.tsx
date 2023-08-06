@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Button, Input, InputGroup } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 
@@ -10,12 +10,15 @@ const SearchComponent: React.FC = () => {
   };
 
   return (
-    <InputGroup>
+    <InputGroup p={"3"}>
       <Input
         type="text"
         placeholder="What are you looking for?"
+        _placeholder={{ color: "teal" }}
         onChange={handleInputChange}
         focusBorderColor="teal.400"
+        size={"lg"}
+        borderColor={"teal"}
       />
       <Link to={`/ads/?search_string=${searchTerm}`}>
         <Button
@@ -23,7 +26,7 @@ const SearchComponent: React.FC = () => {
           colorScheme="teal"
           variant="outline"
           ml="2"
-          size="md"
+          size="lg"
           leftIcon={<SearchIcon />}
         />
       </Link>

@@ -11,7 +11,7 @@ const SearchComponent: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
-  const handleEnterKey = (event) => {
+  const handleEnterKey = (event: { key: string }) => {
     if (event.key === "Enter") {
       // Navigate to the specified link when "Enter" key is pressed
       navigate(`/ads/?search_string=${searchTerm}`);

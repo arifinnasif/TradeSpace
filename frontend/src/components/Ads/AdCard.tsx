@@ -15,16 +15,9 @@ import IsUsed from "./IsUsed";
 import { FaThList } from "react-icons/fa";
 import BuyOrSellTag from "./BuyOrSellTag";
 
-interface AdCardProps {
-  title: string;
-  category: string;
-  price: string;
-  is_used: boolean;
-  is_negotiable: boolean;
-  is_sell_ad: boolean;
-}
+import { AdCardType } from "../../services/ad.service";
 
-const AdCard: FunctionComponent<AdCardProps> = ({
+const AdCard: FunctionComponent<AdCardType> = ({
   title,
   category,
   price,

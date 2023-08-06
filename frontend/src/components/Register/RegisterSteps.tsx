@@ -16,8 +16,6 @@ import Step3 from "./RegisterStep3Components";
 import { registrationService } from "../../services/registration.service";
 import { useNavigate } from "react-router-dom";
 
-// import hist
-
 const Register = () => {
   const toast = useToast();
   const [step, setStep] = useState(1);
@@ -110,12 +108,12 @@ const Register = () => {
           formContent={
             <Step1
               onNext={handleNextStep}
-              username={username}
+              email={email}
               userfullname={userfullname}
               phone={phone}
               dob={dob}
               gender={gender}
-              setUsername={setUsername}
+              setEmail={setEmail}
               setUserfullname={setUserfullname}
               setPhone={setPhone}
               setDob={setDob}
@@ -131,9 +129,9 @@ const Register = () => {
             <Step2
               onNext={registerButtonAction}
               onPrev={handlePrevStep}
-              email={email}
+              username={username}
               password={password}
-              setEmail={setEmail}
+              setUsername={setUsername}
               setPassword={setPassword}
             />
           }

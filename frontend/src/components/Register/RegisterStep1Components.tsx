@@ -18,12 +18,12 @@ import { FormEvent, FunctionComponent } from "react";
 
 interface Step1Props {
   onNext: () => void;
-  username?: string;
+  email?: string;
   userfullname?: string;
   phone?: string;
   dob: string;
   gender: string;
-  setUsername: (name: string) => void;
+  setEmail: (name: string) => void;
   setUserfullname: (name: string) => void;
   setPhone: (phone: string) => void;
   setDob: (dob: string) => void;
@@ -32,12 +32,12 @@ interface Step1Props {
 
 const Step1: FunctionComponent<Step1Props> = ({
   onNext,
-  username,
+  email,
   userfullname,
   phone,
   dob,
   gender,
-  setUsername,
+  setEmail,
   setUserfullname,
   setPhone,
   setDob,
@@ -46,24 +46,14 @@ const Step1: FunctionComponent<Step1Props> = ({
   const isCurrentInputInValid = () => {
     return (
       userfullname == undefined ||
-      username == undefined ||
+      email == undefined ||
       phone == undefined ||
-      isUsernameInValid() ||
+      isEmailInValid() ||
       isUserfullnameInValid() ||
       isPhoneInValid() ||
       isDobInValid() ||
       (gender !== "male" && gender !== "female")
     );
-  };
-  const isUsernameInValid = () => {
-    if (username == undefined) return false;
-    if (username.length < 4) return true;
-    const allowed =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890._-".split(
-        ""
-      );
-
-    return !validator.isWhitelisted(username, allowed);
   };
 
   const isUserfullnameInValid = () => {
@@ -72,6 +62,12 @@ const Step1: FunctionComponent<Step1Props> = ({
     const allowed = "abcdefghijklmnopqrstuvwxyz ".split("");
 
     return !validator.isWhitelisted(userfullname.toLowerCase(), allowed);
+  };
+
+  const isEmailInValid = () => {
+    if (email == undefined) return false;
+    if (email.length < 8) return true;
+    return !validator.isEmail(email);
   };
 
   const isPhoneInValid = () => {
@@ -87,14 +83,14 @@ const Step1: FunctionComponent<Step1Props> = ({
     return false;
   };
 
-  const handleUsernameChange = (e: FormEvent<HTMLInputElement>) => {
-    const tmp = e.currentTarget.value;
-    setUsername(tmp);
-  };
-
   const handleUserfullnameChange = (e: FormEvent<HTMLInputElement>) => {
     const tmp = e.currentTarget.value;
     setUserfullname(tmp);
+  };
+
+  const handleEmailChange = (e: FormEvent<HTMLInputElement>) => {
+    const tmp = e.currentTarget.value;
+    setEmail(tmp);
   };
 
   const handlePhoneChange = (e: FormEvent<HTMLInputElement>) => {
@@ -117,10 +113,6 @@ const Step1: FunctionComponent<Step1Props> = ({
 
   return (
     <>
-      <FormControl id="username" isInvalid={isUsernameInValid()}>
-        <FormLabel>Username</FormLabel>
-        <Input type="text" value={username} onChange={handleUsernameChange} />
-      </FormControl>
       <FormControl id="userfullname" isInvalid={isUserfullnameInValid()}>
         <FormLabel>Full Name</FormLabel>
         <Input
@@ -128,6 +120,10 @@ const Step1: FunctionComponent<Step1Props> = ({
           value={userfullname}
           onChange={handleUserfullnameChange}
         />
+      </FormControl>
+      <FormControl id="email" isInvalid={isEmailInValid()}>
+        <FormLabel>Email</FormLabel>
+        <Input type="text" value={email} onChange={handleEmailChange} />
       </FormControl>
       <FormControl id="phone" isInvalid={isPhoneInValid()}>
         <FormLabel>Phone</FormLabel>

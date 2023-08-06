@@ -9,32 +9,38 @@ import validator from "validator";
 interface Step2Props {
   onNext: () => void;
   onPrev: () => void;
-  email?: string;
+  username?: string;
   password?: string;
-  setEmail: (email: string) => void;
+  setUsername: (email: string) => void;
   setPassword: (password: string) => void;
 }
 
 const Step2: FunctionComponent<Step2Props> = ({
   onNext,
   onPrev,
-  email,
+  username,
   password,
-  setEmail,
+  setUsername,
   setPassword,
 }) => {
   const isCurrentInputInValid = () => {
     return (
-      email == undefined ||
+      username == undefined ||
       password == undefined ||
-      isEmailInValid() ||
+      isUsernameInValid() ||
       isPasswordInValid()
     );
   };
-  const isEmailInValid = () => {
-    if (email == undefined) return false;
-    if (email.length < 8) return true;
-    return !validator.isEmail(email);
+
+  const isUsernameInValid = () => {
+    if (username == undefined) return false;
+    if (username.length < 4) return true;
+    const allowed =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890._-".split(
+        ""
+      );
+
+    return !validator.isWhitelisted(username, allowed);
   };
 
   const isPasswordInValid = () => {
@@ -43,9 +49,9 @@ const Step2: FunctionComponent<Step2Props> = ({
     return false;
   };
 
-  const handleEmailChange = (e: FormEvent<HTMLInputElement>) => {
+  const handleUsernameChange = (e: FormEvent<HTMLInputElement>) => {
     const tmp = e.currentTarget.value;
-    setEmail(tmp);
+    setUsername(tmp);
   };
 
   const handlePasswordChange = (e: FormEvent<HTMLInputElement>) => {
@@ -55,9 +61,13 @@ const Step2: FunctionComponent<Step2Props> = ({
 
   return (
     <>
-      <FormControl id="email" isInvalid={isEmailInValid()}>
-        <FormLabel>Email address</FormLabel>
-        <Input type="email" value={email} onChange={handleEmailChange} />
+      <FormControl id="username" isInvalid={isUsernameInValid()}>
+        <FormLabel>Username</FormLabel>
+        <Input
+          type="username"
+          value={username}
+          onChange={handleUsernameChange}
+        />
       </FormControl>
       <FormControl id="password" isInvalid={isPasswordInValid()}>
         <FormLabel>Password</FormLabel>

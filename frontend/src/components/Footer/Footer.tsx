@@ -47,13 +47,17 @@ export default function FooterComponent() {
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
           <Stack align={"flex-start"}>
-            <ListHeader>More from TradeSpace</ListHeader>
+            <ListHeader>
+              <Text as="b" color={"teal"}>
+                More from TradeSpace
+              </Text>
+            </ListHeader>
             <Box as="a" href={"#"}>
               Sell Fast
             </Box>
             <Stack direction={"row"} align={"center"} spacing={2}>
               <Box as="a" href={"#"}>
-                About
+                Membership
               </Box>
               {/* <Tag
                     size={"sm"}
@@ -65,17 +69,21 @@ export default function FooterComponent() {
                 </Tag> */}
             </Stack>
             <Box as="a" href={"#"}>
-              Privacy
+              Banner Ads
             </Box>
             <Box as="a" href={"#"}>
-              Carrers
+              Ad Promotions
             </Box>
             <Box as="a" href={"#"}>
-              Terms and Conditions
+              BikersGuide
             </Box>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Help and Support</ListHeader>
+            <ListHeader>
+              <Text as="b" color={"teal"}>
+                Help & Support
+              </Text>
+            </ListHeader>
             <Box as="a" href={"#"}>
               FAQ
             </Box>
@@ -83,43 +91,37 @@ export default function FooterComponent() {
               Stay Safe
             </Box>
             <Box as="a" href={"#"}>
-              Tech Support
+              Contact Us
             </Box>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Legal</ListHeader>
+            <ListHeader>
+              <Text as="b" color={"teal"}>
+                Follow TradeSpace
+              </Text>
+            </ListHeader>
+            <Stack direction={"row"} align={"center"} spacing={2}></Stack>
+          </Stack>
+          <Stack align={"flex-start"}>
+            <ListHeader>
+              <Text as="b" color={"teal"}>
+                About TradeSpace
+              </Text>
+            </ListHeader>
             <Box as="a" href={"#"}>
-              Cookies Policy
+              About Us
+            </Box>
+            <Box as="a" href={"#"}>
+              Careers
+            </Box>
+            <Box as="a" href={"#"}>
+              Terms and Conditions
             </Box>
             <Box as="a" href={"#"}>
               Privacy Policy
             </Box>
             <Box as="a" href={"#"}>
-              Terms of Service
-            </Box>
-            <Box as="a" href={"#"}>
-              Law Enforcement
-            </Box>
-            <Box as="a" href={"#"}>
-              Status
-            </Box>
-          </Stack>
-          <Stack align={"flex-start"}>
-            <ListHeader>Follow Us</ListHeader>
-            <Box as="a" href={"#"}>
-              Facebook
-            </Box>
-            <Box as="a" href={"#"}>
-              Twitter
-            </Box>
-            <Box as="a" href={"#"}>
-              Dribbble
-            </Box>
-            <Box as="a" href={"#"}>
-              Instagram
-            </Box>
-            <Box as="a" href={"#"}>
-              LinkedIn
+              Sitemap
             </Box>
           </Stack>
         </SimpleGrid>

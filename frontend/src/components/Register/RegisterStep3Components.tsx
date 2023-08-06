@@ -4,7 +4,6 @@ import { FormControl, FormLabel, Input, Button } from "@chakra-ui/react";
 
 import validator from "validator";
 
-import { Link } from "react-router-dom";
 import { FormEvent, FunctionComponent } from "react";
 
 interface Step3Props {

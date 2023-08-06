@@ -13,6 +13,7 @@ import RegisterForm from "./RegisterForm";
 import Step1 from "./RegisterStep1Components";
 import Step2 from "./RegisterStep2Components";
 import Step3 from "./RegisterStep3Components";
+import { registrationService } from "../../services/registration.service";
 
 const Register = () => {
   const toast = useToast();
@@ -26,12 +27,31 @@ const Register = () => {
   ];
 
   const handleNextStep = () => {
-    console.log(email);
     setStep(step + 1);
     if (step === 3) {
       setProgress(100);
     } else {
       setProgress(progress + 33.33);
+    }
+  };
+
+  const register = async () => {
+    try {
+      const response_status = (
+        await registrationService.register({
+          username: username,
+          name: userfullname,
+          phone: "+88" + phone,
+          dob: dob,
+          gender: gender,
+          email: email,
+          password: password,
+        })
+      ).status;
+      if (response_status >= 200 && response_status < 300) handleNextStep();
+    } catch (error) {
+      console.log(error);
+      // show toast
     }
   };
 
@@ -77,7 +97,7 @@ const Register = () => {
           header={header[1]}
           formContent={
             <Step2
-              onNext={handleNextStep}
+              onNext={register}
               onPrev={handlePrevStep}
               email={email}
               password={password}

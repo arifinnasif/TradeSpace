@@ -1,20 +1,16 @@
-import { Box, ButtonGroup, Flex, Radio } from "@chakra-ui/react";
+import { Box, ButtonGroup, Flex } from "@chakra-ui/react";
 import { Formik } from "formik";
+
 import {
-  CheckboxContainer,
-  CheckboxControl,
   CheckboxSingleControl,
   InputControl,
-  NumberInputControl,
-  PercentComplete,
-  RadioGroupControl,
   ResetButton,
   SelectControl,
-  SliderControl,
   SubmitButton,
-  SwitchControl,
   TextareaControl
 } from "formik-chakra-ui";
+
+
 import * as Yup from "yup";
 
 
@@ -38,14 +34,17 @@ const phone = 12345678912;
 
 
 const initialValues = {
+    select_category: "",
     title: "",
     is_sell_ad: false,
     description: "",
     is_negotiable: false,
     is_used: false,
     phone: phone,
+    days_used: "",
     is_phone_public: false,
     address: "",
+    price: "",
 };
 
 
@@ -86,7 +85,7 @@ const PostAd = () => {
         >
 
           <SelectControl
-            name="select"
+            name="select_category"
             selectProps={{ placeholder: "Select Category" }}
           >
           {categories.map((category, index) => (
@@ -143,6 +142,8 @@ const PostAd = () => {
           <br />
           
           <InputControl name="address" label="Address" />
+
+          <br />
           
           <ButtonGroup>
             <SubmitButton>Submit</SubmitButton>

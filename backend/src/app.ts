@@ -7,6 +7,10 @@ import helmet from "helmet";
 import apiRouter from "./routers";
 import passport from "passport";
 
+import * as dotenv from "dotenv"
+
+dotenv.config()
+
 const { CLIENT_URL } = require("./constants");
 
 
@@ -28,7 +32,7 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors({ origin: CLIENT_URL, credentials: true}))
+app.use(cors({ origin: true, credentials: true }))
 app.use(passport.initialize());
 
 

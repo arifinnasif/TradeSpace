@@ -3,13 +3,13 @@ import { Suspense } from "react";
 import { Spinner } from "@chakra-ui/react";
 
 import Things from "./components/Things";
-import GetAds from "./components/Ads/GetAds";
 import Register from "./components/Register/RegisterSteps";
 import PostAd from "./components/Ads/PostAd";
 
 import AdDetailsPage from "./pages/AdDetails.page";
 // import CategoryList from "./components/Homepage/CategoryList";
 import HomePage from "./pages/Home.page";
+import GetAds from "./pages/GetAds.page";
 
 function App() {
   return (

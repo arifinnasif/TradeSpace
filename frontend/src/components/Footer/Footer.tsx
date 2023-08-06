@@ -47,49 +47,43 @@ export default function FooterComponent() {
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
           <Stack align={"flex-start"}>
-            <ListHeader>Product</ListHeader>
+            <ListHeader>More from TradeSpace</ListHeader>
             <Box as="a" href={"#"}>
-              Overview
+              Sell Fast
             </Box>
             <Stack direction={"row"} align={"center"} spacing={2}>
               <Box as="a" href={"#"}>
-                Features
+                About
               </Box>
-              <Tag
-                size={"sm"}
-                bg={useColorModeValue("green.300", "green.800")}
-                ml={2}
-                color={"white"}
-              >
-                New
-              </Tag>
+              {/* <Tag
+                    size={"sm"}
+                    bg={useColorModeValue("green.300", "green.800")}
+                    ml={2}
+                    color={"white"}
+                >
+                    New
+                </Tag> */}
             </Stack>
             <Box as="a" href={"#"}>
-              Tutorials
+              Privacy
             </Box>
             <Box as="a" href={"#"}>
-              Pricing
+              Carrers
             </Box>
             <Box as="a" href={"#"}>
-              Releases
+              Terms and Conditions
             </Box>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Company</ListHeader>
+            <ListHeader>Help and Support</ListHeader>
             <Box as="a" href={"#"}>
-              About Us
+              FAQ
             </Box>
             <Box as="a" href={"#"}>
-              Press
+              Stay Safe
             </Box>
             <Box as="a" href={"#"}>
-              Careers
-            </Box>
-            <Box as="a" href={"#"}>
-              Contact Us
-            </Box>
-            <Box as="a" href={"#"}>
-              Partners
+              Tech Support
             </Box>
           </Stack>
           <Stack align={"flex-start"}>
@@ -151,7 +145,7 @@ export default function FooterComponent() {
           <Logo />
         </Flex>
         <Text pt={6} fontSize={"sm"} textAlign={"center"}>
-          © 2022 Chakra Templates. All rights reserved
+          © TradeSpace. All rights reserved
         </Text>
       </Box>
     </Box>

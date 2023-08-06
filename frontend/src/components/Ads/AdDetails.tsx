@@ -14,7 +14,7 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
-import { FunctionComponent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaUser,
   FaThList,
@@ -25,7 +25,7 @@ import {
   FaMedal,
 } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { adService, AdDetailsType } from "../services/ad.service";
+import { adService, AdDetailsType } from "../../services/ad.service";
 
 // interface AdDetailsProps {
 //   ad_id: number

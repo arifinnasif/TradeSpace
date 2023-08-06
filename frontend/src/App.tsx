@@ -8,9 +8,9 @@ import Register from "./components/Register/RegisterSteps";
 import PostAd from "./components/Ads/PostAd";
 
 import Navbar from "./components/Navbar/Navbar";
-
-import AdDetils from "./components/AdDetails";
+import AdDetils from "./components/Ads/AdDetails";
 import CategoryList from "./components/Homepage/CategoryList";
+
 
 function App() {
   return (

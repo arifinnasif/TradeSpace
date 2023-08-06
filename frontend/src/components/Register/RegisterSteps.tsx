@@ -26,6 +26,7 @@ const Register = () => {
   ];
 
   const handleNextStep = () => {
+    console.log(email);
     setStep(step + 1);
     if (step === 3) {
       setProgress(100);
@@ -44,6 +45,8 @@ const Register = () => {
   let [phone, setPhone] = useState("");
   let [dob, setDob] = useState("1999-12-31");
   let [gender, setGender] = useState("male");
+  let [email, setEmail] = useState<string>();
+  let [password, setPassword] = useState<string>();
 
   return (
     <>
@@ -72,7 +75,14 @@ const Register = () => {
         <RegisterForm
           header={header[1]}
           formContent={
-            <Step2 onNext={handleNextStep} onPrev={handlePrevStep} />
+            <Step2
+              onNext={handleNextStep}
+              onPrev={handlePrevStep}
+              email={email}
+              password={password}
+              setEmail={setEmail}
+              setPassword={setPassword}
+            />
           }
         />
       )}

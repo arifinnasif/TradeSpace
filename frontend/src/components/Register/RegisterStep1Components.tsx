@@ -10,7 +10,7 @@ import {
   RadioGroup,
 } from "@chakra-ui/react";
 
-import React, { FormEvent, FunctionComponent } from "react";
+import { FormEvent, FunctionComponent } from "react";
 
 interface Step1Props {
   onNext: () => void;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { CategoryType, homeService } from "../../services/Home.service";
-import { Grid } from "@chakra-ui/react";
+import { Grid, GridItem, Heading } from "@chakra-ui/react";
 import CategoryCard from "./CategoryCard";
 
 function CategoryList() {
@@ -19,11 +19,18 @@ function CategoryList() {
   }, []);
 
   return (
-    <Grid templateColumns="repeat(4, 1fr)" mx={"10"}>
-      {categories?.map((p) => (
-        <CategoryCard key={p.category} {...p} />
-      ))}
-    </Grid>
+    <>
+      <Grid templateColumns="repeat(4, 1fr)" mx={"10"}>
+        <GridItem colSpan={4}>
+          <Heading p={"3"}> Browse Ads by Category</Heading>
+        </GridItem>
+        {categories?.map((p) => (
+          <GridItem>
+            <CategoryCard key={p.category} {...p} />
+          </GridItem>
+        ))}
+      </Grid>
+    </>
   );
 }
 

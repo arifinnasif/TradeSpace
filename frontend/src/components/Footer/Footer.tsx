@@ -124,7 +124,7 @@ export default function FooterComponent() {
             <Box as="a" href={"#"}>
               Stay Safe
             </Box>
-            <Box as="a" href={"#"}>
+            <Box as="a" href={"https://github.com/ansakib/TradeSpace"}>
               Contact Us
             </Box>
           </Stack>
@@ -144,7 +144,10 @@ export default function FooterComponent() {
               <SocialButton label={"Instagram"} href={"#"}>
                 <FaInstagram />
               </SocialButton>
-              <SocialButton label={"Facebook"} href={"#"}>
+              <SocialButton
+                label={"Facebook"}
+                href={"https://facebook.com/kamruzzaman.sheam.5"}
+              >
                 <FaFacebook />
               </SocialButton>
             </Stack>
@@ -155,7 +158,7 @@ export default function FooterComponent() {
                 About TradeSpace
               </Text>
             </ListHeader>
-            <Box as="a" href={"#"}>
+            <Box as="a" href={"https://github.com/ansakib/TradeSpace"}>
               About Us
             </Box>
             <Box as="a" href={"#"}>

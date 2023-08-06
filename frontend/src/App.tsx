@@ -8,8 +8,9 @@ import Register from "./components/Register/RegisterSteps";
 import PostAd from "./components/Ads/PostAd";
 
 import Navbar from "./components/Navbar/Navbar";
-
 import AdDetils from "./components/Ads/AdDetails";
+import CategoryList from "./components/Homepage/CategoryList";
+
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Suspense fallback={<Spinner />}>
         <Navbar />
         <Routes>
+          <Route path="/" element={<CategoryList />} />
           <Route path="/things/:id/" element={<Things />} />
 
           <Route path="/ads/" element={<GetAds />} />

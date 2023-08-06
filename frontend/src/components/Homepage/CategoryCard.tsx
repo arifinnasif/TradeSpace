@@ -27,10 +27,10 @@ const CategoryCard: FunctionComponent<CategoryType> = ({ category, count }) => {
       >
         <HStack spacing={"3"}>
           <Spacer />
-          <Icon color={"teal.800"} h={"14"} w={"16"} as={FaThList} />
+          <Icon color={"teal"} h={"14"} w={"16"} as={FaThList} />
           <Stack>
             <CardBody>
-              <Heading color={"teal.700"} size="md">
+              <Heading colorScheme={"teal"} size="md">
                 {category}
               </Heading>
 

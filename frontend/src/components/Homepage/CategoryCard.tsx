@@ -22,11 +22,12 @@ const CategoryCard: FunctionComponent<CategoryType> = ({ category, count }) => {
         variant="outline"
         colorScheme="teal"
         width={"80"}
-        height={"40"}
+        h={"100%"}
+        borderColor={"teal"}
       >
         <HStack spacing={"3"}>
           <Spacer />
-          <Icon w={"16"} h={"20"} as={FaThList} />
+          <Icon h={"14"} w={"16"} as={FaThList} />
           <Stack>
             <CardBody>
               <Heading size="md">{category}</Heading>

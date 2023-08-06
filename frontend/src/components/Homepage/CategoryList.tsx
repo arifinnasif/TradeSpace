@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { CategoryType, homeService } from "../../services/Home.service";
-import { HStack } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import CategoryCard from "./CategoryCard";
 
 function CategoryList() {
@@ -19,11 +19,11 @@ function CategoryList() {
   }, []);
 
   return (
-    <HStack spacing={"2"}>
+    <Grid templateColumns="repeat(4, 1fr)" mx={"10"}>
       {categories?.map((p) => (
         <CategoryCard key={p.category} {...p} />
       ))}
-    </HStack>
+    </Grid>
   );
 }
 

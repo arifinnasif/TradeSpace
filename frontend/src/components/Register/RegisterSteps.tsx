@@ -101,6 +101,7 @@ const Register = () => {
 
   return (
     <>
+
       <Progress value={progress} size="xs" colorScheme="teal" />
       {step === 1 && (
         <RegisterForm
@@ -172,6 +173,7 @@ const Register = () => {
           ) : null}
         </Flex>
       </ButtonGroup>
+
     </>
   );
 };

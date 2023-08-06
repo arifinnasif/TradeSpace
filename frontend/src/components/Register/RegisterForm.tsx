@@ -22,6 +22,7 @@ const RegisterForm: FunctionComponent<RegisterFormProps> = ({
 }) => {
   return (
     <Flex
+
       minW={"85vw"}
       align={"center"}
       justify={"center"}
@@ -35,6 +36,7 @@ const RegisterForm: FunctionComponent<RegisterFormProps> = ({
         px={6}
         minW={"35vw"}
         minH={"100vh"}
+
       >
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>{header}</Heading>

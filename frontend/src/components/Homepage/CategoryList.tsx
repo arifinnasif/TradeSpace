@@ -20,9 +20,11 @@ function CategoryList() {
 
   return (
     <>
-      <Grid templateColumns="repeat(4, 1fr)" mx={"10"}>
+      <Grid templateColumns="repeat(4, 1fr)">
         <GridItem colSpan={4}>
-          <Heading p={"3"}> Browse Ads by Category</Heading>
+          <Heading colorScheme={"teal"} p={"3"}>
+            Browse Ads by Category
+          </Heading>
         </GridItem>
         {categories?.map((p) => (
           <GridItem>

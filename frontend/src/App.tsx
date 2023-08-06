@@ -3,28 +3,27 @@ import { Suspense } from "react";
 import { Spinner } from "@chakra-ui/react";
 
 import Things from "./components/Things";
-import GetAds from "./components/Ads/GetAds";
 import Register from "./components/Register/RegisterSteps";
 import PostAd from "./components/Ads/PostAd";
 
-import Navbar from "./components/Navbar/Navbar";
-import AdDetils from "./components/Ads/AdDetails";
-import CategoryList from "./components/Homepage/CategoryList";
-
+import AdDetailsPage from "./pages/AdDetails.page";
+// import CategoryList from "./components/Homepage/CategoryList";
+import HomePage from "./pages/Home.page";
+import GetAds from "./pages/GetAds.page";
 
 function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
-          <Route path="/" element={<CategoryList />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/things/:id/" element={<Things />} />
 
           <Route path="/ads/" element={<GetAds />} />
           <Route path="/register/" element={<Register />} />
           <Route path="/ads/post-ad/" element={<PostAd />} />
-          <Route path="/ads/:id/" element={<AdDetils />} />
+          <Route path="/ads/:id/" element={<AdDetailsPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

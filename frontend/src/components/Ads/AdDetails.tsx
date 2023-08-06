@@ -14,7 +14,7 @@ import {
   Button,
   Divider,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { FunctionComponent } from "react";
 import {
   FaUser,
   FaThList,
@@ -24,8 +24,7 @@ import {
   FaMapMarkerAlt,
   FaMedal,
 } from "react-icons/fa";
-import { useParams } from "react-router-dom";
-import { adService, AdDetailsType } from "../../services/ad.service";
+import { AdDetailsType } from "../../services/ad.service";
 
 // interface AdDetailsProps {
 //   ad_id: number
@@ -42,19 +41,19 @@ import { adService, AdDetailsType } from "../../services/ad.service";
 // createdAt: string,
 // }
 
-const AdDetils = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [ad, setAd] = useState<AdDetailsType>();
-  const { id } = useParams();
-  useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      const ad_details = await adService.getAdDetails(+id!);
-      setAd(ad_details);
-      setIsLoading(false);
-    }
-    fetchData();
-  }, [id]);
+const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [ad, setAd] = useState<AdDetailsType>();
+  // const { id } = useParams();
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     setIsLoading(true);
+  //     const ad_details = await adService.getAdDetails(+id!);
+  //     setAd(ad_details);
+  //     setIsLoading(false);
+  //   }
+  //   fetchData();
+  // }, [id]);
   return (
     // <Box>
 

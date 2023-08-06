@@ -24,7 +24,8 @@ const RegisterForm:FunctionComponent<Props> = ({ header, formContent }) => {
       align={'center'}
       justify={'center'}
       
-      bg={useColorModeValue('teal.50', 'gray.800')}>
+      bg={useColorModeValue('teal.50', 'gray.800')}
+    >
       <Stack 
         spacing={8} 
         mx={'auto'} 

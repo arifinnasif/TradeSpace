@@ -46,27 +46,6 @@ const Register = () => {
         {step === 1 && <RegisterForm header={header[0]} formContent={<Step1 onNext={handleNextStep}/>} />}
         {step === 2 && <RegisterForm header={header[1]} formContent={<Step2 onNext={handleNextStep} onPrev={handlePrevStep}/>} />}
         {step === 3 && <RegisterForm header={header[2]} formContent={<Step3 />} />}
-        <ButtonGroup mt="5%" w="100%">
-          <Flex w="100%" justifyContent="space-between" alignItems='center'>
-            {step === 3 ? (
-              <Button
-                w="7rem"
-                colorScheme="red"
-                variant="solid"
-                onClick={() => {
-                  toast({
-                    title: 'Account created.',
-                    description: "We've created your account for you.",
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                  })
-                }}>
-                Submit
-              </Button>
-            ) : null}
-          </Flex>
-        </ButtonGroup>
     </>
   )
 }

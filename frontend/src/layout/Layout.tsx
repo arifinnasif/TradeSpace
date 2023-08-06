@@ -48,7 +48,7 @@ const Layout: FunctionComponent<LayoutProps> = ({
         <Navbar />
         {loading ? (
           <>
-            <Spinner size={"100"} />
+            <Spinner size={"100px"} />
           </>
         ) : (
           <div>

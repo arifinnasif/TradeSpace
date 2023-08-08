@@ -3,6 +3,7 @@ import { Box, Flex, Stack } from '@chakra-ui/layout';
 import { Button, 
          Checkbox, 
          FormControl, 
+         FormErrorMessage, 
          FormHelperText, 
          FormLabel, 
          HStack, 
@@ -12,7 +13,7 @@ import { Button,
          useColorModeValue 
        } from '@chakra-ui/react';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface AdData {
   category: string,
@@ -72,17 +73,87 @@ const categories = [
 const PostAd = () => {
 
   // declaration of states
-  const [category, setCategory] = useState<string>('')
-  const [title, setTitle] = useState<string>('')
+  const [category, setCategory] = useState<string>()
+  const [title, setTitle] = useState<string>()
   const [is_sell_ad, setIs_sell_ad] = useState<boolean>(false)
-  const [description, setDescription] = useState<string>('')
+  const [description, setDescription] = useState<string>()
   const [is_negotiable, setIs_negotiable] = useState<boolean>(false)
   const [is_used, setIs_used] = useState<boolean>(false)
   const [days_used, setDays_used] = useState<number>()
   const [is_phone_public, setIs_phone_public] = useState<boolean>(false)
-  const [address, setAddress] = useState<string>('')
+  const [address, setAddress] = useState<string>()
   const [price, setPrice] = useState<number>()
   const [images, setImages] = useState<string[]>([])
+
+  // necessary for the days_used field.
+  // let a user checks is_used and set days used 10.
+  // but then then unchecks is_used. 
+  // guess what happens to days_used? it stays 10.
+  useEffect(() => {
+    if (is_used == false) {
+      setDays_used(undefined)
+    }
+  }, [is_used])
+    
+
+
+  // declaration of error states
+  const [categoryError, setCategoryError] = useState<boolean>(false)
+  const [titleError, setTitleError] = useState<boolean>(false)
+  const [descriptionError, setDescriptionError] = useState<boolean>(false)
+  const [days_usedError, setDays_usedError] = useState<boolean>(false)
+  const [addressError, setAddressError] = useState<boolean>(false)
+  const [priceError, setPriceError] = useState<boolean>(false)
+
+
+  // definition of error checker hooks
+  useEffect(() => {
+    if (category == undefined || category == "") {
+      setCategoryError(true)
+    } else {
+      setCategoryError(false)
+    }
+  }, [category])
+  
+  useEffect(() => {
+    if (title == undefined || title.length < 5 || title.length > 50) {
+      setTitleError(true)
+    } else {
+      setTitleError(false)
+    }
+  }, [title])
+
+  useEffect(() => {
+    if (description != undefined && description.length > 100) {
+      setDescriptionError(true)
+    } else {
+      setDescriptionError(false)
+    }
+  }, [description])
+
+  useEffect(() => {
+    if (is_used == true && (days_used == undefined || days_used < 0)) {
+      setDays_usedError(true)
+    } else {
+      setDays_usedError(false)
+    }
+  }, [days_used, is_used])
+
+  useEffect(() => {
+    if (address == undefined || address.length < 5 || address.length > 50) {
+      setAddressError(true)
+    } else {
+      setAddressError(false)
+    }
+  }, [address])
+
+  useEffect(() => {
+    if (price == undefined || price < 0) {
+      setPriceError(true)
+    } else {
+      setPriceError(false)
+    }
+  }, [price])
 
 
 
@@ -93,7 +164,6 @@ const PostAd = () => {
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
-    console.log(title)
   }
 
   const handleIs_sell_adChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -126,23 +196,25 @@ const PostAd = () => {
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPrice(parseInt(e.target.value))
-    console.log(price)
   }
 
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImages(e.target.value.split(","))
-    console.log(images)
   }
 
+
+
+
+  // validation function
   const validateUserInput = () => {
-    if (category == undefined) return false;
-    if (title == undefined) return false;
-    if (description == undefined) return false;
-    if (address == undefined) return false;
-    if (price == undefined) return false;
-    if (price < 0) return false;
-    if (is_used == true && days_used == undefined) return false;
-    if (is_used == true && days_used! < 0) return false;
+    if (categoryError ||
+        titleError ||
+        descriptionError ||
+        days_usedError ||
+        addressError ||
+        priceError
+       ) return false;
+
     return true;
   }
 
@@ -193,20 +265,21 @@ const PostAd = () => {
           boxShadow={"lg"}
           p={8}
         >
-          <Stack spacing={5}>
-            <FormControl isRequired>
+          <Stack spacing={7}>
+            <FormControl isRequired isInvalid={categoryError}>
               <FormLabel>Select Category</FormLabel>
-              <Select placeholder='Category' onChange={handleCategoryChange}>
+              <Select placeholder="Category" onChange={handleCategoryChange}>
                 {categories.map((category) => (
                   <option key={category} value={category}>{category}</option>
                 ))}
               </Select>
+              {categoryError && <FormErrorMessage>Please select a category</FormErrorMessage>}
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={titleError}>
               <FormLabel>Title</FormLabel>
               <Input type="text" placeholder="Title" value={title} onChange={handleTitleChange} />
-              <FormHelperText>Title needs to 5-50 characters</FormHelperText>
+              {titleError && <FormErrorMessage>Title should be at the range of 5-50 characters</FormErrorMessage>}
             </FormControl>
 
             <FormControl>
@@ -215,14 +288,19 @@ const PostAd = () => {
               </Checkbox>
             </FormControl>
               
-            <FormControl>
+            <FormControl isInvalid={descriptionError}>
               <FormLabel>Description</FormLabel>
               <Textarea placeholder='Provide your products description' value={description} onChange={handleDescriptionChange} />
+              {descriptionError && <FormErrorMessage>
+                                      Description should be at the range of 0-100 characters
+                                   </FormErrorMessage>}
+
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={priceError}>
               <FormLabel>Price</FormLabel>
               <Input type="number" placeholder="Price" value={price} onChange={handlePriceChange} />
+              {priceError && <FormErrorMessage>Price should be a positive number</FormErrorMessage>}
             </FormControl>
 
             <FormControl>
@@ -244,14 +322,16 @@ const PostAd = () => {
               {/* why not <Input .../> here? */}
               {/* Well it's just ugly for file imput. */}
               {/* Such is frontend */}
+              <FormHelperText>Upload upto 5 images</FormHelperText>
             </FormControl>
 
             {
               is_used && 
               (
-              <FormControl isRequired>
+              <FormControl isRequired isInvalid={days_usedError}>
                 <FormLabel>Days used</FormLabel>
                 <Input type="number" placeholder="Days used" value={days_used} onChange={handleDays_usedChange} />
+                {days_usedError && <FormErrorMessage>Days used should be a positive number</FormErrorMessage>}
               </FormControl>
               )
             }
@@ -262,9 +342,11 @@ const PostAd = () => {
               </Checkbox>
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={addressError}>
               <FormLabel>Address</FormLabel>
               <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
+              {addressError && 
+              <FormErrorMessage>Address should be at the range of 5-50 characters</FormErrorMessage>}
             </FormControl>
 
             <Stack spacing={5}>

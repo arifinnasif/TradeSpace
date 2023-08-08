@@ -1,284 +1,291 @@
-//@ts-nocheck
-//@ts-ignore
+import { Box, Flex, Stack } from '@chakra-ui/layout';
 
-import { Box, Button, ButtonGroup, Flex } from "@chakra-ui/react";
-import { Formik, useFormik } from "formik";
+import { Button, 
+         Checkbox, 
+         FormControl, 
+         FormHelperText, 
+         FormLabel, 
+         HStack, 
+         Input, 
+         Select, 
+         Textarea, 
+         useColorModeValue 
+       } from '@chakra-ui/react';
 
-import {
-  CheckboxSingleControl,
-  InputControl,
-  ResetButton,
-  SelectControl,
-  SubmitButton,
-  TextareaControl,
-} from "formik-chakra-ui";
+import { useState } from 'react';
 
-import React, {useState, useEffect} from 'react'
+interface AdData {
+  category: string,
+  title: string,
+  is_sell_ad: boolean,
+  description: string,
+  is_negotiable: boolean,
+  is_used: boolean,
+  days_used: number,
+  is_phone_public: boolean,
+  address: string,
+  price: number,
+  images: string[],
+}
 
-import * as Yup from "yup";
+const onAdd = async (
+  {
+    category,
+    title, 
+    is_sell_ad, 
+    description, 
+    is_negotiable, 
+    is_used, 
+    days_used,  
+    is_phone_public, 
+    address, 
+    price, 
+    images
+  }: AdData) => {
+  const newAd:AdData = {
+    category, 
+    title, 
+    is_sell_ad, 
+    description, 
+    is_negotiable, 
+    is_used, 
+    days_used, 
+    is_phone_public, 
+    address, 
+    price, 
+    images
+  }
 
-const onAdd = ({category, 
-                title, 
-                is_sell_ad, 
-                description, 
-                is_negotiable, 
-                is_used, 
-                days_used, 
-                phone, 
-                is_phone_public, 
-                address, 
-                price, 
-                images}) => {
-  const newAd = {category, title, is_sell_ad, description, is_negotiable, is_used, days_used, phone, is_phone_public, address, price, images}
-  console.log(newAd)
+// Insert the data into the database from here.
+console.log(newAd)
 }
 
 
-const initialValues = {
-  select_category: "",
-  title: "",
-  is_sell_ad: false,
-  description: "",
-  is_negotiable: false,
-  is_used: false,
-  phone: '12345678912',
-  days_used: "",
-  is_phone_public: false,
-  address: "",
-  price: "",
-  images: [],
-};
-
+// fetch categories from the database here
 const categories = [
+  "Vehicles",
   "Electronics",
   "Furniture",
   "Clothing",
 ]
 
-const validationSchema = Yup.object({
-title: Yup.string().required().min(5).max(50),
-is_sell_ad: Yup.boolean(),
-description: Yup.string().max(100),
-price: Yup.number().required().min(0),
-is_negotiable: Yup.boolean(),
-is_used: Yup.boolean(),
-days_used: Yup.number().min(0),
-phone: Yup.number().required(),
-is_phone_public: Yup.boolean(),
-address: Yup.string().required().min(5).max(50),
-images: Yup.array().max(5),
-});
-
 const PostAd = () => {
-  const [category, setCategory] = useState('')
-  const [title, setTitle] = useState('')
-  const [is_sell_ad, setIs_sell_ad] = useState(false)
-  const [description, setDescription] = useState('')
-  const [is_negotiable, setIs_negotiable] = useState(false)
-  const [is_used, setIs_used] = useState(false)
-  const [days_used, setDays_used] = useState('')
-  const [phone, setPhone] = useState(12345678912)
-  const [is_phone_public, setIs_phone_public] = useState(false)
-  const [address, setAddress] = useState('')
-  const [price, setPrice] = useState('')
-  const [images, setImages] = useState([])
+
+  // declaration of states
+  const [category, setCategory] = useState<string>('')
+  const [title, setTitle] = useState<string>('')
+  const [is_sell_ad, setIs_sell_ad] = useState<boolean>(false)
+  const [description, setDescription] = useState<string>('')
+  const [is_negotiable, setIs_negotiable] = useState<boolean>(false)
+  const [is_used, setIs_used] = useState<boolean>(false)
+  const [days_used, setDays_used] = useState<number>()
+  const [is_phone_public, setIs_phone_public] = useState<boolean>(false)
+  const [address, setAddress] = useState<string>('')
+  const [price, setPrice] = useState<number>()
+  const [images, setImages] = useState<string[]>([])
 
 
-  const changeCategory = (e) => {
+
+  // change events definition
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value)
   }
-  const changeTitle = (e) => {
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
+    console.log(title)
   }
-  const changeIs_sell_ad = (e) => {
-    setIs_sell_ad(!is_sell_ad)
+
+  const handleIs_sell_adChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setIs_sell_ad(e.target.checked)
   }
-  const changeDescription = (e) => {
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value)
   }
-  const changeIs_negotiable = (e) => {
-    setIs_negotiable(!is_negotiable)
+
+  const handleIs_negotiableChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIs_negotiable(e.target.checked)
   }
-  const changeIs_used = (e) => {
-    setIs_used(!is_used)
+
+  const handleIs_usedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIs_used(e.target.checked)
   }
-  const changeDays_used = (e) => {
-    setDays_used(e.target.value)
+
+  const handleDays_usedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDays_used(parseInt(e.target.value))
   }
-  const changePhone = (e) => {
-    setPhone(e.target.value)
+
+  const handleIs_phone_publicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIs_phone_public(e.target.checked)
   }
-  const changeIs_phone_public = (e) => {
-    setIs_phone_public(!is_phone_public)
-  }
-  const changeAddress = (e) => {
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value)
   }
-  const changePrice = (e) => {
-    setPrice(e.target.value)
-  }
-  const changeImages = (e) => {
-    setImages(e.target.value)
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice(parseInt(e.target.value))
+    console.log(price)
   }
 
-  const onSubmit = (e) => {
-    e.preventDefault()
+  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImages(e.target.value.split(","))
+    console.log(images)
+  }
 
-    if(title === '' || price === '' || address === '' || category === '' || phone === '') {
-      alert('Please fill in all the required fields')
-      return
-    }
-    if(title.length < 5 || title.length > 50) {
-      alert('Title must be between 5 and 50 characters')
-      return
-    }
-    if(description.length > 100) {
-      alert('Description must be less than 100 characters')
-      return
-    }
-    if(address.length < 5 || address.length > 50) {
-      alert('Address must be between 5 and 50 characters')
-      return
-    }
-    if(phone.length !== 11) {
-      alert('Phone number must be 11 digits')
-      return
-    }
-    if(price < 0) {
-      alert('Price must be greater than 0')
-      return
-    }
-    if(days_used < 0) {
-      alert('Days used must be greater than 0')
-      return
-    }
-    if(images.length > 5) {
-      alert('You can only upload 5 images')
-      return
-    }
+  const validateUserInput = () => {
+    if (category == undefined) return false;
+    if (title == undefined) return false;
+    if (description == undefined) return false;
+    if (address == undefined) return false;
+    if (price == undefined) return false;
+    if (price < 0) return false;
+    if (is_used == true && days_used == undefined) return false;
+    if (is_used == true && days_used! < 0) return false;
+    return true;
+  }
+
+  const handleSubmit = (e : React.MouseEvent<HTMLButtonElement>) => { 
     
-
-    if (!isValid) {
-      onAdd({category, 
-              title, 
-              is_sell_ad, 
-              description, 
-              is_negotiable, 
-              is_used, 
-              days_used, 
-              phone, 
-              is_phone_public, 
-              address, 
-              price, 
-              images
-            })
+    e.preventDefault()
+    
+    if (validateUserInput()) {
+      onAdd({
+        category: category!,
+        title: title!, 
+        is_sell_ad: is_sell_ad, 
+        description: description!, 
+        is_negotiable: is_negotiable, 
+        is_used: is_used, 
+        days_used: days_used!, 
+        is_phone_public: is_phone_public, 
+        address: address!,
+        price: price!,
+        images: images
+      })
+    } else {
+      alert("Please fill all the fields correctly")
     }
-
   }
 
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
+    <Flex
+
+      minW={"85vw"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("teal.50", "gray.800")}
     >
-      {({ handleSubmit, values, errors, setFieldValue }) => (
+      <Stack
+        spacing={8}
+        mx={"auto"}
+        maxW={"lg"}
+        py={12}
+        px={6}
+        minW={"85vw"}
+        minH={"100vh"}
+
+      >
         <Box
-          borderWidth="1px"
-          rounded="lg"
-          shadow="1px 1px 3px rgba(0,0,0,0.3)"
-          maxW={"75vw"}
-          p={6}
-          m="10px auto"
-          as="form"
-          onSubmit={handleSubmit as any}
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"lg"}
+          p={8}
         >
-          <SelectControl
-            name="category"
-            selectProps={{ placeholder: "Select Category" }}
-            onChange={changeCategory}
-          >
-            {categories.map((category, index) => (
-              <option key={index} value={category}>
-                {category}
-              </option>
-            ))}
-          </SelectControl>
-          <br />
-          
-          <InputControl name="title" label="Title" onChange={changeTitle} />
-          
-          <br />
-          <CheckboxSingleControl name="is_sell_ad" onChange={changeIs_sell_ad}>
-            Is a sell Ad
-          </CheckboxSingleControl>
+          <Stack spacing={5}>
+            <FormControl isRequired>
+              <FormLabel>Select Category</FormLabel>
+              <Select placeholder='Category' onChange={handleCategoryChange}>
+                {categories.map((category) => (
+                  <option key={category} value={category}>{category}</option>
+                ))}
+              </Select>
+            </FormControl>
 
-          <br />
+            <FormControl isRequired>
+              <FormLabel>Title</FormLabel>
+              <Input type="text" placeholder="Title" value={title} onChange={handleTitleChange} />
+              <FormHelperText>Title needs to 5-50 characters</FormHelperText>
+            </FormControl>
 
-          <TextareaControl name="description" label="Description(max 100 characters)" onChange={changeDescription}/>
-          
-          <br />
-          
-          <InputControl name="price" label="Price" onChange={changePrice}/>
-          
-          <br />
+            <FormControl>
+              <Checkbox isChecked={is_sell_ad} onChange={handleIs_sell_adChange}>
+                Is a sell Ad
+              </Checkbox>
+            </FormControl>
+              
+            <FormControl>
+              <FormLabel>Description</FormLabel>
+              <Textarea placeholder='Provide your products description' value={description} onChange={handleDescriptionChange} />
+            </FormControl>
 
-          <Flex>
-          <CheckboxSingleControl name="is_negotiable" onChange={changeIs_negotiable}>
-            Price is negotiable
-          </CheckboxSingleControl>
-          
-          <CheckboxSingleControl name="is_used" onChange={changeIs_used}>
-            Product is used
-          </CheckboxSingleControl>
-          </Flex>
+            <FormControl isRequired>
+              <FormLabel>Price</FormLabel>
+              <Input type="number" placeholder="Price" value={price} onChange={handlePriceChange} />
+            </FormControl>
 
-          <br />
+            <FormControl>
 
-          {/* take 5 images as input */}
-          <label>Images (up to 5)</label>
+              <HStack spacing='200'>
+                <Checkbox isChecked={is_negotiable} onChange={handleIs_negotiableChange}>
+                Price is negotiable
+                </Checkbox>
+                <Checkbox isChecked={is_used} onChange={handleIs_usedChange}>
+                Product is used before
+                </Checkbox>
+              </HStack>
+              
+            </FormControl>
 
-          <br />
-          <br />
+            <FormControl>
+              <FormLabel>Upload images</FormLabel>
+              <input type = 'file' accept='image/*' multiple onChange={handleImagesChange} />
+              {/* why not <Input .../> here? */}
+              {/* Well it's just ugly for file imput. */}
+              {/* Such is frontend */}
+            </FormControl>
 
-          <input
-            type="file"
-            name="images"
-            accept="image/*"
-            multiple
-            onChange={changeImages}
-          />
+            {
+              is_used && 
+              (
+              <FormControl isRequired>
+                <FormLabel>Days used</FormLabel>
+                <Input type="number" placeholder="Days used" value={days_used} onChange={handleDays_usedChange} />
+              </FormControl>
+              )
+            }
 
-          <br />
-          <br />
-          
-          <InputControl name="days_used" label="Days Used(N/A for unused product)" isDisabled={!is_used} onChange={changeDays_used}/>
-    
-          
-          <br />
-          
-          <InputControl name="phone" label="Phone" onChange={changePhone}/>
-          
-          <br />
+            <FormControl>
+              <Checkbox isChecked={is_phone_public} onChange={handleIs_phone_publicChange}>
+                Make my phone number public for this Ad
+              </Checkbox>
+            </FormControl>
 
-          <CheckboxSingleControl name="is_phone_public" onChange={changeIs_phone_public}>
-            Phone Number is public
-          </CheckboxSingleControl>
+            <FormControl isRequired>
+              <FormLabel>Address</FormLabel>
+              <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
+            </FormControl>
 
-          <br />
-          
-          <InputControl name="address" label="Address" onChange={changeAddress}/>
-
-          <br />
-
-          <ButtonGroup>
-            <Button type="submit" onClick={onSubmit}>Submit</Button>
-            <ResetButton>Reset</ResetButton>
-          </ButtonGroup>
+            <Stack spacing={5}>
+              <Button
+                bg={'blue.400'}
+                color={'white'}
+                _hover={{
+                  bg: 'blue.500',
+                }}
+                type='submit'
+                onClick={handleSubmit}
+              >
+                Submit
+              </Button>
+            </Stack>
+            
+          </Stack>
         </Box>
-      )}
-    </Formik>
+      </Stack>
+    </Flex>
   )
 }
 
-export default PostAd
+export default PostAd;

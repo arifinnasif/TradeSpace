@@ -89,6 +89,7 @@ const PostAd = () => {
   // let a user checks is_used and set days used 10.
   // but then then unchecks is_used. 
   // guess what happens to days_used? it stays 10.
+  // so we need to reset it to undefined.
   useEffect(() => {
     if (is_used == false) {
       setDays_used(undefined)
@@ -106,56 +107,87 @@ const PostAd = () => {
   const [priceError, setPriceError] = useState<boolean>(false)
 
 
+  // declaration of touched states
+  const [categoryTouched, setCategoryTouched] = useState<boolean>(false)
+  const [titleTouched, setTitleTouched] = useState<boolean>(false)
+  const [descriptionTouched, setDescriptionTouched] = useState<boolean>(false)
+  const [days_usedTouched, setDays_usedTouched] = useState<boolean>(false)
+  const [addressTouched, setAddressTouched] = useState<boolean>(false)
+  const [priceTouched, setPriceTouched] = useState<boolean>(false)
+
+  const handleCategoryTouched = () => {
+    setCategoryTouched(true)
+  }
+
+  const handleTitleTouched = () => {
+    setTitleTouched(true)
+  }
+
+  const handleDescriptionTouched = () => {
+    setDescriptionTouched(true)
+  }
+
+  const handleDays_usedTouched = () => {
+    setDays_usedTouched(true)
+  }
+
+  const handleAddressTouched = () => {
+    setAddressTouched(true)
+  }
+
+  const handlePriceTouched = () => {
+    setPriceTouched(true)
+  }
+
+
   // definition of error checker hooks
   useEffect(() => {
-    if (category == undefined || category == "") {
+    if (categoryTouched && (category == undefined || category == "")) {
       setCategoryError(true)
     } else {
       setCategoryError(false)
     }
-  }, [category])
+  }, [category, categoryTouched])
   
   useEffect(() => {
-    if (title == undefined || title.length < 5 || title.length > 50) {
+    if (titleTouched && (title == undefined || title.length < 5 || title.length > 50)) {
       setTitleError(true)
     } else {
       setTitleError(false)
     }
-  }, [title])
+  }, [title, titleTouched])
 
   useEffect(() => {
-    if (description != undefined && description.length > 100) {
+    if (descriptionTouched && (description != undefined && description.length > 100)) {
       setDescriptionError(true)
     } else {
       setDescriptionError(false)
     }
-  }, [description])
+  }, [description, descriptionTouched])
 
   useEffect(() => {
-    if (is_used == true && (days_used == undefined || days_used < 0)) {
+    if (days_usedTouched && (is_used == true && (days_used == undefined || days_used < 0))) {
       setDays_usedError(true)
     } else {
       setDays_usedError(false)
     }
-  }, [days_used, is_used])
+  }, [days_used, is_used, days_usedTouched])
 
   useEffect(() => {
-    if (address == undefined || address.length < 5 || address.length > 50) {
+    if (addressTouched && (address == undefined || address.length < 5 || address.length > 50)) {
       setAddressError(true)
     } else {
       setAddressError(false)
     }
-  }, [address])
+  }, [address, addressTouched])
 
   useEffect(() => {
-    if (price == undefined || price < 0) {
+    if (priceTouched && (price == undefined || price < 0)) {
       setPriceError(true)
     } else {
       setPriceError(false)
     }
-  }, [price])
-
-
+  }, [price, priceTouched])
 
   // change events definition
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -201,7 +233,6 @@ const PostAd = () => {
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImages(e.target.value.split(","))
   }
-
 
 
 
@@ -266,7 +297,7 @@ const PostAd = () => {
           p={8}
         >
           <Stack spacing={7}>
-            <FormControl isRequired isInvalid={categoryError}>
+            <FormControl isRequired isInvalid={categoryError} onBlur={handleCategoryTouched}>
               <FormLabel>Select Category</FormLabel>
               <Select placeholder="Category" onChange={handleCategoryChange}>
                 {categories.map((category) => (
@@ -276,7 +307,7 @@ const PostAd = () => {
               {categoryError && <FormErrorMessage>Please select a category</FormErrorMessage>}
             </FormControl>
 
-            <FormControl isRequired isInvalid={titleError}>
+            <FormControl isRequired isInvalid={titleError} onBlur={handleTitleTouched}>
               <FormLabel>Title</FormLabel>
               <Input type="text" placeholder="Title" value={title} onChange={handleTitleChange} />
               {titleError && <FormErrorMessage>Title should be at the range of 5-50 characters</FormErrorMessage>}
@@ -288,7 +319,7 @@ const PostAd = () => {
               </Checkbox>
             </FormControl>
               
-            <FormControl isInvalid={descriptionError}>
+            <FormControl isInvalid={descriptionError} onBlur={handleDescriptionTouched}>
               <FormLabel>Description</FormLabel>
               <Textarea placeholder='Provide your products description' value={description} onChange={handleDescriptionChange} />
               {descriptionError && <FormErrorMessage>
@@ -297,7 +328,7 @@ const PostAd = () => {
 
             </FormControl>
 
-            <FormControl isRequired isInvalid={priceError}>
+            <FormControl isRequired isInvalid={priceError} onBlur={handlePriceTouched}>
               <FormLabel>Price</FormLabel>
               <Input type="number" placeholder="Price" value={price} onChange={handlePriceChange} />
               {priceError && <FormErrorMessage>Price should be a positive number</FormErrorMessage>}
@@ -328,7 +359,7 @@ const PostAd = () => {
             {
               is_used && 
               (
-              <FormControl isRequired isInvalid={days_usedError}>
+              <FormControl isRequired isInvalid={days_usedError} onBlur={handleDays_usedTouched}>
                 <FormLabel>Days used</FormLabel>
                 <Input type="number" placeholder="Days used" value={days_used} onChange={handleDays_usedChange} />
                 {days_usedError && <FormErrorMessage>Days used should be a positive number</FormErrorMessage>}
@@ -342,7 +373,7 @@ const PostAd = () => {
               </Checkbox>
             </FormControl>
 
-            <FormControl isRequired isInvalid={addressError}>
+            <FormControl isRequired isInvalid={addressError} onBlur={handleAddressTouched}>
               <FormLabel>Address</FormLabel>
               <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
               {addressError && 

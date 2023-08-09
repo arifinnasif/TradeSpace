@@ -5,7 +5,6 @@ import {
   Flex,
   Avatar,
   HStack,
-  Text,
   IconButton,
   Button,
   Menu,
@@ -17,6 +16,7 @@ import {
   useColorModeValue,
   Stack,
   useColorMode,
+  Image,
 } from "@chakra-ui/react";
 
 import {
@@ -26,6 +26,9 @@ import {
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
+
+import logo from "../../../../logos/tradespace-lettermark-white-navbar.png"
+
 
 interface Props {
   children: React.ReactNode;
@@ -68,14 +71,18 @@ const Navbar = () => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"}>
-            <Box>Logo</Box>
+            <Box>
+              <Image width='150px' height='50px' src={logo} alt="Logo" />
+            </Box>
             <HStack
               as={"nav"}
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link}>
+                  {link}
+                </NavLink>
               ))}
             </HStack>
           </HStack>
@@ -123,7 +130,9 @@ const Navbar = () => {
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link}>
+                  {link}
+                </NavLink>
               ))}
             </Stack>
           </Box>

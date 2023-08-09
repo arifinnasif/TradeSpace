@@ -1,12 +1,23 @@
+// For backend integration:
+
+// 1. Fetch categories from the database and put them categoris array.
+
+// 2. Post new AD into the database. Go to the onAdd function
+
+// 3. newAd object is the object that will contain all the data to push into the database.
+
+
 import { Box, Flex, Stack } from '@chakra-ui/layout';
 
 import { Button, 
+         Center, 
          Checkbox, 
          FormControl, 
          FormErrorMessage, 
          FormHelperText, 
          FormLabel, 
          HStack, 
+         Heading, 
          Input, 
          Select, 
          Textarea, 
@@ -14,6 +25,11 @@ import { Button,
        } from '@chakra-ui/react';
 
 import { useEffect, useState } from 'react';
+
+import Layout from '../../layout/Layout';
+
+import { useNavigate } from 'react-router-dom';
+
 
 interface AdData {
   category: string,
@@ -71,6 +87,10 @@ const categories = [
 ]
 
 const PostAd = () => {
+
+  let navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   // declaration of states
   const [category, setCategory] = useState<string>()
@@ -267,137 +287,145 @@ const PostAd = () => {
         price: price!,
         images: images
       })
+      navigate("/");
     } else {
       alert("Please fill all the fields correctly")
     }
   }
 
   return (
-    <Flex
-
-      minW={"85vw"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("teal.50", "gray.800")}
-    >
-      <Stack
-        spacing={8}
-        mx={"auto"}
-        maxW={"lg"}
-        py={12}
-        px={6}
-        minW={"85vw"}
-        minH={"100vh"}
-
-      >
-        <Box
-          rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
-          boxShadow={"lg"}
-          p={8}
+    <>
+      <Layout title="Hello" loading={isLoading}>
+        <Flex
+          minW={"85vw"}
+          align={"center"}
+          justify={"center"}
+          bg={useColorModeValue("teal.50", "gray.800")}
         >
-          <Stack spacing={7}>
-            <FormControl isRequired isInvalid={categoryError} onBlur={handleCategoryTouched}>
-              <FormLabel>Select Category</FormLabel>
-              <Select placeholder="Category" onChange={handleCategoryChange}>
-                {categories.map((category) => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </Select>
-              {categoryError && <FormErrorMessage>Please select a category</FormErrorMessage>}
-            </FormControl>
 
-            <FormControl isRequired isInvalid={titleError} onBlur={handleTitleTouched}>
-              <FormLabel>Title</FormLabel>
-              <Input type="text" placeholder="Title" value={title} onChange={handleTitleChange} />
-              {titleError && <FormErrorMessage>Title should be at the range of 5-50 characters</FormErrorMessage>}
-            </FormControl>
+          <Stack
+            spacing={8}
+            mx={"auto"}
+            maxW={"lg"}
+            py={12}
+            px={6}
+            minW={"85vw"}
+            minH={"100vh"}
+          >
+            <Center>
+            <Heading fontSize={"4xl"}>Post an Ad</Heading>
+            </Center>
 
-            <FormControl>
-              <Checkbox isChecked={is_sell_ad} onChange={handleIs_sell_adChange}>
-                Is a sell Ad
-              </Checkbox>
-            </FormControl>
-              
-            <FormControl isInvalid={descriptionError} onBlur={handleDescriptionTouched}>
-              <FormLabel>Description</FormLabel>
-              <Textarea placeholder='Provide your products description' value={description} onChange={handleDescriptionChange} />
-              {descriptionError && <FormErrorMessage>
-                                      Description should be at the range of 0-100 characters
-                                   </FormErrorMessage>}
+            <Box
+              rounded={"lg"}
+              bg={useColorModeValue("white", "gray.700")}
+              boxShadow={"lg"}
+              p={8}
+            >
+              <Stack spacing={7}>
+                <FormControl isRequired isInvalid={categoryError} onBlur={handleCategoryTouched}>
+                  <FormLabel>Select Category</FormLabel>
+                  <Select placeholder="Category" onChange={handleCategoryChange}>
+                    {categories.map((category) => (
+                      <option key={category} value={category}>{category}</option>
+                    ))}
+                  </Select>
+                  {categoryError && <FormErrorMessage>Please select a category</FormErrorMessage>}
+                </FormControl>
 
-            </FormControl>
+                <FormControl isRequired isInvalid={titleError} onBlur={handleTitleTouched}>
+                  <FormLabel>Title</FormLabel>
+                  <Input type="text" placeholder="Title" value={title} onChange={handleTitleChange} />
+                  {titleError && <FormErrorMessage>Title should be at the range of 5-50 characters</FormErrorMessage>}
+                </FormControl>
 
-            <FormControl isRequired isInvalid={priceError} onBlur={handlePriceTouched}>
-              <FormLabel>Price</FormLabel>
-              <Input type="number" placeholder="Price" value={price} onChange={handlePriceChange} />
-              {priceError && <FormErrorMessage>Price should be a positive number</FormErrorMessage>}
-            </FormControl>
+                <FormControl>
+                  <Checkbox isChecked={is_sell_ad} onChange={handleIs_sell_adChange}>
+                    Is a sell Ad
+                  </Checkbox>
+                </FormControl>
+                  
+                <FormControl isInvalid={descriptionError} onBlur={handleDescriptionTouched}>
+                  <FormLabel>Description</FormLabel>
+                  <Textarea placeholder='Provide your products description' value={description} onChange={handleDescriptionChange} />
+                  {descriptionError && <FormErrorMessage>
+                                          Description should be at the range of 0-100 characters
+                                      </FormErrorMessage>}
 
-            <FormControl>
+                </FormControl>
 
-              <HStack spacing='200'>
-                <Checkbox isChecked={is_negotiable} onChange={handleIs_negotiableChange}>
-                Price is negotiable
-                </Checkbox>
-                <Checkbox isChecked={is_used} onChange={handleIs_usedChange}>
-                Product is used before
-                </Checkbox>
-              </HStack>
-              
-            </FormControl>
+                <FormControl isRequired isInvalid={priceError} onBlur={handlePriceTouched}>
+                  <FormLabel>Price</FormLabel>
+                  <Input type="number" placeholder="Price" value={price} onChange={handlePriceChange} />
+                  {priceError && <FormErrorMessage>Price should be a positive number</FormErrorMessage>}
+                </FormControl>
 
-            <FormControl>
-              <FormLabel>Upload images</FormLabel>
-              <input type = 'file' accept='image/*' multiple onChange={handleImagesChange} />
-              {/* why not <Input .../> here? */}
-              {/* Well it's just ugly for file imput. */}
-              {/* Such is frontend */}
-              <FormHelperText>Upload upto 5 images</FormHelperText>
-            </FormControl>
+                <FormControl>
 
-            {
-              is_used && 
-              (
-              <FormControl isRequired isInvalid={days_usedError} onBlur={handleDays_usedTouched}>
-                <FormLabel>Days used</FormLabel>
-                <Input type="number" placeholder="Days used" value={days_used} onChange={handleDays_usedChange} />
-                {days_usedError && <FormErrorMessage>Days used should be a positive number</FormErrorMessage>}
-              </FormControl>
-              )
-            }
+                  <HStack spacing='200'>
+                    <Checkbox isChecked={is_negotiable} onChange={handleIs_negotiableChange}>
+                    Price is negotiable
+                    </Checkbox>
+                    <Checkbox isChecked={is_used} onChange={handleIs_usedChange}>
+                    Product is used before
+                    </Checkbox>
+                  </HStack>
+                  
+                </FormControl>
 
-            <FormControl>
-              <Checkbox isChecked={is_phone_public} onChange={handleIs_phone_publicChange}>
-                Make my phone number public for this Ad
-              </Checkbox>
-            </FormControl>
+                <FormControl>
+                  <FormLabel>Upload images</FormLabel>
+                  <input type = 'file' accept='image/*' multiple onChange={handleImagesChange} />
+                  {/* why not <Input .../> here? */}
+                  {/* Well it's just ugly for file imput. */}
+                  {/* Such is frontend */}
+                  <FormHelperText>Upload upto 5 images</FormHelperText>
+                </FormControl>
 
-            <FormControl isRequired isInvalid={addressError} onBlur={handleAddressTouched}>
-              <FormLabel>Address</FormLabel>
-              <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
-              {addressError && 
-              <FormErrorMessage>Address should be at the range of 5-50 characters</FormErrorMessage>}
-            </FormControl>
+                {
+                  is_used && 
+                  (
+                  <FormControl isRequired isInvalid={days_usedError} onBlur={handleDays_usedTouched}>
+                    <FormLabel>Days used</FormLabel>
+                    <Input type="number" placeholder="Days used" value={days_used} onChange={handleDays_usedChange} />
+                    {days_usedError && <FormErrorMessage>Days used should be a positive number</FormErrorMessage>}
+                  </FormControl>
+                  )
+                }
 
-            <Stack spacing={5}>
-              <Button
-                bg={'blue.400'}
-                color={'white'}
-                _hover={{
-                  bg: 'blue.500',
-                }}
-                type='submit'
-                onClick={handleSubmit}
-              >
-                Submit
-              </Button>
-            </Stack>
-            
+                <FormControl>
+                  <Checkbox isChecked={is_phone_public} onChange={handleIs_phone_publicChange}>
+                    Make my phone number public for this Ad
+                  </Checkbox>
+                </FormControl>
+
+                <FormControl isRequired isInvalid={addressError} onBlur={handleAddressTouched}>
+                  <FormLabel>Address</FormLabel>
+                  <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
+                  {addressError && 
+                  <FormErrorMessage>Address should be at the range of 5-50 characters</FormErrorMessage>}
+                </FormControl>
+
+                <Stack spacing={5}>
+                  <Button
+                    bg={'blue.400'}
+                    color={'white'}
+                    _hover={{
+                      bg: 'blue.500',
+                    }}
+                    type='submit'
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </Button>
+                </Stack>
+                
+              </Stack>
+            </Box>
           </Stack>
-        </Box>
-      </Stack>
-    </Flex>
+        </Flex>
+      </Layout>
+    </>
   )
 }
 

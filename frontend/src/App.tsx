@@ -1,4 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import { Suspense } from "react";
 import { Spinner } from "@chakra-ui/react";
 
@@ -10,6 +16,11 @@ import AdDetailsPage from "./pages/AdDetails.page";
 // import CategoryList from "./components/Homepage/CategoryList";
 import HomePage from "./pages/Home.page";
 import GetAds from "./pages/GetAds.page";
+
+const PrivateRoute = () => {
+  const isAuth = false;
+  return <>{isAuth ? <Outlet /> : <Navigate to="/login" />}</>;
+};
 
 function App() {
   return (

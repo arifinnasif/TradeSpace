@@ -38,17 +38,17 @@ const Register = () => {
 
   const registerButtonAction = async () => {
     try {
-      const response_status = (
-        await registrationService.register({
-          username: username,
-          name: userfullname,
-          phone: "+88" + phone,
-          dob: dob,
-          gender: gender,
-          email: email,
-          password: password,
-        })
-      ).status;
+      const response = await registrationService.register({
+        username: username,
+        name: userfullname,
+        phone: "+88" + phone,
+        dob: dob,
+        gender: gender,
+        email: email,
+        password: password,
+      });
+      console.log(response);
+      const response_status = response.status;
       if (response_status >= 200 && response_status < 300) handleNextStep();
     } catch (error) {
       console.log(error);
@@ -101,7 +101,6 @@ const Register = () => {
 
   return (
     <>
-
       <Progress value={progress} size="xs" colorScheme="teal" />
       {step === 1 && (
         <RegisterForm
@@ -173,7 +172,6 @@ const Register = () => {
           ) : null}
         </Flex>
       </ButtonGroup>
-
     </>
   );
 };

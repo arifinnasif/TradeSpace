@@ -37,10 +37,11 @@ export default function Login() {
         email: values.email,
         password: values.password,
       });
+      console.log(response);
       dispatch(authenticateUser());
 
-      //localStorage.setItem("isAuth", "true");
-      console.log(response);
+      localStorage.setItem("isAuth", "true");
+      // console.log(response);
     } catch (error) {
       console.log(error);
     }

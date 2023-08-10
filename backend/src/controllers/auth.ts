@@ -106,10 +106,17 @@ let loginUser = async (req: Request, res: Response) => {
     const token = await sign(payload, SECRET);
 
     // send the token in a HTTP-only cookie
-    return res.status(200).cookie("token", token, { httpOnly: true }).json({
-      success: true,
-      message: "Logged in successfully!",
-    });
+    return res
+      .status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        //sameSite: "strict",
+      })
+      .json({
+        success: true,
+        message: "Logged in successfully!",
+      });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({

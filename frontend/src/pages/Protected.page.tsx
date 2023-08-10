@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import { homeService } from "../services/Home.service";
 
 const Protected = () => {
-  const [info, setInfo] = useState("");
+  const [info, setInfo] = useState(0);
 
   useEffect(() => {
     async function fetchData() {
       const info = await homeService.protectedInfo();
-      setInfo(info);
+      setInfo(info.status);
     }
     fetchData();
   }, []);

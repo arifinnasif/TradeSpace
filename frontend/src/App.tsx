@@ -18,14 +18,17 @@ import HomePage from "./pages/Home.page";
 import GetAds from "./pages/GetAds.page";
 import Protected from "./pages/Protected.page";
 import Login from "./pages/Login.page";
+import { useSelector } from "react-redux";
 
 const PrivateRoutes = () => {
-  const isAuth = false;
+  const { isAuth } = useSelector((state: any) => state.auth);
+
   return <>{isAuth ? <Outlet /> : <Navigate to="/login" />}</>;
 };
 
 const RestrictedRoutes = () => {
-  const isAuth = false;
+  const { isAuth } = useSelector((state: any) => state.auth);
+
   return <>{!isAuth ? <Outlet /> : <Navigate to="/protected" />}</>;
 };
 

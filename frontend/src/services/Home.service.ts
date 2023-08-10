@@ -77,7 +77,7 @@ class HomeService {
   }
 
   async protectedInfo() {
-    return (await API.get("/auth/protected")).data;
+    return await API.get("/auth/protected");
   }
 }
 

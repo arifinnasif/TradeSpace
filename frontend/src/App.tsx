@@ -20,7 +20,7 @@ import Protected from "./pages/Protected.page";
 import Login from "./pages/Login.page";
 
 const PrivateRoutes = () => {
-  const isAuth = false;
+  const isAuth = true;
   return <>{isAuth ? <Outlet /> : <Navigate to="/login" />}</>;
 };
 

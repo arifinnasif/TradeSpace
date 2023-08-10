@@ -1,3 +1,5 @@
+import API from "../api/axios.config";
+
 export interface CategoryType {
   category: string;
   count: string;
@@ -72,6 +74,10 @@ class HomeService {
         count: "15",
       },
     ];
+  }
+
+  async protectedInfo() {
+    return (await API.get("/auth/protected")).data;
   }
 }
 

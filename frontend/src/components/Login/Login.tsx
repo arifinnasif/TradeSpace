@@ -15,7 +15,7 @@ import {
 import { Logo } from "./Logo";
 import { PasswordField } from "./PasswordField";
 
-export const App = () => (
+const LoginComponent = () => (
   <Container
     maxW="lg"
     py={{ base: "12", md: "24" }}
@@ -59,3 +59,5 @@ export const App = () => (
     </Stack>
   </Container>
 );
+
+export default LoginComponent;

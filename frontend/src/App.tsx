@@ -17,14 +17,15 @@ import AdDetailsPage from "./pages/AdDetails.page";
 import HomePage from "./pages/Home.page";
 import GetAds from "./pages/GetAds.page";
 import Protected from "./pages/Protected.page";
+import Login from "./pages/Login.page";
 
 const PrivateRoutes = () => {
-  const isAuth = true;
+  const isAuth = false;
   return <>{isAuth ? <Outlet /> : <Navigate to="/login" />}</>;
 };
 
 const RestrictedRoutes = () => {
-  const isAuth = true;
+  const isAuth = false;
   return <>{!isAuth ? <Outlet /> : <Navigate to="/protected" />}</>;
 };
 
@@ -44,6 +45,7 @@ function App() {
 
           <Route element={<RestrictedRoutes />}>
             <Route path="/register/" element={<Register />} />
+            <Route path="/login/" element={<Login />} />
           </Route>
 
           <Route path="/ads/" element={<GetAds />} />

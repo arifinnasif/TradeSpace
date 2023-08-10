@@ -1,91 +1,117 @@
+"use client";
+
 import {
+  Flex,
   Box,
-  Button,
-  Checkbox,
-  Container,
   FormControl,
   FormLabel,
-  Heading,
-  HStack,
   Input,
-  Link,
+  Checkbox,
   Stack,
+  Button,
+  Heading,
   Text,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { Logo } from "./Logo";
-import { PasswordField } from "./PasswordField";
-import { FormEvent } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { authenticateUser } from "../../redux/slices/AuthSlice";
+import { loginService } from "../../services/login.service";
 
-const LoginComponent = () => {
+export default function Login() {
   const [values, setValues] = useState({
     email: "",
     password: "",
   });
 
-  const onChange = (e: FormEvent<HTMLInputElement>) => {
+  const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const dispatch = useDispatch();
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      const response = await loginService.login({
+        email: values.email,
+        password: values.password,
+      });
       dispatch(authenticateUser());
 
-      localStorage.setItem("isAuth", "true");
+      //localStorage.setItem("isAuth", "true");
+      console.log(response);
     } catch (error) {
-      console.log(error.response.data.errors[0].msg);
-      setError(error.response.data.errors[0].msg);
+      console.log(error);
     }
   };
 
   return (
-    <Container
-      maxW="lg"
-      py={{ base: "12", md: "24" }}
-      px={{ base: "0", sm: "8" }}
+    <Flex
+      minH={"100vh"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("gray.50", "gray.800")}
     >
-      <Stack spacing="8">
-        <Stack spacing="6">
-          <Logo />
-          <Stack spacing={{ base: "2", md: "3" }} textAlign="center">
-            <Heading size={{ base: "xs", md: "sm" }}>
-              Log in to your account
-            </Heading>
-            <Text color="fg.muted">
-              Don't have an account? <Link href="#">Sign up</Link>
-            </Text>
-          </Stack>
+      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+        <Stack align={"center"}>
+          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
+          <Text fontSize={"lg"} color={"gray.600"}>
+            to enjoy all of our cool <Text color={"blue.400"}>features</Text> ✌️
+          </Text>
         </Stack>
         <Box
-          py={{ base: "0", sm: "8" }}
-          px={{ base: "4", sm: "10" }}
-          bg={{ base: "transparent", sm: "bg.surface" }}
-          boxShadow={{ base: "none", sm: "md" }}
-          borderRadius={{ base: "none", sm: "xl" }}
+          rounded={"lg"}
+          bg={useColorModeValue("white", "gray.700")}
+          boxShadow={"lg"}
+          p={8}
         >
-          <Stack spacing="6">
-            <Stack spacing="5">
-              <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
-                <Input id="email" type="email" />
-              </FormControl>
-              <PasswordField />
-            </Stack>
-            <HStack justify="space-between">
-              <Checkbox defaultChecked>Remember me</Checkbox>
-              <Button variant="text" size="sm">
-                Forgot password?
+          <Stack spacing={4}>
+            <FormControl id="email">
+              <FormLabel htmlFor="email">Email address</FormLabel>
+              <Input
+                type="email"
+                onChange={(e) => onChange(e)}
+                id="email"
+                name="email"
+                value={values.email}
+                required
+              />
+            </FormControl>
+            <FormControl id="password">
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <Input
+                type="password"
+                onChange={(e) => onChange(e)}
+                value={values.password}
+                id="password"
+                name="password"
+              />
+            </FormControl>
+            <Stack spacing={10}>
+              <Stack
+                direction={{ base: "column", sm: "row" }}
+                align={"start"}
+                justify={"space-between"}
+              >
+                <Checkbox>Remember me</Checkbox>
+                <Text color={"blue.400"}>Forgot password?</Text>
+              </Stack>
+              <Button
+                onClick={(e) => onSubmit(e)}
+                type="submit"
+                bg={"blue.400"}
+                color={"white"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+              >
+                Log in
               </Button>
-            </HStack>
+            </Stack>
           </Stack>
         </Box>
       </Stack>
-    </Container>
+    </Flex>
   );
-};
-
-export default LoginComponent;
+}

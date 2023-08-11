@@ -9,7 +9,6 @@ import {
   useColorModeValue,
   useColorMode,
   Image,
-  Link,
 } from "@chakra-ui/react";
 
 import {
@@ -21,32 +20,36 @@ import {
 import logo from "../../../../logos/tradespace-lettermark-white-navbar.png"
 import React from "react";
 
+import { Link } from 'react-router-dom'
+
 
 
 
 interface Props {
   children: React.ReactNode;
   href: string;
+  isClicked: boolean;
 }
 
 const NavLink = (props: Props) => {
-  const { children, href } = props;
+  const { children, href, isClicked } = props;
 
   return (
-      <Box
-        as="a"
-        px={2}
-        py={1}
-        rounded={"md"}
-        _hover={{
-          // color: useColorModeValue("teal.500", "teal.200"),
-          bg: useColorModeValue("gray.200", "gray.700"),
-          color: useColorModeValue("black", "white"),
-        }}
-        href={href}
-      >
-          {children}
-      </Box>
+    <Box
+      as={Link}
+      to={href}
+      px={2}
+      py={1}
+      rounded={"md"}
+      _hover={{
+        // color: useColorModeValue("teal.500", "teal.200"),
+        bg: useColorModeValue("gray.200", "gray.700"),
+        color: useColorModeValue("black", "white"),
+      }}
+      bg = {isClicked? useColorModeValue("gray.300", "gray.700") : " "}
+    >
+        {children}
+    </Box>
   );
 };
 
@@ -71,32 +74,65 @@ const userName = () => {
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const [isHomeClicked, setIsHomeClicked] = React.useState(false);
+  const [isAllAdsClicked, setIsAllAdsClicked] = React.useState(false);
+  const [isAccountClicked, setIsAccountClicked] = React.useState(false);
+
+  const changeHomeClicked = () => {
+    setIsHomeClicked(true);
+  }
+
+  const changeAllAdsClicked = () => {
+    setIsAllAdsClicked(true);
+  }
+
+  const changeAccountClicked = () => {
+    setIsAccountClicked(true);
+  }
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} 
+           px={4} 
+           // to make the navbar stick to the top 
+           // the next 3 parameters are necessary  
+           position="sticky" 
+           top="0" 
+           zIndex="sticky"
+      >
+
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+          
           <HStack spacing={8} alignItems={"center"}>
+            
+            {/* company logo here. */}
             <Box>
               {/* link the image to home */}
-              <Link href="/">
-              <Image width='115px' height='35px' src={logo} alt="Logo" />
+              <Link to="/">
+              <Image width='145px' height='35px' src={logo} alt="Logo" />
               </Link>
             </Box>
+
             <HStack
               as={"nav"}
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              <NavLink href="/">
-                  Home
-              </NavLink>
+              <Box onClick={changeHomeClicked}>
+                <NavLink href="/" isClicked={isHomeClicked}>
+                    Home
+                </NavLink>
+              </Box>
 
-              <NavLink href="/ads">
-                All Ads
-              </NavLink>
+              <Box onClick={changeAllAdsClicked}>
+                <NavLink href="/ads" isClicked={isAllAdsClicked}>
+                  All Ads
+                </NavLink>
+              </Box>
             </HStack>
+
           </HStack>
+
           <Flex alignItems={"center"}>
             <HStack spacing={"4"}>
               <Button onClick={toggleColorMode}>
@@ -104,34 +140,25 @@ const Navbar = () => {
                   colorMode === "light" ? <MoonIcon boxSize={6}/> : <SunIcon boxSize={6}/>
                 }
               </Button>
-
-              <Box
-                as="a"
-                px={2}
-                py={1}
-                rounded={"md"}
-                _hover={{
-                  // color: useColorModeValue("teal.500", "teal.200"),
-                  bg: useColorModeValue("gray.200", "gray.700"),
-                  color: useColorModeValue("black", "white")
-                }}
-                href={isLoggedIn() ? "/profile" : "/login"}
-              >
-                { isLoggedIn() ? "Profile" : "Login" }
+              
+              <Box onClick={changeAccountClicked}>
+                <NavLink href={isLoggedIn()? "/profile" : "/login"} isClicked={isAccountClicked}>
+                  {isLoggedIn()? "Profile" : "Login"}
+                </NavLink>
               </Box>
 
               <Button
-                as="a"
-                variant={"solid"}
+                as={Link}
+                to={isLoggedIn()? "/ads/post-ad" : "/login"}
+                variant="outline"
                 colorScheme={"teal"}
                 size={"sm"}
                 mr={4}
-                color={"white"}
+                color={useColorModeValue("black", "white")}
                 _hover={{ 
                   color: useColorModeValue("black", "white"),
-                  bg: "teal.600"
+                  bg: "teal.500"
                 }}
-                href={isLoggedIn() ? "/ads/post-ad" : "/login"}
                 leftIcon={<AddIcon />}
               >
                 Post Ad
@@ -149,6 +176,7 @@ const Navbar = () => {
                   // currently commenting out. 
                   // takes a lot of time to load
                   // will handle later
+                  
                   // src={userImage()}
                 />
                 :

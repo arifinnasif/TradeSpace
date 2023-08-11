@@ -17,8 +17,7 @@ const mute_user = async (req: Request, res: Response) => {
     });
 
     if (!target_user) {
-        res.status(404).json({ error: "User does not exist." });
-        return;
+        return res.status(404).json({ error: "User does not exist." });
     }
 
     const mute_duration_in_sec: number = +req.body.duration.days * 24 * 60 * 60 + +req.body.duration.hours * 60 * 60 + +req.body.duration.minutes * 60 + +req.body.duration.seconds;
@@ -40,7 +39,7 @@ const mute_user = async (req: Request, res: Response) => {
         `You have been muted by an admin (@${req.user?.username}) for ${req.body.duration.days} days and ${req.body.duration.hours} hours`)
 
     // send success response
-    res.status(200).json({ success: true, message: `User @${username} have been muted successfully.` });
+    return res.status(200).json({ success: true, message: `User @${username} have been muted successfully.` });
 }
 
 export { mute_user };

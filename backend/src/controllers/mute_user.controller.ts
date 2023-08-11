@@ -8,7 +8,7 @@ dotenv.config();
 
 
 const mute_user = async (req: Request, res: Response) => {
-    const username = req.user!.username;
+    const username = req.params.username;
 
     const target_user = await prisma.users.findUnique({
         where: {
@@ -34,11 +34,13 @@ const mute_user = async (req: Request, res: Response) => {
     });
 
     // notify
-    notify_user(req.user!.username,
+    notify_user(username,
         "user mgt",
         "You have been muted",
-        `You have been muted by an admin for ${req.body.duration.days} days and ${req.body.duration.hours} hours`)
+        `You have been muted by an admin (@${req.user?.username}) for ${req.body.duration.days} days and ${req.body.duration.hours} hours`)
 
     // send success response
     res.status(200).json({ success: true, message: `User @${username} have been muted successfully.` });
 }
+
+export { mute_user };

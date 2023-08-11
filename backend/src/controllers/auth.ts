@@ -17,9 +17,9 @@ declare global {
     namespace Express {
         export interface User {
             username: string;
-            email: string;
-            phone_verified: boolean;
-            email_verified: boolean;
+            email?: string;
+            phone_verified?: boolean;
+            email_verified?: boolean;
         }
     }
 }

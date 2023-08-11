@@ -5,138 +5,158 @@ import {
   Flex,
   Avatar,
   HStack,
-  IconButton,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  useDisclosure,
   useColorModeValue,
-  Stack,
   useColorMode,
   Image,
+  Link,
 } from "@chakra-ui/react";
 
 import {
-  HamburgerIcon,
-  CloseIcon,
   AddIcon,
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
 
 import logo from "../../../../logos/tradespace-lettermark-white-navbar.png"
+import React from "react";
+
+
 
 
 interface Props {
   children: React.ReactNode;
+  href: string;
 }
 
-const Links = ["Dashboard", "Projects", "Team"];
-
 const NavLink = (props: Props) => {
-  const { children } = props;
+  const { children, href } = props;
+
   return (
-    <Box
-      as="a"
-      px={2}
-      py={1}
-      rounded={"md"}
-      _hover={{
-        textDecoration: "none",
-        bg: useColorModeValue("gray.200", "gray.700"),
-      }}
-      href={"#"}
-    >
-      {children}
-    </Box>
+      <Box
+        as="a"
+        px={2}
+        py={1}
+        rounded={"md"}
+        _hover={{
+          // color: useColorModeValue("teal.500", "teal.200"),
+          bg: useColorModeValue("gray.200", "gray.700"),
+          color: useColorModeValue("black", "white"),
+        }}
+        href={href}
+      >
+          {children}
+      </Box>
   );
 };
 
+// if the used id logged in or not
+// checked by this function
+// integrated with backend later
+const isLoggedIn = () => {
+  return true;
+}
+
+// get user image if he has any.
+const userImage = () => {
+  return "https://bit.ly/sage-adebayo";
+}
+
+// Why is the name necessary?
+// Because the user name is displayed on the navbar
+// incase the user has no image
+const userName = () => {
+  return "Sage Adebayo";
+}
+
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <IconButton
-            size={"md"}
-            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={"Open Menu"}
-            display={{ md: "none" }}
-            onClick={isOpen ? onClose : onOpen}
-          />
           <HStack spacing={8} alignItems={"center"}>
             <Box>
-              <Image width='150px' height='50px' src={logo} alt="Logo" />
+              {/* link the image to home */}
+              <Link href="/">
+              <Image width='115px' height='35px' src={logo} alt="Logo" />
+              </Link>
             </Box>
             <HStack
               as={"nav"}
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              {Links.map((link) => (
-                <NavLink key={link}>
-                  {link}
-                </NavLink>
-              ))}
+              <NavLink href="/">
+                  Home
+              </NavLink>
+
+              <NavLink href="/ads">
+                All Ads
+              </NavLink>
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
-            <Stack direction={"row"} spacing={"7"}>
+            <HStack spacing={"4"}>
               <Button onClick={toggleColorMode}>
-                {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                {
+                  colorMode === "light" ? <MoonIcon boxSize={6}/> : <SunIcon boxSize={6}/>
+                }
               </Button>
+
+              <Box
+                as="a"
+                px={2}
+                py={1}
+                rounded={"md"}
+                _hover={{
+                  // color: useColorModeValue("teal.500", "teal.200"),
+                  bg: useColorModeValue("gray.200", "gray.700"),
+                  color: useColorModeValue("black", "white")
+                }}
+                href={isLoggedIn() ? "/profile" : "/login"}
+              >
+                { isLoggedIn() ? "Profile" : "Login" }
+              </Box>
+
               <Button
+                as="a"
                 variant={"solid"}
                 colorScheme={"teal"}
                 size={"sm"}
                 mr={4}
+                color={"white"}
+                _hover={{ 
+                  color: useColorModeValue("black", "white"),
+                  bg: "teal.600"
+                }}
+                href={isLoggedIn() ? "/ads/post-ad" : "/login"}
                 leftIcon={<AddIcon />}
               >
-                Action
+                Post Ad
               </Button>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={"full"}
-                  variant={"link"}
-                  cursor={"pointer"}
-                  minW={0}
-                >
-                  <Avatar
-                    size={"sm"}
-                    src={
-                      "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                    }
-                  />
-                </MenuButton>
-                <MenuList>
-                  <MenuItem>Link 1</MenuItem>
-                  <MenuItem>Link 2</MenuItem>
-                  <MenuDivider />
-                  <MenuItem>Link 3</MenuItem>
-                </MenuList>
-              </Menu>
-            </Stack>
+    
+              {
+                isLoggedIn() ?
+                <Avatar
+                  as="a"
+                  size={"md"}
+                  colorScheme="teal"
+                  showBorder={true}
+                  name={userName()}
+                  href="/profile"
+                  // currently commenting out. 
+                  // takes a lot of time to load
+                  // will handle later
+                  // src={userImage()}
+                />
+                :
+                <></>
+              }
+            </HStack>
           </Flex>
         </Flex>
-
-        {isOpen ? (
-          <Box pb={4} display={{ md: "none" }}>
-            <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
-                <NavLink key={link}>
-                  {link}
-                </NavLink>
-              ))}
-            </Stack>
-          </Box>
-        ) : null}
       </Box>
 
       {/* <Box p={4}>Main Content Here</Box> */}

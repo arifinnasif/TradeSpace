@@ -18,8 +18,8 @@ declare global {
         export interface User {
             username: string;
             email?: string;
-            phone_verified?: boolean;
-            email_verified?: boolean;
+            // phone_verified?: boolean; // not needed
+            // email_verified?: boolean; // not needed
         }
     }
 }

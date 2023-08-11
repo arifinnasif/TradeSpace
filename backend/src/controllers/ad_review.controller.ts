@@ -19,7 +19,7 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
                 createdAt: 'desc'
             },
 
-            skip: (Number(req.query.page||1) - 1) * limit,
+            skip: (Number(req.query.page || 1) - 1) * limit,
 
             take: limit,
         });
@@ -43,7 +43,7 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
             }
         });
 
-        if(pending_review?.status !== 'pending') return res.status(404).json({});
+        if (pending_review?.status !== 'pending') return res.status(404).json({});
 
         return res.status(200).json(pending_review);
     } catch (error: any) {
@@ -63,7 +63,7 @@ export const approve_pending_review = async (req: Request, res: Response) => {
             }
         });
 
-        if(pending_review?.status !== 'pending') return res.status(404).json({});
+        if (pending_review?.status !== 'pending') return res.status(404).json({});
 
         const updated_review = await prisma.ads.update({
             where: {
@@ -76,9 +76,9 @@ export const approve_pending_review = async (req: Request, res: Response) => {
         });
 
         await notify_user(pending_review.op_username,
-                          'ad_approved',
-                          'Ad Approved',
-                          'Your ad has been approved by the admin.');
+            'ad_approved',
+            'Ad Approved',
+            'Your ad has been approved by the admin.');
 
         return res.status(200).json(updated_review);
     } catch (error: any) {
@@ -98,9 +98,9 @@ export const decline_pending_review = async (req: Request, res: Response) => {
             }
         });
 
-        if(!pending_review) return res.status(404).json({});
+        if (!pending_review) return res.status(404).json({});
 
-        if(pending_review.status !== 'pending') return res.status(404).json({});
+        if (pending_review.status !== 'pending') return res.status(404).json({});
 
         await prisma.ads.delete({
             where: {
@@ -118,13 +118,13 @@ export const decline_pending_review = async (req: Request, res: Response) => {
                 address: pending_review.address,
             }
         });
-        
+
 
 
         await notify_user(pending_review.op_username,
-                          'ad_declined',
-                          'Ad Declined',
-                          'Your ad has been declined by the admin.');
+            'ad_declined',
+            'Ad Declined',
+            `Your ad has been declined by the admin for "${req.body.reason}"`);
 
         return res.status(200).json(archived_review);
     } catch (error: any) {

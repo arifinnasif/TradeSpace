@@ -121,7 +121,7 @@ passport.use('admin-rule',
   new Strategy(opts, async ({ username }, done) => {
     try {
 
-      const user = await prisma.users.findUnique({
+      const user = await prisma.admins.findUnique({
         where: {
           username: username
         },

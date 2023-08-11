@@ -60,7 +60,7 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
             status?: string;
         } | null
             = await prisma.ads.findUnique({
-                where: { id: Number(req.params.adId) },
+                where: { id: Number(req.params.id) },
                 select: {
                     id: true,
                     op_username: true,
@@ -166,7 +166,7 @@ export const approve_pending_review = async (req: Request, res: Response) => {
         await notify_user(pending_review.op_username,
             'ad_approved',
             'Ad Approved',
-            'Your ad has been approved by the admin.');
+            `Your ad #${req.body.id} titled "${req.body.title}" has been approved by the admin.`);
 
         return res.status(200).json(updated_review);
     } catch (error: any) {
@@ -188,7 +188,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
 
         if (!pending_review) return res.status(404).json({});
 
-        if (pending_review.status !== 'pending') return res.status(404).json({});
+        if (pending_review.status !== 'pending') return res.status(404).json({ "error": "ad not pending" });
 
         await prisma.ads.delete({
             where: {
@@ -212,7 +212,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
         await notify_user(pending_review.op_username,
             'ad_declined',
             'Ad Declined',
-            `Your ad has been declined by the admin for "${req.body.reason}"`);
+            `Your ad #${req.body.id} titled "${req.body.title}" has been declined by the admin for "${req.body.reason}"`);
 
         return res.status(200).json(archived_review);
     } catch (error: any) {

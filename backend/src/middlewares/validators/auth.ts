@@ -55,15 +55,15 @@ const gender = check('gender').custom(async (value: string) => {
 
 // check if phone is valid
 const phone = check('phone').custom(async (value: string) => {
-  if (value.length !== 3+11) {
+  if (value.length !== 3 + 11) {
     throw new Error('invalid phone number')
   }
 
-  if (value.substring(0,3) !== '+88') {
+  if (value.substring(0, 3) !== '+88') {
     throw new Error('invalid phone number')
   }
 
-  if (value.substring(3,14).match(/^[0-9]+$/) === null) {
+  if (value.substring(3, 14).match(/^[0-9]+$/) === null) {
     throw new Error('invalid phone number')
   }
 })
@@ -86,7 +86,7 @@ const dob = check('dob').custom(async (value: string) => {
 
 // ------------------ Login Validation ------------------ //
 
-const loginCheck = check('email').custom(async (value: any, {req}) => {
+const loginCheck = check('email').custom(async (value: any, { req }) => {
   // check if email exists
   const user = await prisma.users.findUnique({
     where: { email: value },
@@ -115,6 +115,31 @@ const loginCheck = check('email').custom(async (value: any, {req}) => {
 
 })
 
+const adminLoginCheck = check('email').custom(async (value: any, { req }) => {
+  // check if email exists
+  const user = await prisma.admins.findUnique({
+    where: { email: value },
+  });
+
+  if (!user) {
+    throw new Error('Email does not exist.')
+  }
+
+
+  // check if password is correct
+  const isMatch = await compare(req.body.password, user.password);
+
+  if (!isMatch) {
+    throw new Error('Invalid password.')
+  }
+
+
+  // if everything is ok
+  req.user = user;
+  // pass the user to the next middleware(login function)
+
+})
+
 
 
 
@@ -123,4 +148,5 @@ const loginCheck = check('email').custom(async (value: any, {req}) => {
 
 export const registerValidation = [email, phone, gender, dob, password, emailExists, phoneExists]
 export const loginValidation = [loginCheck]
+export const adminLoginValidation = [adminLoginCheck]
 

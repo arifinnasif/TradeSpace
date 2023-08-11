@@ -245,7 +245,55 @@ let verifyEmail = async (req: Request, res: Response) => {
 
 
 
+// login admin: /api/admin/login
+let loginAdmin = async (req: Request, res: Response) => {
+    // catch the user from the loginCheck middleware
+    // const user: any = req.user;
+
+    // create a payload
+    // username will be used for passport-jwt
+    let payload = {
+        username: req.user!.username,
+        email: req.user!.email
+    }
+
+    try {
+        // create a token
+        //const token = await sign(payload, SECRET, { expiresIn: '1h' });
+        const token = await sign(payload, SECRET);
+
+        // send the token in a HTTP-only cookie
+        return res.status(200).cookie('token', token, { httpOnly: true }).json({
+            success: true,
+            message: 'Logged in successfully!'
+        });
+    } catch (error: any) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
 
 
 
-export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail }
+
+let logoutAdmin = async (req: Request, res: Response) => {
+    try {
+        return res.status(200).clearCookie('token', { httpOnly: true }).json({
+            success: true,
+            message: 'Logged out successfully!'
+        });
+    } catch (error: any) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
+
+
+
+export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail, loginAdmin, logoutAdmin }

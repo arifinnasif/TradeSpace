@@ -47,4 +47,28 @@ const create_checkout_session = async () => {
     }
 }
 
-create_checkout_session();
+
+const create_charges = async () => {
+    try {
+        const id = 1;
+        // const domain_url = process.env.WEB_APP_URL!;
+        const { priceInCents, name } = store_items.get(Number(id));
+
+        const charges = await stripe.charges.create({
+            amount: 10000,
+            source: 'tok_visa',
+            currency: 'usd'
+        });
+
+        console.log(charges);
+    } catch (error: any) {
+        // return res.status(500).json({
+        //     success: false,
+        //     error: error.message
+        // });
+        console.log(error);
+    }
+}
+
+// create_checkout_session();
+create_charges();

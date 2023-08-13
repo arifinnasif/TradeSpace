@@ -278,9 +278,10 @@ let loginAdmin = async (req: Request, res: Response) => {
 
 
 
-
+// logout admin: /api/admin/logout
 let logoutAdmin = async (req: Request, res: Response) => {
     try {
+        // remove the token from the cookie
         return res.status(200).clearCookie('token', { httpOnly: true }).json({
             success: true,
             message: 'Logged out successfully!'

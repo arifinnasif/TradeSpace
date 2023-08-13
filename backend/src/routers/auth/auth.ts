@@ -1,6 +1,6 @@
 import express from "express";
 import { getUsers, loginUser, logoutUser, protectedRoute, registerUser, verifyEmail } from "../../controllers/auth";
-import { loginValidation, registerValidation }  from "../../middlewares/validators/auth";
+import { loginValidation, registerValidation } from "../../middlewares/validators/auth";
 import { validationMiddleware } from "../../middlewares/validations-middleware";
 import { nonPhoneVerifiedUserAuth, userAuth } from "../../middlewares/auth-middleware";
 import { verify_phone } from "../../controllers/phone_verification.controller";

@@ -1,13 +1,16 @@
-/**
- * check whether the user is muted or not. if muted, return 403 with a message. if not, continue.
- */
-
-import { NextFunction } from "express";
-import { Request } from "express";
-import { Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import prisma from "../../prisma/prisma_client"
 
 
+/**
+ * apply this middleware before features that are not available to muted users
+ * checks whether the user is muted or not. if muted, return 403 with a message. if not, continue.
+ * must be used after an authUser middleware
+ * @param req 
+ * @param res 
+ * @param next 
+ * @returns 
+ */
 export const check_mute = async (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
         console.log('you should use check_mute middleware after an authUser middleware. exiting...');

@@ -4,12 +4,6 @@ import { approve_pending_review, decline_pending_review, get_all_pending_reviews
 
 const router = Router();
 
-// router.use((req, res, next) => {
-//     console.log("accessing ad_review.ts");
-//     next();
-// }
-// 
-// );
 
 router.route("/")
 
@@ -24,7 +18,7 @@ router.route("/:id")
     .get(get_pending_review_details)
 
     .put(approve_pending_review)
-    
+
     .delete(decline_pending_review);
 
 

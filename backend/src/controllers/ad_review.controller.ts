@@ -9,6 +9,15 @@ const limit = 10;
 
 dotenv.config();
 
+/**
+ * @todo consult the frontend guy about the things to be shown in the pending review list card
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+
+
+// get all pending reviews: /api/admin/ad_reviews
 export const get_all_pending_reviews = async (req: Request, res: Response) => {
     try {
         const pending_reviews = await prisma.ads.findMany({
@@ -36,6 +45,8 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
 }
 
 
+
+// get pending review details: /api/admin/ad_reviews/:id
 export const get_pending_review_details = async (req: Request, res: Response) => {
     try {
         let review_details: {
@@ -105,7 +116,7 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
         }
 
 
-
+        // phone is sent even if is_phone_public is false
         const user = await prisma.users.findUnique({
             where: { username: review_details.op_username },
             select: { phone: true }
@@ -142,7 +153,17 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
     }
 }
 
-
+/**
+ * checks whether the ad exists or not
+ * if not, return 404
+ * checks whether the ad is pending or not
+ * if not pending, return 404
+ * if pending, approve the ad and notify the user
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+// approve pending review: PUT /api/admin/ad_reviews/:id
 export const approve_pending_review = async (req: Request, res: Response) => {
     try {
         const pending_review = await prisma.ads.findUnique({
@@ -151,7 +172,9 @@ export const approve_pending_review = async (req: Request, res: Response) => {
             }
         });
 
-        if (pending_review?.status !== 'pending') return res.status(404).json({});
+        if (!pending_review) return res.status(404).json({});
+
+        if (pending_review.status !== 'pending') return res.status(404).json({});
 
         const updated_review = await prisma.ads.update({
             where: {
@@ -163,6 +186,7 @@ export const approve_pending_review = async (req: Request, res: Response) => {
             }
         });
 
+        // notify user
         await notify_user(pending_review.op_username,
             'ad_approved',
             'Ad Approved',
@@ -178,6 +202,19 @@ export const approve_pending_review = async (req: Request, res: Response) => {
 }
 
 
+/**
+ * checks whether the ad exists or not
+ * if not, return 404
+ * checks whether the ad is pending or not
+ * if not pending, return 404
+ * if pending, deletes the ad from ads table and add it to archived ads table
+ * notify the user why his ad is declined
+ * @todo add reason to archived ads table
+ * @param req 
+ * @param res 
+ * @returns 
+ */
+// decline pending review: DELETE /api/admin/ad_reviews/:id
 export const decline_pending_review = async (req: Request, res: Response) => {
     try {
         const pending_review = await prisma.ads.findUnique({
@@ -190,12 +227,14 @@ export const decline_pending_review = async (req: Request, res: Response) => {
 
         if (pending_review.status !== 'pending') return res.status(404).json({ "error": "ad not pending" });
 
+        // delete from ads table
         await prisma.ads.delete({
             where: {
                 id: Number(req.params.id!)
             }
         });
 
+        // add to archived ads table
         const archived_review = await prisma.archived_ads.create({
             data: {
                 op_username: pending_review.op_username,
@@ -209,6 +248,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
 
 
 
+        // notify user
         await notify_user(pending_review.op_username,
             'ad_declined',
             'Ad Declined',

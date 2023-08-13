@@ -14,7 +14,16 @@ import { token } from 'morgan';
 const prisma = new PrismaClient();
 
 
-
+declare global {
+    namespace Express {
+        export interface User {
+            username: string;
+            email?: string;
+            // phone_verified?: boolean; // not needed
+            // email_verified?: boolean; // not needed
+        }
+    }
+}
 
 
 // get user list: /api/auth/getUsers
@@ -79,7 +88,8 @@ let registerUser = async (req: Request, res: Response) => {
             email: email
         }
         const jwt_token = await sign(payload, SECRET);
-        return res.status(201).cookie('token', jwt_token, { httpOnly: true, sameSite: 'none', secure: true }).json({
+      
+        return res.status(201).cookie('token', jwt_token, { httpOnly: true }).json({
             success: true,
             message: 'User created!',
             token: jwt_token // this token is added as we cannot access the cookie in header axios
@@ -102,13 +112,15 @@ let registerUser = async (req: Request, res: Response) => {
 // login user: /api/auth/login
 let loginUser = async (req: Request, res: Response) => {
     // catch the user from the loginCheck middleware
-    const user: any = req.user;
+
+    // const user: any = req.user;
+
 
     // create a payload
     // username will be used for passport-jwt
     let payload = {
-        username: user.username,
-        email: user.email
+        username: req.user!.username,
+        email: req.user!.email
     }
 
     try {
@@ -238,7 +250,58 @@ let verifyEmail = async (req: Request, res: Response) => {
 
 
 
+// login admin: /api/admin/login
+let loginAdmin = async (req: Request, res: Response) => {
+    // catch the user from the loginCheck middleware
+    // const user: any = req.user;
+
+    // create a payload
+    // username will be used for passport-jwt
+    let payload = {
+        username: req.user!.username,
+        email: req.user!.email
+    }
+
+    try {
+        // create a token
+        //const token = await sign(payload, SECRET, { expiresIn: '1h' });
+        const token = await sign(payload, SECRET);
+
+        // send the token in a HTTP-only cookie
+        return res.status(200).cookie('token', token, { httpOnly: true }).json({
+            success: true,
+            message: 'Logged in successfully!'
+        });
+    } catch (error: any) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
 
 
 
-export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail }
+// logout admin: /api/admin/logout
+let logoutAdmin = async (req: Request, res: Response) => {
+    try {
+        // remove the token from the cookie
+        return res.status(200).clearCookie('token', { httpOnly: true }).json({
+            success: true,
+            message: 'Logged out successfully!'
+        });
+    } catch (error: any) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
+
+
+
+
+export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail, loginAdmin, logoutAdmin }
+

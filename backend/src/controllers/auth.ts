@@ -10,6 +10,7 @@ import crypto from 'crypto';
 // import prisma
 import { PrismaClient } from '@prisma/client';
 import { request } from 'http';
+import { token } from 'morgan';
 const prisma = new PrismaClient();
 
 
@@ -87,9 +88,11 @@ let registerUser = async (req: Request, res: Response) => {
             email: email
         }
         const jwt_token = await sign(payload, SECRET);
+      
         return res.status(201).cookie('token', jwt_token, { httpOnly: true }).json({
             success: true,
-            message: 'User created!'
+            message: 'User created!',
+            token: jwt_token // this token is added as we cannot access the cookie in header axios
         });
     } catch (error: any) {
         console.log(error)
@@ -109,7 +112,9 @@ let registerUser = async (req: Request, res: Response) => {
 // login user: /api/auth/login
 let loginUser = async (req: Request, res: Response) => {
     // catch the user from the loginCheck middleware
+
     // const user: any = req.user;
+
 
     // create a payload
     // username will be used for passport-jwt
@@ -297,4 +302,6 @@ let logoutAdmin = async (req: Request, res: Response) => {
 
 
 
+
 export { getUsers, registerUser, loginUser, protectedRoute, logoutUser, verifyEmail, loginAdmin, logoutAdmin }
+

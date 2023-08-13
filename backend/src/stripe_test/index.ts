@@ -70,5 +70,30 @@ const create_charges = async () => {
     }
 }
 
+
+const create_payment_intent = async () => {
+    try {
+        const id = 1;
+        // const domain_url = process.env.WEB_APP_URL!;
+        const { priceInCents, name } = store_items.get(Number(id));
+
+        const payment_intent = await stripe.paymentIntents.create({
+            amount: 10000,
+            payment_method_types: ['card'],
+            // payment_method: 'tok_visa',
+            currency: 'usd'
+        });
+
+        console.log(payment_intent);
+    } catch (error: any) {
+        // return res.status(500).json({
+        //     success: false,
+        //     error: error.message
+        // });
+        console.log(error);
+    }
+}
+
 // create_checkout_session();
-create_charges();
+// create_charges();
+create_payment_intent();

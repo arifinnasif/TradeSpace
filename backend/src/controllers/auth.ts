@@ -116,6 +116,7 @@ let loginUser = async (req: Request, res: Response) => {
       .json({
         success: true,
         message: "Logged in successfully!",
+        cookies: req.cookies,
       });
   } catch (error: any) {
     console.log(error);

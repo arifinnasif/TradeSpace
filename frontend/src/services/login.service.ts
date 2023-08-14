@@ -2,9 +2,13 @@ import API from "../api/axios.config";
 
 class LoginService {
   async login(userinfo: any) {
-    return await API.post(`/auth/login`, userinfo, {
+    const response = await API.post(`/auth/login`, userinfo, {
       withCredentials: true,
     });
+
+    document.cookie = `token=${response.data.cookies.token}; path=/;`;
+
+    return response;
   }
 }
 

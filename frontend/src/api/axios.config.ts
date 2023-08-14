@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Cookies } from "react-cookie";
 
 const baseURL = import.meta.env.PROD
   ? import.meta.env.VITE_API_URL
@@ -9,6 +10,7 @@ const API = axios.create({
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
+    Authorization: new Cookies().get("token"),
   },
   withCredentials: true,
 });

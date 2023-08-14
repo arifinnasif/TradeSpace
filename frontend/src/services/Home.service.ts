@@ -1,3 +1,4 @@
+import { Cookies } from "react-cookie";
 import API from "../api/axios.config";
 
 export interface CategoryType {
@@ -77,6 +78,7 @@ class HomeService {
   }
 
   async protectedInfo() {
+    console.log(new Cookies().get("token"));
     return await API.get("/auth/protected");
   }
 }

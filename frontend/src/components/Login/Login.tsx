@@ -16,9 +16,12 @@ import {
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../../redux/slices/AuthSlice";
-import { loginService } from "../../services/login.service";
+import login from "../../services/login.service";
+import { useCookies } from "react-cookie";
 
 export default function Login() {
+  const [cookies, setCookie] = useCookies(["token"]);
+
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -33,10 +36,12 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await loginService.login({
+      const response = await login({
         email: values.email,
         password: values.password,
       });
+      setCookie("token", response.data.token);
+
       console.log(response);
       dispatch(authenticateUser());
 

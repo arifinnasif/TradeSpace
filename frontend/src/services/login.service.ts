@@ -1,15 +1,16 @@
+import { useCookies } from "react-cookie";
 import API from "../api/axios.config";
 
-class LoginService {
-  async login(userinfo: any) {
-    const response = await API.post(`/auth/login`, userinfo, {
-      withCredentials: true,
-    });
+const login = async (userinfo: any) => {
+  const response = await API.post(`/auth/login`, userinfo, {
+    withCredentials: true,
+  });
 
-    document.cookie = `token=${response.data.cookies.token}; path=/;`;
+  console.log(response.data);
 
-    return response;
-  }
-}
+  // document.cookie = `token=${response.data.token}; path=/;`;
 
-export const loginService = new LoginService();
+  return response;
+};
+
+export default login;

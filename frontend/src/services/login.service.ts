@@ -1,4 +1,3 @@
-import { useCookies } from "react-cookie";
 import API from "../api/axios.config";
 
 const login = async (userinfo: any) => {

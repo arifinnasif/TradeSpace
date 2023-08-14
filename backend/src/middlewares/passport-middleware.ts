@@ -11,7 +11,7 @@ const cookieExtractor = function (req: any) {
   let token = null;
   // console.log(req.headers.authorization);
 
-  if (req && req.cookies) token = req.headers.authorization;
+  if (req && req.headers) token = req.headers.authorization;
   // console.log(token);
   return token;
 };
@@ -54,6 +54,8 @@ passport.use(
       if (user.phone_verified === false || user.email_verified === false) {
         throw new Error("401 not authorized");
       }
+
+      console.log(user);
 
       return await done(null, user);
       // will use this user for protected routes

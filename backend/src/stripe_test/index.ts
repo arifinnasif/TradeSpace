@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2022-11-15',
 });
 
@@ -94,6 +94,6 @@ const create_payment_intent = async () => {
     }
 }
 
-// create_checkout_session();
+create_checkout_session();
 // create_charges();
-create_payment_intent();
+// create_payment_intent();

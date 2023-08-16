@@ -9,6 +9,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
+import { useNavigate } from 'react-router-dom';
+
 
 import PostAdForm from "./PostAdForm";
 import Step1 from "./PostAdStep1Components";
@@ -19,6 +21,24 @@ const PostAdComponent = () => {
 
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
+
+  
+  let navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  // declaration of states
+  const [category, setCategory] = useState<string>()
+  const [title, setTitle] = useState<string>()
+  const [is_sell_ad, setIs_sell_ad] = useState<boolean>(false)
+  const [description, setDescription] = useState<string>()
+  const [is_negotiable, setIs_negotiable] = useState<boolean>(false)
+  const [is_used, setIs_used] = useState<boolean>(false)
+  const [days_used, setDays_used] = useState<number>()
+  const [is_phone_public, setIs_phone_public] = useState<boolean>(false)
+  const [address, setAddress] = useState<string>()
+  const [price, setPrice] = useState<number>()
+  const [images, setImages] = useState<string[]>([])
 
 
   // Headers to show at different steps

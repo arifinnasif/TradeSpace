@@ -13,6 +13,19 @@ import {
 } from "@chakra-ui/react";
 
 
+
+interface Step1Props {
+  onNext: () => void;
+  category: string;
+  title: string;
+  description: string;
+  setCategory: (name: string) => void;
+  setTitle: (name: string) => void;
+  setDescription: (phone: string) => void;
+}
+
+
+
 const Step1 = () => {
   return (
     <>

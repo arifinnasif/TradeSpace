@@ -39,6 +39,7 @@ const PostAdForm: FunctionComponent<PostAdFormProps> = ({
 
       >
         <Stack align={"center"}>
+          <Heading fontSize={"3xl"}>Post your Ad</Heading>
           <Heading fontSize={"4xl"}>{header}</Heading>
           <Text fontSize={"lg"}>
             Stay with{" "}

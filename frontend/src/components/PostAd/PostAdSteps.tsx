@@ -9,6 +9,12 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
+
+import PostAdForm from "./PostAdForm";
+import Step1 from "./PostAdStep1Components";
+import Step2 from "./PostAdStep2Components";
+import Step3 from "./PostAdStep3Components";
+
 const PostAdComponent = () => {
 
   const [step, setStep] = useState(1);
@@ -46,6 +52,10 @@ const PostAdComponent = () => {
 
   return (
     <>
+      <Progress value={progress} size="xs" colorScheme="teal" />
+      {step === 1 && <PostAdForm header="Step 1" formContent={<Step1 />} />}
+      {step === 2 && <PostAdForm header="Step 1" formContent={<Step2 />} />}
+      {step === 3 && <PostAdForm header="Step 1" formContent={<Step3 />} />}
     </>
   );
 };

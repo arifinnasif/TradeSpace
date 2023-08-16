@@ -1,4 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 import { Suspense } from "react";
 import { Spinner } from "@chakra-ui/react";
 
@@ -10,6 +16,21 @@ import AdDetailsPage from "./pages/AdDetails.page";
 // import CategoryList from "./components/Homepage/CategoryList";
 import HomePage from "./pages/Home.page";
 import GetAds from "./pages/GetAds.page";
+import Protected from "./pages/Protected.page";
+import Login from "./pages/Login.page";
+import { useSelector } from "react-redux";
+
+const PrivateRoutes = () => {
+  const { isAuth } = useSelector((state: any) => state.auth);
+
+  return <>{isAuth ? <Outlet /> : <Navigate to="/login" />}</>;
+};
+
+const RestrictedRoutes = () => {
+  const { isAuth } = useSelector((state: any) => state.auth);
+
+  return <>{!isAuth ? <Outlet /> : <Navigate to="/" />}</>;
+};
 
 function App() {
   return (
@@ -20,9 +41,18 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/things/:id/" element={<Things />} />
 
+          <Route element={<PrivateRoutes />}>
+            <Route path="/ads/post-ad/" element={<PostAd />} />
+            <Route path="/protected/" element={<Protected />} />
+          </Route>
+
+          <Route element={<RestrictedRoutes />}>
+            <Route path="/register/" element={<Register />} />
+            <Route path="/login/" element={<Login />} />
+          </Route>
+
           <Route path="/ads/" element={<GetAds />} />
-          <Route path="/register/" element={<Register />} />
-          <Route path="/ads/post-ad/" element={<PostAd />} />
+
           <Route path="/ads/:id/" element={<AdDetailsPage />} />
         </Routes>
       </Suspense>

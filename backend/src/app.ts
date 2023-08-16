@@ -7,24 +7,16 @@ import helmet from "helmet";
 import apiRouter from "./routers";
 import passport from "passport";
 
-import * as dotenv from "dotenv"
+import * as dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 
 const { CLIENT_URL } = require("./constants");
 
-
-
-
 const app = express();
-
-
 
 // import passport-middleware
 import "./middlewares/passport-middleware";
-
-
-
 
 // initialize middleware
 app.use(express.json());
@@ -32,14 +24,11 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors({ origin: true, credentials: true }))
+// app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: "http://127.0.0.1:5173", credentials: true }));
 app.use(passport.initialize());
-
 
 // initialize backend router
 app.use("/api", apiRouter);
-
-
-
 
 export default app;

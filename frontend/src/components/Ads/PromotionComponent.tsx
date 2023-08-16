@@ -1,6 +1,6 @@
 import { Text, Flex, Icon } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import { FaAward } from "react-icons/fa";
+import { FaAward, FaMedal, FaRibbon } from "react-icons/fa";
 
 interface Promotion_type {
   promotion_type: string;
@@ -32,7 +32,7 @@ const promotion: FunctionComponent<Promotion_type> = ({ promotion_type }) => {
           top={0}
           left={0}
         >
-          <Text>{promotion_type}</Text> &nbsp; <Icon as={FaAward} h={4} w={4} />
+          <Text>{promotion_type}</Text> &nbsp; <Icon as={FaMedal} h={4} w={4} />
         </Flex>
       )}
     </>

@@ -1,4 +1,4 @@
-import { Text, Flex, chakra } from "@chakra-ui/react";
+import { Text, Flex, chakra, Badge } from "@chakra-ui/react";
 import { Fragment, FunctionComponent } from "react";
 
 interface AdCardDetailProps {
@@ -20,7 +20,10 @@ const AdCardDetail: FunctionComponent<AdCardDetailProps> = ({
     <Flex alignItems="center" color="gray.500">
       {details.map((data, index) => (
         <Fragment key={index}>
-          <Text fontSize={{ base: "sm", sm: "md" }}>{data}</Text>
+          {/* <Text fontSize={{ base: "sm", sm: "md" }}>{data}</Text> */}
+          <Badge fontSize={"0.8em"} color={"teal.600"}>
+            {data}
+          </Badge>
           {details.length - 1 != index && (
             <chakra.span mx={2} fontSize={{ base: "sm", sm: "md" }}>
               |

@@ -18,6 +18,7 @@ import { BsTelephoneX } from "react-icons/bs";
 
 import { FunctionComponent } from "react";
 import { AdCardType } from "../../services/ad.service";
+import Promotion from "./PromotionComponent";
 
 interface ProductCardProps {
   id: number;
@@ -66,7 +67,7 @@ const AdCard: FunctionComponent<AdCardType> = ({
 }) => {
   return (
     <Container maxW="7xl" p={{ base: 5, md: 12 }} margin="0 auto">
-      <VStack spacing={4}>
+      <VStack spacing={1}>
         <Stack
           key={id}
           spacing={{ base: 0, md: 4 }}
@@ -79,22 +80,7 @@ const AdCard: FunctionComponent<AdCardType> = ({
           overflow="hidden"
           pos="relative"
         >
-          {is_used && (
-            <Flex
-              alignItems="center"
-              p={1}
-              bg="red.400"
-              pos="absolute"
-              fontSize="xs"
-              fontWeight="500"
-              color="white"
-              top={0}
-              left={0}
-            >
-              <Text>USED</Text> &nbsp;{" "}
-              <Icon as={AiOutlineExclamationCircle} h={4} w={4} />
-            </Flex>
-          )}
+          <Promotion promotion_type={promotion_type} />
           <Flex ml="0 !important">
             <Image
               rounded="md"

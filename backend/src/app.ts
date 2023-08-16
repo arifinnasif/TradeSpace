@@ -18,30 +18,14 @@ const { CLIENT_URL } = require("./constants");
 
 const app = express();
 
-
-
-// import passport-middleware
-import "./middlewares/passport-middleware";
-
-
-
-
-// initialize middleware
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(helmet());
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(cors({ origin: true, credentials: true }));
-app.use(passport.initialize());
-
 const endpointSecret = "whsec_db09a7108b5b210061c92fe5b792b2165b3211c97d3a1d22fdd5bc00fa8589aa";
 
-import { stripe } from "./stripe_test";
+// import { stripe } from "./stripe_test";
+import { stripe } from "./controllers/payment.controller"
 
 
 // initialize backend router
-app.use("/api", apiRouter);
+app.use('/webhook', express.raw({ type: 'application/json' }));
 app.post("/webhook", (req: any, res: any) => {
     // console.log(req);
     const payload = req.body;
@@ -54,11 +38,37 @@ app.post("/webhook", (req: any, res: any) => {
         console.log("<===event===>")
         console.log(event);
     } catch (err: any) {
+        console.log(err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
     res.status(200).end();
 })
+
+
+// import passport-middleware
+import "./middlewares/passport-middleware";
+
+
+
+
+// initialize middleware
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(helmet());
+
+app.use(cookieParser());
+app.use(cors({ origin: true, credentials: true }));
+app.use(passport.initialize());
+
+
+
+
+// initialize backend router
+app.use("/api", apiRouter);
+
+
+app.use(bodyParser.json());
 
 
 

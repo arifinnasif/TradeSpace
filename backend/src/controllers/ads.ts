@@ -74,16 +74,17 @@ let postAd = async (req: Request, res: Response) => {
                 description: description,               
                 price: Number(price),
 
-                // Do not use Boolean(string) here. 
-                // Any string which isn't the empty string will evaluate to true by Boolean(string).
-                is_negotiable: (is_negotiable === 'true'),
-                is_used: (is_used === 'true'),
-                is_phone_public: (is_phone_public === 'true'),
-                is_sell_ad: (is_sell_ad === 'true'),
+
+
+                
+                is_negotiable: is_negotiable,
+                is_used: is_used,
+                is_phone_public: is_phone_public,
+                is_sell_ad: is_sell_ad,
 
                 days_used: Number(convertUsageTimeToDays(usage_time)),
                 address: address,
-                promotion_type: '',
+                promotion_type: "normal",
 
                 // ticket: promotion!.ticket, // promotion is not null here. Validated in validators/ads.ts
                 // Hence, ! is used. 

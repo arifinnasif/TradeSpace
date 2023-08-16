@@ -12,6 +12,7 @@ import {
   InputGroup,
   Select,
   FormErrorMessage,
+  Textarea,
 } from "@chakra-ui/react";
 import { FunctionComponent, useState } from "react";
 
@@ -48,19 +49,45 @@ const Step1: FunctionComponent<Step1Props> = ({
 
   // declaration of error states
   const [categoryError, setCategoryError] = useState<boolean>(false)
+  const [titleError, setTitleError] = useState<boolean>(false)
+  const [descriptionError, setDescriptionError] = useState<boolean>(false)
 
 
-  // declaration of touched states
+
+
+  // declaration of touched states and action
   const [categoryTouched, setCategoryTouched] = useState<boolean>(false)
-
   const handleCategoryTouched = () => {
     setCategoryTouched(true)
   }
 
+  const [titleTouched, setTitleTouched] = useState<boolean>(false)
+  const handleTitleTouched = () => {
+    setTitleTouched(true)
+  }
+
+  const [descriptionTouched, setDescriptionTouched] = useState<boolean>(false)
+  const handleDescriptionTouched = () => {
+    setDescriptionTouched(true)
+  }
+
+
+
+
+  
   // change events definition
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value)
   }
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value)
+  }
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(e.target.value)
+  }
+
 
 
   return (
@@ -73,6 +100,23 @@ const Step1: FunctionComponent<Step1Props> = ({
             ))}
           </Select>
           {categoryError && <FormErrorMessage>Please select a category</FormErrorMessage>}
+      </FormControl>
+
+
+      <FormControl isRequired isInvalid={titleError} onBlur={handleTitleTouched}>
+        <FormLabel>Title</FormLabel>
+        <Input type="text" placeholder="Title" value={title} onChange={handleTitleChange} />
+        {titleError && <FormErrorMessage>Title should be at the range of 5-50 characters</FormErrorMessage>}
+      </FormControl>
+
+
+      <FormControl isInvalid={descriptionError} onBlur={handleDescriptionTouched}>
+        <FormLabel>Description</FormLabel>
+        <Textarea placeholder='Provide your products description' value={description} onChange={handleDescriptionChange} />
+        {descriptionError && <FormErrorMessage>
+                                Description should be at the range of 0-100 characters
+                            </FormErrorMessage>}
+
       </FormControl>
     </>
   );

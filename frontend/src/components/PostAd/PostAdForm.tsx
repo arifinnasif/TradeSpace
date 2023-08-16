@@ -38,8 +38,8 @@ const PostAdForm: FunctionComponent<PostAdFormProps> = ({
 
       >
         <Stack align={"center"}>
-          <Heading fontSize={"3xl"}>Post your Ad</Heading>
-          <Heading fontSize={"4xl"}>{header}</Heading>
+          <Heading fontSize={"2xl"}>Post your Ad</Heading>
+          <Heading fontSize={"3xl"}>{header}</Heading>
         </Stack>
         <Box
           rounded={"lg"}

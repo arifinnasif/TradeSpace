@@ -75,22 +75,22 @@ let registerUser = async (req: Request, res: Response) => {
       request_to_send_opt(phone),
     ]);
 
-    // let payload = {
-    //   username: username,
-    //   email: email,
-    // };
-    // const jwt_token = await sign(payload, SECRET);
+    let payload = {
+      username: username,
+      email: email,
+    };
+    const jwt_token = await sign(payload, SECRET);
 
-    // return res.status(201).cookie("token", jwt_token, { httpOnly: true }).json({
-    //   success: true,
-    //   message: "User created!",
-    //   token: jwt_token, // this token is added as we cannot access the cookie in header axios
-    // });
-
-    return res.status(201).json({
+    return res.status(201).cookie("token", jwt_token, { httpOnly: true }).json({
       success: true,
-      message: "The registraion was succefull",
+      message: "User created!",
+      token: jwt_token,
     });
+
+    // return res.status(201).json({
+    //   success: true,
+    //   message: "The registraion was succefull",
+    // });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({

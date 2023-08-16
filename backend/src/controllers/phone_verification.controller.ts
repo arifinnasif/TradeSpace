@@ -11,13 +11,13 @@ const prisma = new PrismaClient();
 
 export const verify_phone = async (req: Request, res: Response) => {
     // extract username from jwt token
-    const token = req.cookies['token'];
-    const decoded_token = jwt.verify(token, process.env.SECRET!) as { username: string, email: string };
+    // const token = req.cookies['token'];
+    // const decoded_token = jwt.verify(token, process.env.SECRET!) as { username: string, email: string };
 
     // check if the user exists
     const user = await prisma.users.findUnique({
         where: {
-            username: decoded_token.username
+            username: req.user.username
 
         },
         select: {
@@ -57,13 +57,13 @@ export const verify_phone = async (req: Request, res: Response) => {
     if (is_otp_valid) {
         await prisma.users.update({
             where: {
-                username: decoded_token.username
+                username: req.user.username
             },
             data: {
                 phone_verified: true
             }
         });
-        return res.status(200).json({
+        return res.status(200).clearCookie('token', { httpOnly: true }).json({
             success: true,
             message: 'Phone number verified!'
         });

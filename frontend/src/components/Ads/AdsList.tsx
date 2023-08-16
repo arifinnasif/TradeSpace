@@ -21,7 +21,7 @@ function AdsList() {
   }, []);
   return (
     <Box>
-      <VStack spacing={"2"}>
+      <VStack spacing={"0"}>
         {adsList?.map((p) => (
           <Link to={`/ads/${p.id}`}>
             <AdCard key={p.id} {...p} />

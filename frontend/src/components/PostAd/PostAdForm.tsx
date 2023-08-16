@@ -22,7 +22,6 @@ const PostAdForm: FunctionComponent<PostAdFormProps> = ({
 }) => {
   return (
     <Flex
-
       minW={"85vw"}
       align={"center"}
       justify={"center"}
@@ -34,28 +33,22 @@ const PostAdForm: FunctionComponent<PostAdFormProps> = ({
         maxW={"lg"}
         py={12}
         px={6}
-        minW={"35vw"}
+        minW={"55vw"}
         minH={"100vh"}
 
       >
         <Stack align={"center"}>
           <Heading fontSize={"3xl"}>Post your Ad</Heading>
           <Heading fontSize={"4xl"}>{header}</Heading>
-          <Text fontSize={"lg"}>
-            Stay with{" "}
-            <Text as="span" color={"blue.400"}>
-              TradeSpace
-            </Text>{" "}
-            ✌️
-          </Text>
         </Stack>
         <Box
           rounded={"lg"}
+          minW={"50vw"}
           bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
           p={8}
         >
-          <Stack spacing={4}>{formContent}</Stack>
+          <Stack spacing={7}>{formContent}</Stack>
         </Box>
       </Stack>
     </Flex>

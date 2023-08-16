@@ -12,6 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 
+import Layout from "../../layout/Layout";
 import PostAdForm from "./PostAdForm";
 import Step1 from "./PostAdStep1Components";
 import Step2 from "./PostAdStep2Components";
@@ -72,10 +73,22 @@ const PostAdComponent = () => {
 
   return (
     <>
-      <Progress value={progress} size="xs" colorScheme="teal" />
-      {step === 1 && <PostAdForm header="Step 1" formContent={<Step1 />} />}
-      {step === 2 && <PostAdForm header="Step 1" formContent={<Step2 />} />}
-      {step === 3 && <PostAdForm header="Step 1" formContent={<Step3 />} />}
+      <Layout title="Hello" loading={isLoading}>
+        <Progress value={progress} size="xs" colorScheme="teal" />
+        {step === 1 && <PostAdForm header="Tell us about your product" 
+                                   formContent= {<Step1 onNext={handleNextStep} 
+                                                        category={category} 
+                                                        setCategory={setCategory}
+                                                        title={title}
+                                                        setTitle={setTitle}
+                                                        description={description}
+                                                        setDescription={setDescription} 
+                                                />} 
+                       />
+        }
+        {step === 2 && <PostAdForm header="Step 1" formContent={<Step2 />} />}
+        {step === 3 && <PostAdForm header="Step 1" formContent={<Step3 />} />}
+      </Layout>
     </>
   );
 };

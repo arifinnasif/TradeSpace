@@ -10,8 +10,9 @@ import { Spinner } from "@chakra-ui/react";
 
 import Things from "./components/Things";
 import Register from "./components/Register/RegisterSteps";
+import PostAd from "./components/Ads/PostAd";
 
-import PostAd from "./pages/PostAd.page";
+// import PostAd from "./pages/PostAd.page";
 
 import AdDetailsPage from "./pages/AdDetails.page";
 // import CategoryList from "./components/Homepage/CategoryList";

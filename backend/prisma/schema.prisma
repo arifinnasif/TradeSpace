@@ -27,6 +27,7 @@ model users {
   phone               String          @unique
   email_verified      Boolean         @default(false)
   phone_verified      Boolean         @default(false)
+  mute_end_date       DateTime        @default("1970-01-01T00:00:00.000Z")
   profile_pic         Bytes?
   // verified            Boolean         @default(false) // do we need this?
   createdAt           DateTime        @default(now())
@@ -55,7 +56,7 @@ model ads {
   price           Float?
   is_negotiable   Boolean    @default(false)
   is_used         Boolean    @default(true)
-  is_sell_ad     Boolean    @default(true)
+  is_sell_ad      Boolean    @default(true)
   days_used       Int?
   image1          Bytes?
   image2          Bytes?

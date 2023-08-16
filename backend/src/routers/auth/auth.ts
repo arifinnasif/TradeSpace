@@ -1,4 +1,5 @@
 import express from "express";
+
 import {
   getUsers,
   loginUser,
@@ -11,6 +12,7 @@ import {
   loginValidation,
   registerValidation,
 } from "../../middlewares/validators/auth";
+
 import { validationMiddleware } from "../../middlewares/validations-middleware";
 import {
   nonPhoneVerifiedUserAuth,

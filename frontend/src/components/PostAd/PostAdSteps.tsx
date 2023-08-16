@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Progress,
   ButtonGroup,
@@ -71,10 +71,32 @@ const PostAdComponent = () => {
   };
 
 
+
+
+  // calculate navbar height
+  // const [navbarHeight, setNavbarHeight] = useState(0);
+
+  // useEffect(() => {
+  //   const navbarElement = document.getElementById("navbar");
+  //   if (navbarElement) {
+  //     const height = navbarElement.clientHeight;
+  //     setNavbarHeight(height);
+  //   }
+  // }, []);
+  // for now fixed height 60 will be used
+
+
   return (
     <>
       <Layout title="Hello" loading={isLoading}>
-        <Progress value={progress} size="xs" colorScheme="teal" />
+        {/* stick to it's position */}
+        <Progress value={progress} 
+                  size="xs"  
+                  colorScheme="teal" 
+                  position="sticky" 
+                  top="60px"
+                  zIndex="sticky" 
+        />
         {step === 1 && <PostAdForm header="Tell us about your product" 
                                    formContent= {<Step1 onNext={handleNextStep} 
                                                         category={category} 

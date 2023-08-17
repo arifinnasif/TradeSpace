@@ -7,13 +7,17 @@ import {
   Checkbox,
   FormErrorMessage,
   HStack,
+  Flex,
+  Button,
+  useToast,
 } from "@chakra-ui/react";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
 
 
 
 interface Step2Props {
+  onPrev: () => void;
   onNext: () => void;
   is_sell_ad: boolean;
   price?: number;
@@ -24,11 +28,12 @@ interface Step2Props {
   setPrice: (price: number) => void;
   setIsNegotiable: (is_negotiable: boolean) => void;
   setIsUsed: (is_used: boolean) => void;
-  setDaysUsed: (days_used: number) => void;
+  setDaysUsed: (days_used: number|undefined) => void;
 }
 
 
 const Step2: FunctionComponent<Step2Props> = ({
+  onPrev,
   onNext,
   is_sell_ad,
   price,
@@ -89,7 +94,72 @@ const Step2: FunctionComponent<Step2Props> = ({
 
 
 
+
+  // error checking hooks for constant supervision
+
+  // necessary for the days_used field.
+  // let a user checks is_used and set days used 10.
+  // but then then unchecks is_used. 
+  // guess what happens to days_used? it stays 10.
+  // so we need to reset it to undefined.
+  useEffect(() => {
+    if (is_used == false) {
+      setDaysUsed(undefined)
+    }
+  }, [is_used])
+
+  useEffect(() => {
+    if (priceTouched && (price == undefined || price < 0)) {
+      setPriceError(true)
+    } else {
+      setPriceError(false)
+    }
+  }, [price, priceTouched])
+
+  useEffect(() => {
+    if (days_usedTouched && (is_used == true && (days_used == undefined || days_used < 0))) {
+      setDays_usedError(true)
+    } else {
+      setDays_usedError(false)
+    }
+  }, [days_used, is_used, days_usedTouched])
+
+
+
+  // validation function
+  const isUserInputValid = () => {
+    if (priceError || price == undefined || price < 0 ||
+        days_usedError || (is_used == true && (days_used == undefined || days_used < 0))
+       ) return false;
+
+    return true;
+  }
+
+  const toast = useToast();
+
   
+  const handleNextRequest = (e : React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if(isUserInputValid()){
+      console.log(is_sell_ad)
+      console.log(price)
+      console.log(is_negotiable)
+      console.log(is_used)
+      console.log(days_used)
+      onNext();
+    }
+    else {
+      console.log("Invalid Inputs")
+      toast({
+        title: "Invalid Inputs",
+        description: "Please check your inputs and try again.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }
+
   return (
     <>
       <FormControl>
@@ -127,6 +197,30 @@ const Step2: FunctionComponent<Step2Props> = ({
         </FormControl>
         )
       }
+
+      <Flex justifyContent={"space-between"}>
+        <Button
+          onClick={onPrev}
+          bg={"teal.400"}
+          color={"white"}
+          _hover={{
+            bg: "blue.500",
+          }}
+        >
+          Previous
+        </Button>
+        <Button
+          // isDisabled={isCurrentInputInValid()}
+          onClick={handleNextRequest}
+          bg={"teal.400"}
+          color={"white"}
+          _hover={{
+            bg: "blue.500",
+          }}
+        >
+          Next
+        </Button>
+      </Flex>
     </>
   );
 }

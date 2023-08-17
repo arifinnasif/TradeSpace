@@ -1,4 +1,5 @@
 import API from "../api/axios.config";
+import { Cookies } from "react-cookie";
 
 export interface NotificationType {
   id: number;
@@ -10,7 +11,9 @@ export interface NotificationType {
 
 class NotificationService {
   async getNotifications() {
-    return (await API.get(`profile/notifications`)).data.notification_list;
+    console.log("getNotifications");
+    console.log(new Cookies().get("token"));
+    return ((await API.get(`profile/notifications`)).data.notifications);
   }
 }
 

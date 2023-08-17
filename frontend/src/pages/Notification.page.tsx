@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import Layout from "../layout/Layout";
+
 import {  Box, 
           Card, 
           Center, 
@@ -13,26 +15,30 @@ import {  Box,
           Text
 } from "@chakra-ui/react";
 
+import { notificationService,
+         NotificationType
+ } from "../services/Notification.service";
 
-const notifications = 
-  [
-    {
-      "id": 1,
-      "username": "Sheam1805099",
-      "type": "promotion",
-      "title": "your platinum promotion has expired",
-      "description": "the promotion that u purchased has expired",
-      "createdAt": "2023-08-17T22:36:57.568Z"
-    },
-    {
-      "id": 2,
-      "username": "Sheam1805099",
-      "type": "promotion",
-      "title": "your platinum promotion has expired",
-      "description": "the promotion that u purchased has expired",
-      "createdAt": "2023-08-15T12:36:57.568Z"
-    },
-  ]
+
+// const notifications = 
+//   [
+//     {
+//       "id": 1,
+//       "username": "Sheam1805099",
+//       "type": "promotion",
+//       "title": "your platinum promotion has expired",
+//       "description": "the promotion that u purchased has expired",
+//       "createdAt": "2023-08-17T22:36:57.568Z"
+//     },
+//     {
+//       "id": 2,
+//       "username": "Sheam1805099",
+//       "type": "promotion",
+//       "title": "your platinum promotion has expired",
+//       "description": "the promotion that u purchased has expired",
+//       "createdAt": "2023-08-15T12:36:57.568Z"
+//     },
+//   ]
 
 
 function formatTimestamp(timestamp: string) {
@@ -65,8 +71,19 @@ const GetNotifications = () => {
 
 
   const [isLoading, setIsLoading] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationType[]>();
   
   
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const notifications = await notificationService.getNotifications()
+      setNotifications(notifications);
+      setIsLoading(false);
+    }
+    fetchData();
+  }
+  , []);
   
   
   
@@ -108,7 +125,7 @@ const GetNotifications = () => {
 
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing='4'>
-                    {notifications.map((notification) => (
+                    {notifications?.map((notification) => (
                       <Box key={notification.id}>
                         <Heading size='sm' textTransform='uppercase'>
                           {notification.title}

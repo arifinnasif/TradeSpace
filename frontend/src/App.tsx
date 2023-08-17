@@ -18,6 +18,7 @@ import HomePage from "./pages/Home.page";
 import GetAds from "./pages/GetAds.page";
 import Protected from "./pages/Protected.page";
 import Login from "./pages/Login.page";
+import GetNotifications from "./pages/Notification.page";
 import { useSelector } from "react-redux";
 
 const PrivateRoutes = () => {
@@ -42,6 +43,7 @@ function App() {
           <Route path="/things/:id/" element={<Things />} />
 
           <Route element={<PrivateRoutes />}>
+            <Route path='/notifications' element={<GetNotifications />} />
             <Route path="/ads/post-ad/" element={<PostAd />} />
             <Route path="/protected/" element={<Protected />} />
           </Route>

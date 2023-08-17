@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import apiRouter from "./routers";
 import passport from "passport";
+import prisma from "../prisma/prisma_client";
 
 import * as dotenv from "dotenv"
 
@@ -22,20 +23,66 @@ const endpointSecret = "whsec_db09a7108b5b210061c92fe5b792b2165b3211c97d3a1d22fd
 
 // import { stripe } from "./stripe_test";
 import { stripe } from "./controllers/payment.controller"
+import { method } from "lodash";
 
-const fulfillOrder = (session: any) => {
-    // TODO: fill me in
-    console.log("Fulfilling order", session);
+const fulfill_order = async (session: any) => {
+    const transaction = await prisma.transactions.findUnique({
+        where: {
+            stripe_checkout_id: session.id
+        }
+    });
+
+    if (!transaction) {
+        console.log("Transaction not found!");
+        return;
+    }
+
+    await prisma.ads.update({
+        where: {
+            id: transaction.ad_id
+        },
+        data: {
+            promotion_type: transaction.promotion
+        }
+    });
+
+    await prisma.transactions.update({
+        where: {
+            stripe_checkout_id: session.id
+        },
+        data: {
+            status: "paid",
+            method: session.payment_method_types[0],
+        }
+    });
+    console.log("Fulfilled order");
 }
 
-const createOrder = (session: any) => {
-    // TODO: fill me in
-    console.log("Creating order", session);
+const create_order = async (session: any) => {
+    await prisma.transactions.update({
+        where: {
+            stripe_checkout_id: session.id
+        },
+        data: {
+            status: "awaiting_payment",
+            method: session.payment_method_types[0],
+        }
+    });
+    console.log("Creating order");
 }
 
-const emailCustomerAboutFailedPayment = (session: any) => {
-    // TODO: fill me in
-    console.log("Emailing customer", session);
+const mark_order_as_failed = async (session: any) => {
+    await prisma.transactions.update({
+        where: {
+            stripe_checkout_id: session.id
+        },
+        data: {
+            status: "failed",
+            method: session.payment_method_types[0],
+        }
+    });
+
+    console.log("order failed");
 }
 
 // initialize backend router
@@ -49,8 +96,8 @@ app.post("/webhook", (req: any, res: any) => {
 
     try {
         event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
-        console.log("<===event===>")
-        console.log(event);
+        // console.log("<===event===>")
+        // console.log(event);
     } catch (err: any) {
         console.log(err.message);
         return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -60,7 +107,7 @@ app.post("/webhook", (req: any, res: any) => {
         case 'checkout.session.completed': {
             const session: any = event.data.object;
             // Save an order in your database, marked as 'awaiting payment'
-            createOrder(session);
+            create_order(session);
 
             // Check if the order is paid (for example, from a card payment)
             //
@@ -68,7 +115,7 @@ app.post("/webhook", (req: any, res: any) => {
             // you're still waiting for funds to be transferred from the customer's
             // account.
             if (session.payment_status === 'paid') {
-                fulfillOrder(session);
+                fulfill_order(session);
             }
 
             break;
@@ -78,7 +125,7 @@ app.post("/webhook", (req: any, res: any) => {
             const session = event.data.object;
 
             // Fulfill the purchase...
-            fulfillOrder(session);
+            fulfill_order(session);
 
             break;
         }
@@ -87,7 +134,7 @@ app.post("/webhook", (req: any, res: any) => {
             const session = event.data.object;
 
             // Send an email to the customer asking them to retry their order
-            emailCustomerAboutFailedPayment(session);
+            mark_order_as_failed(session);
 
             break;
         }

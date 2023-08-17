@@ -166,7 +166,7 @@ model notifications {
 
 model transactions {
   trx_id                Int       @id @default(autoincrement())
-  stripe_checkout_id    String
+  stripe_checkout_id    String    @unique
   user                  users     @relation(fields: [username], references: [username])
   username              String
   ad_id                 Int

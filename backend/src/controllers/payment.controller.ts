@@ -26,7 +26,7 @@ export const get_all_transactions_admin = async (req: any, res: any) => {
     }
 }
 
-// get user transactions: /api/transactions/
+// get user transactions: /api/profile/transactions/
 export const get_user_transactions = async (req: any, res: any) => {
     try {
         const transactions = await prisma.transactions.findMany({

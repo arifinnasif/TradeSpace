@@ -29,7 +29,7 @@ Check out our API Documentation [here](https://documenter.getpostman.com/view/28
      ```
      Now the backend server will be available at `localhost:3000`
   3. To start the initial migration of the database, run the following commands
-   
+
      ```
      yarn prisma generate
      ```
@@ -43,6 +43,15 @@ Check out our API Documentation [here](https://documenter.getpostman.com/view/28
 
      ```
      yarn prisma migrate deploy
+     ```
+
+  4. Download the latest `stripe-cli` from [here](https://github.com/stripe/stripe-cli/releases/tag/v1.17.1). Then login using
+     ```
+     stripe login
+     ```
+     and provide the required credentials. Then run the following command to start the webhook listener
+     ```
+     stripe listen --forward-to <your_local_backend_server_url>/api/webhooks
      ```
 
 - For frontend

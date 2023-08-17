@@ -21,7 +21,7 @@ import Step3 from "./PostAdStep3Components";
 const PostAdComponent = () => {
 
   const [step, setStep] = useState(1);
-  const [progress, setProgress] = useState(33.33);
+  const [progress, setProgress] = useState(25);
 
   
   let navigate = useNavigate();
@@ -57,10 +57,10 @@ const PostAdComponent = () => {
   // after pressing next button
   const handleNextStep = () => {
     setStep(step + 1);
-    if (step === 3) {
+    if (step === 4) {
       setProgress(100);
     } else {
-      setProgress(progress + 33.33);
+      setProgress(progress + 25);
     }
   };
 
@@ -69,7 +69,7 @@ const PostAdComponent = () => {
   // after pressing previous button
   const handlePrevStep = () => {
     setStep(step - 1);
-    setProgress(progress - 33.33);
+    setProgress(progress - 25);
   };
 
 
@@ -132,6 +132,7 @@ const PostAdComponent = () => {
         }
         {step === 3 && <PostAdForm header="Choose Images and Address for transaction" 
                                    formContent={<Step3  onPrev={handlePrevStep}
+                                                        onNext={handleNextStep}
                                                         images={images}
                                                         is_phone_public={is_phone_public}
                                                         address={address}

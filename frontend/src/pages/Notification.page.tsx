@@ -37,15 +37,28 @@ const notifications =
 
 function formatTimestamp(timestamp: string) {
   const date = new Date(timestamp);
-  console.log(date);
-  const hours = date.getHours();
-  console.log(hours);
-  const minutes = date.getMinutes();
-  console.log(minutes);
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  const formattedTime = `${hours % 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  // console.log(date);
+  // const hours = date.getHours();
+  // console.log(hours);
+  // const minutes = date.getMinutes();
+  // console.log(minutes);
+  // const ampm = hours >= 12 ? 'PM' : 'AM';
+  // const formattedTime = `${hours % 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
   
-  return `${formattedTime} of ${date.toDateString()}`;
+  // return `${formattedTime} of ${date.toDateString()}`;
+
+  const formattedTime = date.toLocaleString('en-US', {
+    timeZone: 'UTC',
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+
+  return formattedTime;
 }
 
 const GetNotifications = () => {
@@ -76,9 +89,9 @@ const GetNotifications = () => {
             minW={"85vw"}
             minH={"100vh"}
           >
-            {/* <Center>
-            <Heading fontSize={"4xl"}>Notification</Heading>
-            </Center> */}
+            <Center>
+            <Heading fontSize={"3xl"}>Notifications</Heading>
+            </Center>
 
             <Box
               rounded={"lg"}
@@ -87,11 +100,11 @@ const GetNotifications = () => {
               p={8}
             >
               <Card>
-                <Center>
+                {/* <Center>
                   <CardHeader>
                     <Heading size='md'>Notifications</Heading>
                   </CardHeader>
-                </Center>
+                </Center> */}
 
                 <CardBody>
                   <Stack divider={<StackDivider />} spacing='4'>

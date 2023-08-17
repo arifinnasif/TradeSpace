@@ -1,36 +1,31 @@
-import passport from 'passport'
-import { Strategy } from 'passport-jwt'
-const { SECRET } = require('../constants')
-
-
+import passport from "passport";
+import { Strategy } from "passport-jwt";
+const { SECRET } = require("../constants");
 
 // import prisma
+
 import prisma from '../../prisma/prisma_client';
 import { Interface } from 'readline';
 // const prisma = new PrismaClient();
 
 
-
 // check if a user sends cookie with a token
 const cookieExtractor = function (req: any) {
-  let token = null
 
-  if (req && req.cookies)
-    token = req.cookies['token']
-
-  return token
-}
+  let token = null;
+  // console.log(req.headers.authorization);
 
 
+  if (req && req.headers) token = req.headers.authorization;
+  // console.log(token);
+  return token;
+};
 
 // options for passport-jwt
 const opts = {
   secretOrKey: SECRET,
   jwtFromRequest: cookieExtractor,
-}
-
-
-
+};
 
 /*
     In the next passport.use() function:
@@ -40,6 +35,7 @@ const opts = {
 
     we will use this id from the jwt-token to find the user
 */
+
 passport.use('user-rule',
   new Strategy(opts, async ({ username }, done) => {
     try {
@@ -81,9 +77,11 @@ passport.use('user-rule',
     } catch (error: any) {
       console.log(error.message)
       done(null, false)
+
     }
   })
 );
+
 
 passport.use('non-phone-verified-user-rule',
   new Strategy(opts, async ({ username }, done) => {
@@ -144,4 +142,4 @@ passport.use('admin-rule',
       done(null, false)
     }
   })
-)
+);

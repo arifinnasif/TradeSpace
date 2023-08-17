@@ -15,6 +15,7 @@ import Step2 from "./RegisterStep2Components";
 import Step3 from "./RegisterStep3Components";
 import { registrationService } from "../../services/registration.service";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const Register = () => {
   const toast = useToast();
@@ -36,19 +37,24 @@ const Register = () => {
     }
   };
 
+  const [cookies, setCookie] = useCookies(["token"]);
+
   const registerButtonAction = async () => {
     try {
-      const response_status = (
-        await registrationService.register({
-          username: username,
-          name: userfullname,
-          phone: "+88" + phone,
-          dob: dob,
-          gender: gender,
-          email: email,
-          password: password,
-        })
-      ).status;
+      const response = await registrationService.register({
+        username: username,
+        name: userfullname,
+        phone: "+88" + phone,
+        dob: dob,
+        gender: gender,
+        email: email,
+        password: password,
+      });
+      console.log(response);
+
+      setCookie("token", response.data.token);
+
+      const response_status = response.status;
       if (response_status >= 200 && response_status < 300) handleNextStep();
     } catch (error) {
       console.log(error);
@@ -87,21 +93,20 @@ const Register = () => {
     setProgress(progress - 33.33);
   };
 
-  let [username, setUsername] = useState<string>();
-  let [userfullname, setUserfullname] = useState<string>();
-  let [phone, setPhone] = useState<string>();
-  let [dob, setDob] = useState("1999-12-31");
-  let [gender, setGender] = useState("male");
-  let [email, setEmail] = useState<string>();
-  let [password, setPassword] = useState<string>();
-  let [otp, setOtp] = useState<string>();
-  let [isVerifyPressable, setIsVerifyPressable] = useState<boolean>(true);
+  const [username, setUsername] = useState<string>();
+  const [userfullname, setUserfullname] = useState<string>();
+  const [phone, setPhone] = useState<string>();
+  const [dob, setDob] = useState("1999-12-31");
+  const [gender, setGender] = useState("male");
+  const [email, setEmail] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [otp, setOtp] = useState<string>();
+  const [isVerifyPressable, setIsVerifyPressable] = useState<boolean>(true);
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <>
-
       <Progress value={progress} size="xs" colorScheme="teal" />
       {step === 1 && (
         <RegisterForm
@@ -173,7 +178,6 @@ const Register = () => {
           ) : null}
         </Flex>
       </ButtonGroup>
-
     </>
   );
 };

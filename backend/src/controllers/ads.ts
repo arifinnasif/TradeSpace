@@ -30,21 +30,38 @@ const fuseOptions = {
 };
 
 
-// post ad: /api/ads/post-ad
+
+// convert usage_time to days
+function convertUsageTimeToDays(usage_time: any) {
+    const { days = 0, months = 0, years = 0 } = usage_time;
+    return days + months * 30 + years * 365; // Approximate conversion to days
+}
+
+
+
+// post ad: /api/ads
 let postAd = async (req: Request, res: Response) => {
 
     // retrieve user object
     const user: any = req.user;
 
-    const { category_name, title, description, price,
-        is_negotiable, is_used, is_phone_public,
-        days_used, address, promotion_type } = req.body;
+    const { category_name, 
+            title, 
+            description,
+            is_sell_ad, 
+            price,
+            is_negotiable, 
+            is_used, 
+            usage_time,
+            is_phone_public, 
+            address,  
+          } = req.body;
 
     // retrieve ticket count for promotion type
-    const promotion = await prisma.promotions.findUnique({
-        where: { promotion_type: promotion_type },
+    // const promotion = await prisma.promotions.findUnique({
+    //     where: { promotion_type: promotion_type },
 
-    });
+    // });
 
     try {
 
@@ -54,20 +71,22 @@ let postAd = async (req: Request, res: Response) => {
                 op_username: user.username,
                 category_name: category_name,
                 title: title,
-                description: description,
+                description: description,               
                 price: Number(price),
 
-                // Do not use Boolean(string) here. 
-                // Any string which isn't the empty string will evaluate to true by Boolean(string).
-                is_negotiable: (is_negotiable === 'true'),
-                is_used: (is_used === 'true'),
-                is_phone_public: (is_phone_public === 'true'),
 
-                days_used: Number(days_used),
+
+                
+                is_negotiable: is_negotiable,
+                is_used: is_used,
+                is_phone_public: is_phone_public,
+                is_sell_ad: is_sell_ad,
+
+                days_used: Number(convertUsageTimeToDays(usage_time)),
                 address: address,
-                promotion_type: promotion_type,
+                promotion_type: "normal",
 
-                ticket: promotion!.ticket, // promotion is not null here. Validated in validators/ads.ts
+                // ticket: promotion!.ticket, // promotion is not null here. Validated in validators/ads.ts
                 // Hence, ! is used. 
             }
         });

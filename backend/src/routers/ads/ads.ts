@@ -9,15 +9,15 @@ const router = express.Router();
 
 
 
-// post ad is a protected route
-router.route("/post-ad")
-    .post(userAuth, postAdValidation, validationMiddleware, postAd)
+    
 
 
 
 /*
  
-1. get all ads: api/ads/
+1. get all ads,
+   post ad  : api/ads/
+   post ad is a protected route
 
 2. search ads : api/ads/?search=keyword
 
@@ -32,8 +32,10 @@ router.route("/post-ad")
 
  */
 
+
 router.route("/")
     .get(get_ads)
+    .post(userAuth, postAdValidation, validationMiddleware, postAd)
 
 
 

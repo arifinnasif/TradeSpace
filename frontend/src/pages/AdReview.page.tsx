@@ -1,11 +1,11 @@
 import { useState } from "react";
-import Layout from "../layout/Layout";
+import AdminLayout from "../layout/AdminLayout";
 import { Grid, GridItem } from "@chakra-ui/react";
 
 const AdReviewPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   return (
-    <Layout title="Ad Reviews" loading={isLoading}>
+    <AdminLayout title="Ad Reviews" loading={isLoading}>
       <Grid
         templateAreas={`"filter_section ad_section"`}
         gridTemplateColumns={"1fr 700px"}
@@ -16,7 +16,7 @@ const AdReviewPage = () => {
         <GridItem area={"filter_section"}></GridItem>
         <GridItem area={"ad_section"}></GridItem>
       </Grid>
-    </Layout>
+    </AdminLayout>
   );
 };
 

@@ -74,6 +74,22 @@ export const handle_payment_initialization = async (req: any, res: any) => {
             });
         }
 
+        // check if the ad is sell ad
+        if (!ad.is_sell_ad) {
+            return res.status(403).json({
+                success: false,
+                message: 'This ad is not a sell ad!'
+            });
+        }
+
+        // check if the ad is approved
+        if (ad.status !== 'approved') {
+            return res.status(403).json({
+                success: false,
+                message: 'This ad is not approved!'
+            });
+        }
+
         // check if the ad is already promoted
         if (ad.promotion_type !== "normal") {
             return res.status(403).json({

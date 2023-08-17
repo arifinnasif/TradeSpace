@@ -103,6 +103,7 @@ const PostAdComponent = () => {
       })
 
       console.log(response)
+      navigate("/")
     } catch(error) {
       console.log(error)
     }

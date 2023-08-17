@@ -11,8 +11,10 @@ import {
   InputLeftAddon,
   InputGroup,
   FormHelperText,
+  Checkbox,
+  FormErrorMessage,
 } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 
 
 
@@ -39,11 +41,15 @@ const Step3: FunctionComponent<Step3Props> = ({
 
 
   // declaration of error states
-
+  const [addressError, setAddressError] = useState<boolean>(false)
 
 
 
   // declaration of touched states and action
+  const [addressTouched, setAddressTouched] = useState<boolean>(false)
+  const handleAddressTouched = () => {
+    setAddressTouched(true)
+  }
 
 
 
@@ -51,6 +57,14 @@ const Step3: FunctionComponent<Step3Props> = ({
   // change events definition
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImages(e.target.value.split(","))
+  }
+
+  const handleIs_phone_publicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsPhonePublic(e.target.checked)
+  }
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.target.value)
   }
 
 
@@ -67,6 +81,19 @@ const Step3: FunctionComponent<Step3Props> = ({
         {/* Well it's just ugly for file imput. */}
         {/* Such is frontend */}
         <FormHelperText>Upload upto 5 images</FormHelperText>
+      </FormControl>
+
+      <FormControl>
+        <Checkbox isChecked={is_phone_public} onChange={handleIs_phone_publicChange}>
+          Make my phone number public for this Ad
+        </Checkbox>
+      </FormControl>
+
+      <FormControl isRequired isInvalid={addressError} onBlur={handleAddressTouched}>
+        <FormLabel>Address</FormLabel>
+        <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
+        {addressError && 
+        <FormErrorMessage>Address should be at the range of 5-50 characters</FormErrorMessage>}
       </FormControl>
     </>
   );

@@ -15,6 +15,7 @@ import {
 
 import {
   AddIcon,
+  BellIcon,
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
@@ -142,6 +143,16 @@ const Navbar = () => {
                   colorMode === "light" ? <MoonIcon boxSize={6}/> : <SunIcon boxSize={6}/>
                 }
               </Button>
+              
+              {isLoggedIn() ?
+                <Link to="/notifications">
+                  <Button>
+                    <BellIcon boxSize={6} />
+                  </Button>
+                </Link>
+              :
+                <></>
+              }
               
               <Box onClick={changeAccountClicked}>
                 <NavLink href={isLoggedIn()? "/profile" : "/login"} isClicked={isAccountClicked}>

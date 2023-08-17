@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import prisma from "../../prisma/prisma_client";
 import _ from "lodash";
 import * as dotenv from "dotenv";
+import { notify_user } from "./user_notification.controller";
 
 dotenv.config();
 
@@ -141,4 +142,70 @@ export const handle_payment_initialization = async (req: any, res: any) => {
             error: error.message
         });
     }
+}
+
+
+
+export const fulfill_order = async (session: any) => {
+    const transaction = await prisma.transactions.findUnique({
+        where: {
+            stripe_checkout_id: session.id
+        }
+    });
+
+    if (!transaction) {
+        console.log("Transaction not found!");
+        return;
+    }
+
+    const ad = await prisma.ads.update({
+        where: {
+            id: transaction.ad_id
+        },
+        data: {
+            promotion_type: transaction.promotion
+        }
+    });
+
+    await prisma.transactions.update({
+        where: {
+            stripe_checkout_id: session.id
+        },
+        data: {
+            status: "paid",
+            method: session.payment_method_types[0],
+        }
+    });
+
+    // notify the user
+
+    notify_user(ad!.op_username, "promotion_successful", "Your ad has been promoted successfully!", `Your ad #${ad.id} titled "${ad.title}" has been promoted to ${ad.promotion_type} successfully! Check out transaction table for the receipt`)
+    console.log("Fulfilled order");
+}
+
+export const create_order = async (session: any) => {
+    await prisma.transactions.update({
+        where: {
+            stripe_checkout_id: session.id
+        },
+        data: {
+            status: "awaiting_payment",
+            method: session.payment_method_types[0],
+        }
+    });
+    console.log("Creating order");
+}
+
+export const mark_order_as_failed = async (session: any) => {
+    await prisma.transactions.update({
+        where: {
+            stripe_checkout_id: session.id
+        },
+        data: {
+            status: "failed",
+            method: session.payment_method_types[0],
+        }
+    });
+
+    console.log("order failed");
 }

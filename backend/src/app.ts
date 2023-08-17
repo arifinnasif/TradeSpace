@@ -7,6 +7,7 @@ import helmet from "helmet";
 import apiRouter from "./routers";
 import passport from "passport";
 import prisma from "../prisma/prisma_client";
+import { stripe, fulfill_order, create_order, mark_order_as_failed } from "./controllers/payment.controller"
 
 import * as dotenv from "dotenv"
 
@@ -19,75 +20,9 @@ const { CLIENT_URL } = require("./constants");
 
 const app = express();
 
-const endpointSecret = "whsec_db09a7108b5b210061c92fe5b792b2165b3211c97d3a1d22fdd5bc00fa8589aa";
 
-// import { stripe } from "./stripe_test";
-import { stripe } from "./controllers/payment.controller"
-import { method } from "lodash";
 
-const fulfill_order = async (session: any) => {
-    const transaction = await prisma.transactions.findUnique({
-        where: {
-            stripe_checkout_id: session.id
-        }
-    });
 
-    if (!transaction) {
-        console.log("Transaction not found!");
-        return;
-    }
-
-    const ad = await prisma.ads.update({
-        where: {
-            id: transaction.ad_id
-        },
-        data: {
-            promotion_type: transaction.promotion
-        }
-    });
-
-    await prisma.transactions.update({
-        where: {
-            stripe_checkout_id: session.id
-        },
-        data: {
-            status: "paid",
-            method: session.payment_method_types[0],
-        }
-    });
-
-    // notify the user
-
-    notify_user(ad!.op_username, "promotion_successful", "Your ad has been promoted successfully!", `Your ad #${ad.id} titled "${ad.title}" has been promoted to ${ad.promotion_type} successfully! Check out transaction table for the receipt`)
-    console.log("Fulfilled order");
-}
-
-const create_order = async (session: any) => {
-    await prisma.transactions.update({
-        where: {
-            stripe_checkout_id: session.id
-        },
-        data: {
-            status: "awaiting_payment",
-            method: session.payment_method_types[0],
-        }
-    });
-    console.log("Creating order");
-}
-
-const mark_order_as_failed = async (session: any) => {
-    await prisma.transactions.update({
-        where: {
-            stripe_checkout_id: session.id
-        },
-        data: {
-            status: "failed",
-            method: session.payment_method_types[0],
-        }
-    });
-
-    console.log("order failed");
-}
 
 // initialize backend router
 app.use('/webhook', express.raw({ type: 'application/json' }));
@@ -99,7 +34,7 @@ app.post("/webhook", async (req: any, res: any) => {
     let event;
 
     try {
-        event = stripe.webhooks.constructEvent(payload, sig, endpointSecret);
+        event = stripe.webhooks.constructEvent(payload, sig, process.env.STRIPE_WEBHOOK_SECRET!);
         // console.log("<===event===>")
         // console.log(event);
     } catch (err: any) {

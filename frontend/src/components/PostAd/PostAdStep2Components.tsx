@@ -10,7 +10,9 @@ import {
   RadioGroup,
   InputLeftAddon,
   InputGroup,
+  Checkbox,
 } from "@chakra-ui/react";
+import { FunctionComponent } from "react";
 
 
 
@@ -18,7 +20,7 @@ import {
 interface Step2Props {
   onNext: () => void;
   is_sell_ad: boolean;
-  price: number;
+  price?: number;
   is_negotiable: boolean;
   is_used: boolean;
   days_used?: number;
@@ -30,10 +32,33 @@ interface Step2Props {
 }
 
 
-const Step2 = () => {
+const Step2: FunctionComponent<Step2Props> = ({
+  onNext,
+  is_sell_ad,
+  price,
+  is_negotiable,
+  is_used,
+  days_used,
+  setIsSellAd,
+  setPrice,
+  setIsNegotiable,
+  setIsUsed,
+  setDaysUsed,
+}) => {
+
+
+  // change events definition
+  const handleIs_sell_adChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setIsSellAd(e.target.checked)
+  }
+
   return (
     <>
-      This is step 2 of the form
+      <FormControl>
+        <Checkbox isChecked={is_sell_ad} onChange={handleIs_sell_adChange}>
+          This ad is a sell Ad
+        </Checkbox>
+      </FormControl>
     </>
   );
 }

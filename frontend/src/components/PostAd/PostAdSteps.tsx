@@ -108,7 +108,21 @@ const PostAdComponent = () => {
                                                 />} 
                        />
         }
-        {step === 2 && <PostAdForm header="Step 1" formContent={<Step2 />} />}
+        {step === 2 && <PostAdForm header="Choose the properties of your Ad" 
+                                   formContent={<Step2 onNext={handleNextStep}
+                                                       is_sell_ad={is_sell_ad}
+                                                       price={price}
+                                                       is_negotiable={is_negotiable}
+                                                       is_used={is_used}
+                                                       days_used={days_used}
+                                                       setIsSellAd={setIs_sell_ad}
+                                                       setPrice={setPrice}
+                                                       setIsNegotiable={setIs_negotiable}
+                                                       setIsUsed={setIs_used}
+                                                       setDaysUsed={setDays_used}
+                                               />} 
+                        />
+        }
         {step === 3 && <PostAdForm header="Step 1" formContent={<Step3 />} />}
       </Layout>
     </>

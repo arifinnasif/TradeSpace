@@ -20,6 +20,7 @@ import Protected from "./pages/Protected.page";
 import Login from "./pages/Login.page";
 import AdminLogin from "./pages/AdminLogin.page";
 import { useSelector } from "react-redux";
+import AdReviewPage from "./pages/AdReview.page";
 
 const PrivateRoutes = () => {
   const { isAuth } = useSelector((state: any) => state.auth);
@@ -69,7 +70,7 @@ function App() {
           </Route>
 
           <Route element={<PrivateRoutesAdmin />}>
-            <Route path="/admin" />
+            <Route path="/admin" element={<AdReviewPage />} />
           </Route>
 
           <Route path="/ads/" element={<GetAds />} />

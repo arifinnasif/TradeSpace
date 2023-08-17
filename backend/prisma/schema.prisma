@@ -169,9 +169,10 @@ model transactions {
   stripe_checkout_id    String
   user                  users     @relation(fields: [username], references: [username])
   username              String
+  ad_id                 Int
   promotion             String
   amount                Float
-  method                String
+  method                String?
   status                String    @default("pending")
   createdAt             DateTime  @default(now())
   payment_successful_at DateTime?

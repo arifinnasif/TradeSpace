@@ -3,6 +3,7 @@ import { userAuth } from "../../middlewares/auth-middleware";
 import { postAdValidation } from "../../middlewares/validators/ads";
 import { validationMiddleware } from "../../middlewares/validations-middleware";
 import { get_ad_details, get_ads, postAd } from "../../controllers/ads";
+import { handle_payment_initialization } from "../../controllers/payment.controller";
 
 const router = express.Router();
 
@@ -39,6 +40,7 @@ router.route("/")
 // ad-details
 router.route("/:adId")
     .get(get_ad_details)
+    .put(userAuth, handle_payment_initialization)
 
 
 export default router;

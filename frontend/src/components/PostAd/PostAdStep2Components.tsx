@@ -10,6 +10,7 @@ import {
   Flex,
   Button,
   useToast,
+  InputGroup,
 } from "@chakra-ui/react";
 import { FunctionComponent, useEffect, useState } from "react";
 
@@ -23,11 +24,15 @@ interface Step2Props {
   price?: number;
   is_negotiable: boolean;
   is_used: boolean;
+  years_used?: number;
+  months_used?: number;
   days_used?: number;
   setIsSellAd: (is_sell_ad: boolean) => void;
   setPrice: (price: number) => void;
   setIsNegotiable: (is_negotiable: boolean) => void;
   setIsUsed: (is_used: boolean) => void;
+  setYearsUsed: (years_used: number|undefined) => void;
+  setMonthsUsed: (months_used: number|undefined) => void;
   setDaysUsed: (days_used: number|undefined) => void;
 }
 
@@ -39,18 +44,25 @@ const Step2: FunctionComponent<Step2Props> = ({
   price,
   is_negotiable,
   is_used,
+  years_used,
+  months_used,
   days_used,
   setIsSellAd,
   setPrice,
   setIsNegotiable,
   setIsUsed,
+  setYearsUsed,
+  setMonthsUsed,
   setDaysUsed,
 }) => {
 
 
   // declaration of error states
   const [priceError, setPriceError] = useState<boolean>(false)
+  const [years_usedError, setYears_usedError] = useState<boolean>(false)
+  const [months_usedError, setMonths_usedError] = useState<boolean>(false)
   const [days_usedError, setDays_usedError] = useState<boolean>(false)
+  const [daysInputError, setDaysInputError] = useState<boolean>(false)
 
 
 
@@ -62,9 +74,24 @@ const Step2: FunctionComponent<Step2Props> = ({
     setPriceTouched(true)
   }
 
-  const [days_usedTouched, setDays_usedTouched] = useState<boolean>(false)
-  const handleDays_usedTouched = () => {
-    setDays_usedTouched(true)
+  // const [years_usedTouched, setYears_usedTouched] = useState<boolean>(false)
+  // const handleYears_usedTouched = () => {
+  //   setYears_usedTouched(true)
+  // }
+
+  // const [months_usedTouched, setMonths_usedTouched] = useState<boolean>(false)
+  // const handleMonths_usedTouched = () => {
+  //   setMonths_usedTouched(true)
+  // }
+
+  // const [days_usedTouched, setDays_usedTouched] = useState<boolean>(false)
+  // const handleDays_usedTouched = () => {
+  //   setDays_usedTouched(true)
+  // }
+
+  const [daysInputTouched, setDaysInputTouched] = useState<boolean>(false)
+  const handleDaysInputTouched = () => {
+    setDaysInputTouched(true)
   }
 
   
@@ -88,6 +115,14 @@ const Step2: FunctionComponent<Step2Props> = ({
     setIsUsed(e.target.checked)
   }
 
+  const handleYears_usedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setYearsUsed(parseInt(e.target.value))
+  }
+
+  const handleMonths_usedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMonthsUsed(parseInt(e.target.value))
+  }
+
   const handleDays_usedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDaysUsed(parseInt(e.target.value))
   }
@@ -104,6 +139,8 @@ const Step2: FunctionComponent<Step2Props> = ({
   // so we need to reset it to undefined.
   useEffect(() => {
     if (is_used == false) {
+      setYearsUsed(undefined)
+      setMonthsUsed(undefined)
       setDaysUsed(undefined)
     }
   }, [is_used])
@@ -117,19 +154,60 @@ const Step2: FunctionComponent<Step2Props> = ({
   }, [price, priceTouched])
 
   useEffect(() => {
-    if (days_usedTouched && (is_used == true && (days_used == undefined || days_used < 0))) {
+    if (daysInputTouched && (is_used == true && (years_used != undefined && years_used < 0))) {
+      setYears_usedError(true)
+    } else {
+      setYears_usedError(false)
+    }
+  }, [years_used,
+      is_used,
+      daysInputTouched]
+  )
+
+  useEffect(() => {
+    if (daysInputTouched && (is_used == true && (months_used != undefined && (months_used < 0 || months_used > 11)))) {
+      setMonths_usedError(true)
+    } else {
+      setMonths_usedError(false)
+    }
+  }, [months_used,
+      is_used,
+      daysInputTouched]
+  )
+
+  useEffect(() => {
+    if (daysInputTouched && (is_used == true && (days_used != undefined && (days_used < 0 || days_used > 30)))) {
       setDays_usedError(true)
     } else {
       setDays_usedError(false)
     }
-  }, [days_used, is_used, days_usedTouched])
+  }, [days_used, 
+      is_used, 
+      daysInputTouched]
+  )
+
+  useEffect(() => {
+    if (daysInputTouched && is_used == true && years_used == undefined && months_used == undefined && days_used == undefined) {
+      setDaysInputError(true)
+    } else {
+      setDaysInputError(false)
+    }
+  }, [years_used, 
+      months_used, 
+      days_used, 
+      is_used,
+      daysInputTouched]
+  )
 
 
 
   // validation function
   const isUserInputValid = () => {
     if (priceError || price == undefined || price < 0 ||
-        days_usedError || (is_used == true && (days_used == undefined || days_used < 0))
+        daysInputError || (is_used == true && years_used == undefined && months_used == undefined && days_used == undefined) ||
+        years_usedError || (is_used == true && (years_used != undefined && years_used < 0)) ||
+        months_usedError || (is_used == true && (months_used != undefined && (months_used < 0 || months_used > 11))) ||
+        days_usedError || (is_used == true && (days_used != undefined && (days_used < 0 || days_used > 30)))
        ) return false;
 
     return true;
@@ -145,6 +223,8 @@ const Step2: FunctionComponent<Step2Props> = ({
       console.log(price)
       console.log(is_negotiable)
       console.log(is_used)
+      console.log(years_used)
+      console.log(months_used)
       console.log(days_used)
       onNext();
     }
@@ -190,10 +270,39 @@ const Step2: FunctionComponent<Step2Props> = ({
       {
         is_used && 
         (
-        <FormControl isRequired isInvalid={days_usedError} onBlur={handleDays_usedTouched}>
+        <FormControl isRequired 
+                     isInvalid={daysInputError ||
+                                years_usedError ||
+                                months_usedError ||
+                                days_usedError
+                               } 
+                     onBlur={handleDaysInputTouched}
+        >
           <FormLabel>Days used</FormLabel>
-          <Input type="number" placeholder="Days used" value={days_used} onChange={handleDays_usedChange} />
-          {days_usedError && <FormErrorMessage>Days used should be a positive number</FormErrorMessage>}
+            <InputGroup>
+              <Input type="number" 
+                     placeholder="Years" 
+                     value={years_used} 
+                     onChange={handleYears_usedChange}
+                     isInvalid={years_usedError} 
+              />
+              <Input type="number" 
+                     placeholder="Months" 
+                     value={months_used} 
+                     onChange={handleMonths_usedChange} 
+                     isInvalid={months_usedError}
+              />
+              <Input type="number" 
+                     placeholder="Days" 
+                     value={days_used} 
+                     onChange={handleDays_usedChange}
+                     isInvalid={days_usedError} 
+              />
+            </InputGroup>
+            {days_usedError && <FormErrorMessage>Days used should be a positive number less than 30</FormErrorMessage>}
+            {daysInputError && <FormErrorMessage>Please enter a valid number of days</FormErrorMessage>}
+            {years_usedError && <FormErrorMessage>Years used should be a positive number</FormErrorMessage>}
+            {months_usedError && <FormErrorMessage>Months used should be a positive number less than 12</FormErrorMessage>}
         </FormControl>
         )
       }

@@ -35,6 +35,8 @@ const PostAdComponent = () => {
   const [description, setDescription] = useState<string>()
   const [is_negotiable, setIs_negotiable] = useState<boolean>(false)
   const [is_used, setIs_used] = useState<boolean>(false)
+  const [years_used, setYears_used] = useState<number>()
+  const [months_used, setMonths_used] = useState<number>()
   const [days_used, setDays_used] = useState<number>()
   const [is_phone_public, setIs_phone_public] = useState<boolean>(false)
   const [address, setAddress] = useState<string>()
@@ -115,11 +117,15 @@ const PostAdComponent = () => {
                                                        price={price}
                                                        is_negotiable={is_negotiable}
                                                        is_used={is_used}
+                                                       years_used={years_used}
+                                                       months_used={months_used}
                                                        days_used={days_used}
                                                        setIsSellAd={setIs_sell_ad}
                                                        setPrice={setPrice}
                                                        setIsNegotiable={setIs_negotiable}
                                                        setIsUsed={setIs_used}
+                                                       setYearsUsed={setYears_used}
+                                                       setMonthsUsed={setMonths_used}
                                                        setDaysUsed={setDays_used}
                                                />} 
                         />

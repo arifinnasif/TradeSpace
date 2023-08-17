@@ -8,7 +8,7 @@ import { adminAuth } from "../../middlewares/auth-middleware";
 
 const router = Router();
 
-router.use("/ad_review", adminAuth, ad_review_router);
+router.use("/ad_reviews", adminAuth, ad_review_router);
 router.use("/mute_user", adminAuth, mute_user_router);
 router.use("/transactions", adminAuth, transactionsRouter);
 router.use("/login", admin_login_router)

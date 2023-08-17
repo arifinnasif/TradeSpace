@@ -53,6 +53,7 @@ Check out our API Documentation [here](https://documenter.getpostman.com/view/28
      ```
      stripe listen --forward-to <your_local_backend_server_url>/api/webhooks
      ```
+     now add the stripe webhook signing secret to the `STRIPE_WEBHOOK_SECRET` in `.env` file in the backend directory
 
 - For frontend
 

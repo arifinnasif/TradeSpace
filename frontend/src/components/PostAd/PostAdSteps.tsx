@@ -130,7 +130,17 @@ const PostAdComponent = () => {
                                                />} 
                         />
         }
-        {step === 3 && <PostAdForm header="Step 1" formContent={<Step3 />} />}
+        {step === 3 && <PostAdForm header="Choose Images and Address for transaction" 
+                                   formContent={<Step3  onPrev={handlePrevStep}
+                                                        images={images}
+                                                        is_phone_public={is_phone_public}
+                                                        address={address}
+                                                        setImages={setImages}
+                                                        setIsPhonePublic={setIs_phone_public}
+                                                        setAddress={setAddress}
+                                               />} 
+                       />
+        }
       </Layout>
     </>
   );

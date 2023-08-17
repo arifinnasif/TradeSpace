@@ -1,3 +1,8 @@
+import { Box, Card, CardBody, CardHeader, Heading, Stack,
+         StackDivider,
+         Text,
+} from "@chakra-ui/react";
+
 import { FunctionComponent } from "react";
 
 interface Step4Props {
@@ -36,9 +41,33 @@ const Step4: FunctionComponent<Step4Props> = ({
   address,
 }) => {
   return(
-    <div>
-      <h1>Step 4</h1>
-    </div>
+  <Card>
+    <CardHeader>
+      <Heading size='md'>Check your Ad informations</Heading>
+    </CardHeader>
+
+    <CardBody>
+      <Stack divider={<StackDivider />} spacing='4'>
+        <Box>
+          <Heading size='xs' textTransform='uppercase'>
+            Category
+          </Heading>
+          <Text pt='2' fontSize='sm'>
+            {category}
+          </Text>
+        </Box>
+        
+        <Box>
+          <Heading size='xs' textTransform='uppercase'>
+            Title
+          </Heading>
+          <Text pt='2' fontSize='sm'>
+            {title}
+          </Text>
+        </Box>
+      </Stack>
+    </CardBody>
+  </Card>
   )
 }
 

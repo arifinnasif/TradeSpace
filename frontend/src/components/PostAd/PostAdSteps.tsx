@@ -76,6 +76,20 @@ const PostAdComponent = () => {
 
   // after pressing submit button
   const handleSubmit = () => {
+    console.log("Submitted");
+    console.log(category)
+    console.log(title)
+    console.log(is_sell_ad)
+    console.log(description)
+    console.log(is_negotiable)
+    console.log(is_used)
+    console.log(years_used)
+    console.log(months_used)
+    console.log(days_used)
+    console.log(is_phone_public)
+    console.log(address)
+    console.log(price)
+    console.log(images)
   };
 
 

@@ -1,50 +1,13 @@
-import Stripe from "stripe";
+import stripe from "../services/stripe";
 import prisma from "../../prisma/prisma_client";
+import { create_checkout_session } from "../services/stripe_checkout_session";
 import _ from "lodash";
 import * as dotenv from "dotenv";
 import { notify_user } from "./user_notification.controller";
 
 dotenv.config();
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2022-11-15',
-});
 
-
-
-const create_checkout_session = async (promotion_type: string, price: number) => {
-    try {
-
-
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"],
-            mode: "payment",
-            line_items: [
-                {
-                    price_data: {
-                        currency: "bdt",
-                        product_data: {
-                            name: _.startCase(promotion_type),
-                        },
-                        unit_amount: Math.round(price * 100),
-                    },
-                    quantity: 1,
-                },
-            ],
-            success_url: process.env.STRIPE_UPON_SUCCESS_URL!,
-            cancel_url: process.env.STRIPE_UPON_CANCEL_URL!,
-        });
-
-        // console.log(session);
-        return [session.id, session.url];
-    } catch (error: any) {
-        // return res.status(500).json({
-        //     success: false,
-        //     error: error.message
-        // });
-        console.log(error);
-    }
-}
 
 
 export const handle_payment_initialization = async (req: any, res: any) => {

@@ -19,6 +19,8 @@ import Step2 from "./PostAdStep2Components";
 import Step3 from "./PostAdStep3Components";
 import Step4 from "./PostAdStep4Components";
 
+import { adService } from "../../services/ad.service";
+
 const PostAdComponent = () => {
 
   const [step, setStep] = useState(1);
@@ -45,15 +47,6 @@ const PostAdComponent = () => {
   const [images, setImages] = useState<string[]>([])
 
 
-  // Headers to show at different steps
-  // of the form
-  const header = [
-    "Provide your information",
-    "Register your Account",
-    "Verify your Account",
-  ];
-
-
 
   // after pressing next button
   const handleNextStep = () => {
@@ -75,8 +68,7 @@ const PostAdComponent = () => {
 
 
   // after pressing submit button
-  const handleSubmit = () => {
-    console.log("Submitted");
+  const handleSubmit = async () => {
     console.log(category)
     console.log(title)
     console.log(is_sell_ad)
@@ -90,6 +82,31 @@ const PostAdComponent = () => {
     console.log(address)
     console.log(price)
     console.log(images)
+
+    try{
+      const response = await adService.postAd({
+        category_name: category,
+        title: title,
+        is_sell_ad: is_sell_ad,
+        description: description,
+        is_negotiable: is_negotiable,
+        is_used: is_used,
+        usage_time: {
+          years: years_used,
+          months: months_used,
+          days: days_used
+        },
+        is_phone_public: is_phone_public,
+        address: address,
+        price: price,
+        images: images
+      })
+
+      console.log(response)
+    } catch(error) {
+      console.log(error)
+    }
+    
   };
 
 

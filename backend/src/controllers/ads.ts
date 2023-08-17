@@ -32,7 +32,11 @@ const fuseOptions = {
 
 
 // convert usage_time to days
-function convertUsageTimeToDays(usage_time: any) {
+function convertUsageTimeToDays(is_used:any, usage_time: any) {
+    if (!is_used)
+        return null;
+    if (usage_time === undefined)
+        return null;
     const { days = 0, months = 0, years = 0 } = usage_time;
     return days + months * 30 + years * 365; // Approximate conversion to days
 }
@@ -73,16 +77,13 @@ let postAd = async (req: Request, res: Response) => {
                 title: title,
                 description: description,               
                 price: Number(price),
-
-
-
                 
                 is_negotiable: is_negotiable,
                 is_used: is_used,
                 is_phone_public: is_phone_public,
                 is_sell_ad: is_sell_ad,
 
-                days_used: Number(convertUsageTimeToDays(usage_time)),
+                days_used: convertUsageTimeToDays(is_used, usage_time),
                 address: address,
                 promotion_type: "normal",
 

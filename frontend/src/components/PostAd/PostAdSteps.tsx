@@ -106,7 +106,7 @@ const PostAdComponent = () => {
     } catch(error) {
       console.log(error)
     }
-    
+
   };
 
 

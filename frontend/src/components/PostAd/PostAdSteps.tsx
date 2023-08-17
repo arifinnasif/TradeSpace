@@ -17,6 +17,7 @@ import PostAdForm from "./PostAdForm";
 import Step1 from "./PostAdStep1Components";
 import Step2 from "./PostAdStep2Components";
 import Step3 from "./PostAdStep3Components";
+import Step4 from "./PostAdStep4Components";
 
 const PostAdComponent = () => {
 
@@ -73,6 +74,9 @@ const PostAdComponent = () => {
   };
 
 
+  // after pressing submit button
+  const handleSubmit = () => {
+  };
 
 
   // calculate navbar height
@@ -140,6 +144,25 @@ const PostAdComponent = () => {
                                                         setIsPhonePublic={setIs_phone_public}
                                                         setAddress={setAddress}
                                                />} 
+                       />
+        }
+        {step === 4 && <PostAdForm header="Review your Ad"
+                                    formContent={<Step4 onPrev={handlePrevStep}
+                                                        onSubmit={handleSubmit}
+                                                        category={category}
+                                                        title={title}
+                                                        description={description}
+                                                        is_sell_ad={is_sell_ad}
+                                                        price={price}
+                                                        is_negotiable={is_negotiable}
+                                                        is_used={is_used}
+                                                        years_used={years_used}
+                                                        months_used={months_used}
+                                                        days_used={days_used}
+                                                        is_phone_public={is_phone_public}
+                                                        address={address}
+                                                        images={images}
+                                                />} 
                        />
         }
       </Layout>

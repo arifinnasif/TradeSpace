@@ -7,7 +7,7 @@ import authRouter from "./auth/auth";
 import thingsRouter from "./things/things"
 import adsRouter from "./ads/ads"
 import adminRouter from "./admin";
-import profileRouter from "./user/profile"
+import profileRouter from "./user"
 
 
 

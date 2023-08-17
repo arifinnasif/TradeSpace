@@ -37,7 +37,7 @@ const fulfill_order = async (session: any) => {
         return;
     }
 
-    await prisma.ads.update({
+    const ad = await prisma.ads.update({
         where: {
             id: transaction.ad_id
         },
@@ -55,6 +55,10 @@ const fulfill_order = async (session: any) => {
             method: session.payment_method_types[0],
         }
     });
+
+    // notify the user
+
+    notify_user(ad!.op_username, "promotion_successful", "Your ad has been promoted successfully!", `Your ad #${ad.id} titled "${ad.title}" has been promoted to ${ad.promotion_type} successfully! Check out transaction table for the receipt`)
     console.log("Fulfilled order");
 }
 
@@ -87,7 +91,7 @@ const mark_order_as_failed = async (session: any) => {
 
 // initialize backend router
 app.use('/webhook', express.raw({ type: 'application/json' }));
-app.post("/webhook", (req: any, res: any) => {
+app.post("/webhook", async (req: any, res: any) => {
     // console.log(req);
     const payload = req.body;
     const sig = req.headers['stripe-signature'];
@@ -104,6 +108,18 @@ app.post("/webhook", (req: any, res: any) => {
     }
 
     switch (event.type) {
+        case 'charge.succeeded': {
+            // add receipt to transaction table
+            const session: any = event.data.object;
+            const transaction = await prisma.transactions.update({
+                where: {
+                    stripe_checkout_id: session.id
+                },
+                data: {
+                    receipt_url: session.receipt_url,
+                }
+            });
+        }
         case 'checkout.session.completed': {
             const session: any = event.data.object;
             // Save an order in your database, marked as 'awaiting payment'
@@ -146,6 +162,7 @@ app.post("/webhook", (req: any, res: any) => {
 
 // import passport-middleware
 import "./middlewares/passport-middleware";
+import { notify_user } from "./controllers/user_notification.controller";
 
 
 

@@ -7,6 +7,10 @@ import {  Box,
           Stack,
           useColorModeValue,
           Heading,
+          CardHeader,
+          CardBody,
+          StackDivider,
+          Text
 } from "@chakra-ui/react";
 
 
@@ -26,13 +30,33 @@ const notifications =
       "type": "promotion",
       "title": "your platinum promotion has expired",
       "description": "the promotion that u purchased has expired",
-      "createdAt": "2023-08-17T22:36:57.568Z"
+      "createdAt": "2023-08-15T12:36:57.568Z"
     },
   ]
 
 
+function formatTimestamp(timestamp: string) {
+  const date = new Date(timestamp);
+  console.log(date);
+  const hours = date.getHours();
+  console.log(hours);
+  const minutes = date.getMinutes();
+  console.log(minutes);
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedTime = `${hours % 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  
+  return `${formattedTime} of ${date.toDateString()}`;
+}
+
 const GetNotifications = () => {
+
+
   const [isLoading, setIsLoading] = useState(false);
+  
+  
+  
+  
+  
   return(
     <>
       <Layout title="Hello" loading={isLoading}>
@@ -52,9 +76,9 @@ const GetNotifications = () => {
             minW={"85vw"}
             minH={"100vh"}
           >
-            <Center>
+            {/* <Center>
             <Heading fontSize={"4xl"}>Notification</Heading>
-            </Center>
+            </Center> */}
 
             <Box
               rounded={"lg"}
@@ -62,6 +86,32 @@ const GetNotifications = () => {
               boxShadow={"lg"}
               p={8}
             >
+              <Card>
+                <Center>
+                  <CardHeader>
+                    <Heading size='md'>Notifications</Heading>
+                  </CardHeader>
+                </Center>
+
+                <CardBody>
+                  <Stack divider={<StackDivider />} spacing='4'>
+                    {notifications.map((notification) => (
+                      <Box key={notification.id}>
+                        <Heading size='sm' textTransform='uppercase'>
+                          {notification.title}
+                        </Heading>
+                        <Text pt='2' fontSize='sm'>
+                          {notification.description}
+                        </Text>
+                        <Text pt='2' fontSize='xs'>
+                          {formatTimestamp(notification.createdAt)}
+                        </Text>
+                      </Box>
+                    ))}
+                  </Stack>
+                </CardBody>
+                
+              </Card>
 
             </Box>
           </Stack>

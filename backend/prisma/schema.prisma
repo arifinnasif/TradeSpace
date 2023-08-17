@@ -165,13 +165,18 @@ model notifications {
 }
 
 model transactions {
-  trx_id    Int      @id @default(autoincrement())
-  user      users    @relation(fields: [username], references: [username])
-  username  String
-  promotion String
-  amount    Float
-  method    String
-  createdAt DateTime @default(now())
+  trx_id                Int       @id @default(autoincrement())
+  stripe_checkout_id    String    @unique
+  user                  users     @relation(fields: [username], references: [username])
+  username              String
+  ad_id                 Int
+  promotion             String
+  amount                Float
+  method                String?
+  status                String    @default("pending")
+  receipt_url           String?
+  createdAt             DateTime  @default(now())
+  payment_successful_at DateTime?
 }
 
 model threads {

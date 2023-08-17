@@ -4,15 +4,11 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Stack,
-  Button,
-  Radio,
-  RadioGroup,
-  InputLeftAddon,
-  InputGroup,
   Checkbox,
+  FormErrorMessage,
+  HStack,
 } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 
 
 
@@ -47,11 +43,53 @@ const Step2: FunctionComponent<Step2Props> = ({
 }) => {
 
 
+  // declaration of error states
+  const [priceError, setPriceError] = useState<boolean>(false)
+  const [days_usedError, setDays_usedError] = useState<boolean>(false)
+
+
+
+
+
+  // declaration of touched states and action
+  const [priceTouched, setPriceTouched] = useState<boolean>(false)
+  const handlePriceTouched = () => {
+    setPriceTouched(true)
+  }
+
+  const [days_usedTouched, setDays_usedTouched] = useState<boolean>(false)
+  const handleDays_usedTouched = () => {
+    setDays_usedTouched(true)
+  }
+
+  
+
+
+
   // change events definition
   const handleIs_sell_adChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setIsSellAd(e.target.checked)
   }
 
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrice(parseInt(e.target.value))
+  }
+
+  const handleIs_negotiableChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsNegotiable(e.target.checked)
+  }
+
+  const handleIs_usedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsUsed(e.target.checked)
+  }
+
+  const handleDays_usedChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDaysUsed(parseInt(e.target.value))
+  }
+
+
+
+  
   return (
     <>
       <FormControl>
@@ -59,6 +97,36 @@ const Step2: FunctionComponent<Step2Props> = ({
           This ad is a sell Ad
         </Checkbox>
       </FormControl>
+
+      <FormControl isRequired isInvalid={priceError} onBlur={handlePriceTouched}>
+        <FormLabel>Price</FormLabel>
+        <Input type="number" placeholder="Price" value={price} onChange={handlePriceChange} />
+        {priceError && <FormErrorMessage>Price should be a positive number</FormErrorMessage>}
+      </FormControl>
+
+      <FormControl>
+
+        <HStack spacing='200'>
+          <Checkbox isChecked={is_negotiable} onChange={handleIs_negotiableChange}>
+          Price is negotiable
+          </Checkbox>
+          <Checkbox isChecked={is_used} onChange={handleIs_usedChange}>
+          Product is used before
+          </Checkbox>
+        </HStack>
+        
+      </FormControl>
+
+      {
+        is_used && 
+        (
+        <FormControl isRequired isInvalid={days_usedError} onBlur={handleDays_usedTouched}>
+          <FormLabel>Days used</FormLabel>
+          <Input type="number" placeholder="Days used" value={days_used} onChange={handleDays_usedChange} />
+          {days_usedError && <FormErrorMessage>Days used should be a positive number</FormErrorMessage>}
+        </FormControl>
+        )
+      }
     </>
   );
 }

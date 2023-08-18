@@ -145,7 +145,9 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
           <Link to={`ad_reviews/${id}`}>
             <Flex justify="space-between">
               <chakra.h3 fontSize={{ base: "lg", md: "xl" }} fontWeight="bold">
-                {title}
+                <Text maxWidth={"400px"} noOfLines={1}>
+                  {title}
+                </Text>
               </chakra.h3>
               <chakra.h3 fontSize={{ base: "lg", md: "xl" }} fontWeight="bold">
                 {price} BDT
@@ -200,11 +202,15 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>State a Reason For Declination</ModalHeader>
+          <ModalHeader>
+            <Text maxWidth={"350px"} noOfLines={1}>
+              {title}
+            </Text>
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <FormLabel>Reason</FormLabel>
+              <FormLabel>Reason fro declination</FormLabel>
               <Input
                 ref={initialRef}
                 value={reason}
@@ -229,31 +235,13 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
                 onClose();
               }}
             >
-              Confirm Decline
+              Confirm Declination
             </Button>
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </Container>
-  );
-};
-
-const IconButton = ({ children, ...props }: PropsWithChildren<StackProps>) => {
-  return (
-    <HStack
-      cursor="pointer"
-      border="1px solid"
-      borderColor="gray.300"
-      px={2}
-      py="0.15rem"
-      alignItems="center"
-      rounded="sm"
-      spacing={2}
-      {...props}
-    >
-      {children}
-    </HStack>
   );
 };
 

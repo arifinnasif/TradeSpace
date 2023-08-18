@@ -22,6 +22,12 @@ import { FaThList } from "react-icons/fa";
 import { FaRegCircleXmark, FaRegCircleCheck } from "react-icons/fa6";
 import ReviewCardDetails from "./ReviewCardDetails";
 import { Link } from "react-router-dom";
+import { approve_a_review } from "../../services/admin.service";
+
+const approveButtonAction = (review_id: number) => {
+  console.log("approve button clicked", review_id);
+  approve_a_review(review_id);
+};
 
 interface ReviewCardType {
   id: string;
@@ -32,6 +38,7 @@ interface ReviewCardType {
   is_negotiable: boolean;
   is_sell_ad: boolean;
   promotion_type: string;
+  refreshAction: () => void;
 }
 
 interface ProductCardProps {
@@ -77,6 +84,7 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
   is_used,
   is_negotiable,
   is_sell_ad,
+  refreshAction,
 }) => {
   return (
     <Container maxW="7xl" p={{ base: 5, md: 3 }} margin="0 auto">
@@ -133,8 +141,16 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
           <HStack>
             <ReviewCardDetails {...{ is_sell_ad, is_used, is_negotiable }} />
             <Spacer />
-            <Button colorScheme="teal" leftIcon={<FaRegCircleCheck />}>
-              Accept
+            <Button
+              colorScheme="teal"
+              leftIcon={<FaRegCircleCheck />}
+              onClick={(e) => {
+                console.log(e);
+                refreshAction();
+                approveButtonAction(+id);
+              }}
+            >
+              Approve
             </Button>
             <Button colorScheme="teal" leftIcon={<FaRegCircleXmark />}>
               Decline

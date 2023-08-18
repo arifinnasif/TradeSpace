@@ -1,16 +1,13 @@
-import { PropsWithChildren, Fragment, FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   chakra,
-  Box,
   Stack,
-  VStack,
   HStack,
   Flex,
   Text,
   Image,
   Container,
   Icon,
-  StackProps,
   Button,
   Spacer,
   Modal,
@@ -26,27 +23,18 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 // Here we have used react-icons package for the icons
-import { AiOutlineHeart, AiOutlineExclamationCircle } from "react-icons/ai";
-import { BsTelephoneX } from "react-icons/bs";
+
 import { FunctionComponent } from "react";
 import { FaThList } from "react-icons/fa";
 import { FaRegCircleXmark, FaRegCircleCheck } from "react-icons/fa6";
 import ReviewCardDetails from "./ReviewCardDetails";
 import { Link } from "react-router-dom";
-import { approveAReview, declineAReview } from "../../services/admin.service";
+import {
+  ReviewCardType,
+  approveAReview,
+  declineAReview,
+} from "../../services/admin.service";
 import React from "react";
-
-interface ReviewCardType {
-  id: string;
-  title: string;
-  category_name: string;
-  price: string;
-  is_used: boolean;
-  is_negotiable: boolean;
-  is_sell_ad: boolean;
-  promotion_type: string;
-  refreshAction: () => void;
-}
 
 interface ProductCardProps {
   id: number;
@@ -210,7 +198,7 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <FormLabel>Reason fro declination</FormLabel>
+              <FormLabel>Reason for declination</FormLabel>
               <Input
                 ref={initialRef}
                 value={reason}
@@ -227,9 +215,9 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
 
           <ModalFooter>
             <Button
-              colorScheme="blue"
+              colorScheme="teal"
               mr={3}
-              onClick={(e) => {
+              onClick={() => {
                 declineButtonAction(+id);
                 refreshAction();
                 onClose();

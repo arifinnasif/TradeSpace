@@ -1,5 +1,28 @@
 import API from "../api/axios.config";
 
+export interface ReviewCardType {
+    id: string;
+    title: string;
+    category_name: string;
+    price: string;
+    is_used: boolean;
+    is_negotiable: boolean;
+    is_sell_ad: boolean;
+    promotion_type: string;
+    refreshAction: () => void;
+}
+
+export interface ReviewCardType {
+    id: string;
+    title: string;
+    category_name: string;
+    price: string;
+    is_used: boolean;
+    is_negotiable: boolean;
+    is_sell_ad: boolean;
+    promotion_type: string;
+}
+
 export const login = async (userinfo: any) => {
     const response = await API.post(`/admin/login`, userinfo, {
         withCredentials: true,

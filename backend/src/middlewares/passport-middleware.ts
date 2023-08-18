@@ -5,20 +5,23 @@ const { SECRET } = require("../constants");
 // import prisma
 
 import prisma from '../../prisma/prisma_client';
-import { Interface } from 'readline';
 // const prisma = new PrismaClient();
 
 
 // check if a user sends cookie with a token
 const cookieExtractor = function (req: any) {
 
-  let token = null;
+  let token_from_authorization = null;
+  let token_from_cookie = null;
   // console.log(req.headers.authorization);
 
 
-  if (req && req.headers) token = req.headers.authorization;
+  if (req && req.headers) token_from_authorization = req.headers.authorization;
+  if (req && req.cookies) token_from_cookie = req.cookies.token;
+
+  if (token_from_authorization !== null) return token_from_authorization;
   // console.log(token);
-  return token;
+  return token_from_cookie;
 };
 
 // options for passport-jwt
@@ -39,6 +42,8 @@ const opts = {
 passport.use('user-rule',
   new Strategy(opts, async ({ username }, done) => {
     try {
+
+      console.log("user", username);
 
       const user: {
         username: string;
@@ -86,6 +91,7 @@ passport.use('user-rule',
 passport.use('non-phone-verified-user-rule',
   new Strategy(opts, async ({ username }, done) => {
     try {
+      console.log("nonuser", username);
 
       const user = await prisma.users.findUnique({
         where: {
@@ -118,6 +124,8 @@ passport.use('non-phone-verified-user-rule',
 passport.use('admin-rule',
   new Strategy(opts, async ({ username }, done) => {
     try {
+
+      console.log("admin", username);
 
       const user = await prisma.admins.findUnique({
         where: {

@@ -1,4 +1,4 @@
-import { PropsWithChildren, Fragment } from "react";
+import { PropsWithChildren, Fragment, FormEvent, useState } from "react";
 import {
   chakra,
   Box,
@@ -13,6 +13,17 @@ import {
   StackProps,
   Button,
   Spacer,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  FormControl,
+  FormLabel,
+  Input,
+  ModalFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
 // Here we have used react-icons package for the icons
 import { AiOutlineHeart, AiOutlineExclamationCircle } from "react-icons/ai";
@@ -22,12 +33,8 @@ import { FaThList } from "react-icons/fa";
 import { FaRegCircleXmark, FaRegCircleCheck } from "react-icons/fa6";
 import ReviewCardDetails from "./ReviewCardDetails";
 import { Link } from "react-router-dom";
-import { approve_a_review } from "../../services/admin.service";
-
-const approveButtonAction = (review_id: number) => {
-  console.log("approve button clicked", review_id);
-  approve_a_review(review_id);
-};
+import { approveAReview, declineAReview } from "../../services/admin.service";
+import React from "react";
 
 interface ReviewCardType {
   id: string;
@@ -86,6 +93,25 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
   is_sell_ad,
   refreshAction,
 }) => {
+  const approveButtonAction = async (review_id: number) => {
+    console.log("approve button clicked", review_id);
+    await approveAReview(review_id);
+  };
+
+  const declineButtonAction = async (review_id: number) => {
+    console.log("decline button clicked", review_id, reason);
+    await declineAReview(review_id, { reason: reason });
+  };
+
+  const handleDeclinationReasonChange = (e: FormEvent<HTMLInputElement>) => {
+    const tmp = e.currentTarget.value;
+    setReason(tmp);
+  };
+  const [reason, setReason] = useState<string>();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
   return (
     <Container maxW="7xl" p={{ base: 5, md: 3 }} margin="0 auto">
       <Stack
@@ -152,12 +178,63 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
             >
               Approve
             </Button>
-            <Button colorScheme="teal" leftIcon={<FaRegCircleXmark />}>
+            <Button
+              colorScheme="teal"
+              leftIcon={<FaRegCircleXmark />}
+              onClick={(e) => {
+                console.log(e);
+                onOpen();
+                // declineButtonAction(+id);
+              }}
+            >
               Decline
             </Button>
           </HStack>
         </Stack>
       </Stack>
+      <Modal
+        initialFocusRef={initialRef}
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>State a Reason For Declination</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl>
+              <FormLabel>Reason</FormLabel>
+              <Input
+                ref={initialRef}
+                value={reason}
+                onChange={handleDeclinationReasonChange}
+                placeholder="eg. Image not taken by user"
+              />
+            </FormControl>
+
+            {/* <FormControl mt={4}>
+              <FormLabel>Last name</FormLabel>
+              <Input placeholder="Last name" />
+            </FormControl> */}
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={(e) => {
+                declineButtonAction(+id);
+                refreshAction();
+                onClose();
+              }}
+            >
+              Confirm Decline
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };

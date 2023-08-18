@@ -11,13 +11,12 @@ export const login = async (userinfo: any) => {
 };
 
 export const getAdReviews = async () => {
-    console.log((await API.get(`/admin/ad_reviews`)).data);
     return (await API.get(`/admin/ad_reviews`, {
         withCredentials: true,
     })).data;
 }
 
-export const approve_a_review = async (review_id: number) => {
+export const approveAReview = async (review_id: number) => {
     const response = await API.put(
         `/admin/ad_reviews/${review_id}`,
         {},
@@ -26,6 +25,20 @@ export const approve_a_review = async (review_id: number) => {
         }
 
 
+    );
+
+    console.log(response.data);
+
+    return response;
+}
+
+export const declineAReview = async (review_id: number, body: any) => {
+    const response = await API.delete(
+        `/admin/ad_reviews/${review_id}`,
+        {
+            data: body,
+            withCredentials: true,
+        }
     );
 
     console.log(response.data);

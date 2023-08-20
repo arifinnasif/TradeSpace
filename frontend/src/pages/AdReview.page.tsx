@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../layout/AdminLayout";
-import { Center, Grid, GridItem } from "@chakra-ui/react";
+import { Center, Text, useColorModeValue } from "@chakra-ui/react";
 import ReviewList from "../components/Admin/ReviewList";
 import { ReviewCardType, getAdReviews } from "../services/admin.service";
 
@@ -23,6 +23,8 @@ const AdReviewPage = () => {
     fetchData();
   }, []);
 
+  const textColor = useColorModeValue("gray.600", "gray.300");
+
   return (
     <AdminLayout title="Ad Reviews" loading={isLoading}>
       {/* <Grid
@@ -38,7 +40,13 @@ const AdReviewPage = () => {
         </GridItem>
       </Grid> */}
       <Center>
-        <ReviewList reviewList={reviewList} />
+        {reviewList !== undefined && reviewList.length > 0 ? (
+          <ReviewList reviewList={reviewList} />
+        ) : (
+          <Text fontSize={"3xl"} as={"b"} margin={200} color={textColor}>
+            Take a break, Young Puppet Master. There are no ads to review 😪
+          </Text>
+        )}
       </Center>
     </AdminLayout>
   );

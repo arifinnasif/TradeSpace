@@ -10,6 +10,8 @@ import {
   Button,
   Spacer,
   useDisclosure,
+  Spinner,
+  useToast,
 } from "@chakra-ui/react";
 // Here we have used react-icons package for the icons
 
@@ -22,41 +24,6 @@ import { ReviewCardType, approveAReview } from "../../services/admin.service";
 import React from "react";
 import DeclinationConfirmationModal from "./DeclinationConfirmationModal";
 
-interface ProductCardProps {
-  id: number;
-  title: string;
-  detail: string[];
-  location: string;
-  updated_at: string;
-  price: string;
-  image: string;
-  isFeatured?: boolean;
-}
-
-const productsList: ProductCardProps[] = [
-  {
-    id: 1,
-    title: "Ford F-150 SUV 2021",
-    location: "Paris",
-    detail: ["2021", "Petrol", "4500 cc", "Automatic"],
-    updated_at: "17 days ago",
-    price: "$ 400k",
-    isFeatured: true,
-    image:
-      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb",
-  },
-  {
-    id: 2,
-    title: "Haval Jolion Top",
-    location: "New York",
-    detail: ["2021", "Petrol", "3500 cc", "Automatic"],
-    updated_at: "1 days ago",
-    price: "$ 450k",
-    image:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb",
-  },
-];
-
 const ReviewCard: FunctionComponent<ReviewCardType> = ({
   id,
   title,
@@ -67,9 +34,26 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
   is_sell_ad,
   refreshAction,
 }) => {
+  const toast = useToast();
   const approveButtonAction = async (review_id: number) => {
+    setIsApproveButtonLoading(true);
     console.log("approve button clicked", review_id);
-    await approveAReview(review_id);
+    try {
+      await approveAReview(review_id);
+      toast({
+        title: "Ad approved successfully",
+        status: "success",
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      // console.log(error);
+      toast({
+        title: "Cannot approve this ad",
+        description: error.message,
+        status: "error",
+      });
+    }
+    setIsApproveButtonLoading(false);
   };
 
   const {
@@ -80,6 +64,9 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
 
   const initialDeclinationRef = React.useRef(null);
   const finalRef = React.useRef(null);
+
+  const [isApproveButtonLoading, setIsApproveButtonLoading] =
+    React.useState(false);
   return (
     <>
       <Container
@@ -96,7 +83,10 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
           borderColor="gray.400"
           p={2}
           rounded="md"
-          w={{ base: "auto", md: "3xl" }}
+          w={{
+            base: "auto",
+            md: "3xspinner={<BeatLoader size={8} color='white' />}l",
+          }}
           overflow="hidden"
           pos="relative"
         >
@@ -106,7 +96,9 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
               w={{ base: "100%", md: "18rem" }}
               h="auto"
               objectFit="cover"
-              src={productsList[0].image}
+              src={
+                "https://images.unsplash.com/photo-1502877338535-766e1452684a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb"
+              }
               alt="product image"
             />
           </Flex>
@@ -150,12 +142,13 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
               <ReviewCardDetails {...{ is_sell_ad, is_used, is_negotiable }} />
               <Spacer />
               <Button
+                isLoading={isApproveButtonLoading}
                 colorScheme="teal"
                 leftIcon={<FaRegCircleCheck />}
-                onClick={(e) => {
-                  console.log(e);
+                spinner={<Spinner size={"md"} color="white" />}
+                onClick={async () => {
+                  await approveButtonAction(+id);
                   refreshAction();
-                  approveButtonAction(+id);
                 }}
               >
                 Approve

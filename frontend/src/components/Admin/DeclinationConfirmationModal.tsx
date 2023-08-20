@@ -13,6 +13,8 @@ import {
   Input,
   ModalFooter,
   Button,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { declineAReview } from "../../services/admin.service";
@@ -30,9 +32,30 @@ interface DeclinationConfirmationModal {
 const DeclinationConfirmationModal: FunctionComponent<
   DeclinationConfirmationModal
 > = ({ id, title, initialRef, finalRef, isOpen, onClose, refreshAction }) => {
+  const [isDeclineButtonLoading, setIsDeclineButtonLoading] =
+    useState<boolean>(false);
+
+  const toast = useToast();
+
   const declineButtonAction = async (review_id: number) => {
+    setIsDeclineButtonLoading(true);
     console.log("decline button clicked", review_id, reason);
-    await declineAReview(review_id, { reason: reason });
+
+    try {
+      await declineAReview(review_id, { reason: reason });
+      toast({
+        title: "Ad declined successfully",
+        status: "success",
+      });
+    } catch (error: any) {
+      // console.log(error);
+      toast({
+        title: "Cannot decline this ad",
+        description: error.message,
+        status: "error",
+      });
+    }
+    setIsDeclineButtonLoading(false);
   };
 
   const handleDeclinationReasonChange = (e: FormEvent<HTMLInputElement>) => {
@@ -77,8 +100,10 @@ const DeclinationConfirmationModal: FunctionComponent<
           <Button
             colorScheme="teal"
             mr={3}
-            onClick={() => {
-              declineButtonAction(+id);
+            isLoading={isDeclineButtonLoading}
+            spinner={<Spinner size={"md"} color="white" />}
+            onClick={async () => {
+              await declineButtonAction(+id);
               refreshAction();
               onClose();
             }}

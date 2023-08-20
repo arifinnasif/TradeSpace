@@ -2,8 +2,8 @@
 
 import { Box, VStack } from "@chakra-ui/react";
 import ReviewCard from "./ReviewCard";
-import { FunctionComponent, useEffect, useState } from "react";
-import { ReviewCardType, getAdReviews } from "../../services/admin.service";
+import { FunctionComponent } from "react";
+import { ReviewCardType } from "../../services/admin.service";
 
 interface ReviewListProps {
   reviewList?: ReviewCardType[];

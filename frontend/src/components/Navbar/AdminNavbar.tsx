@@ -15,7 +15,7 @@ import {
   AvatarBadge,
 } from "@chakra-ui/react";
 
-import { AddIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 import logo from "../../../../logos/tradespace-lettermark-white-navbar.png";
 import React from "react";
@@ -73,19 +73,9 @@ const userName = () => {
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isHomeClicked, setIsHomeClicked] = React.useState(false);
-  const [isAllAdsClicked, setIsAllAdsClicked] = React.useState(false);
-  const [isAccountClicked, setIsAccountClicked] = React.useState(false);
 
   const changeHomeClicked = () => {
     setIsHomeClicked(true);
-  };
-
-  const changeAllAdsClicked = () => {
-    setIsAllAdsClicked(true);
-  };
-
-  const changeAccountClicked = () => {
-    setIsAccountClicked(true);
   };
 
   return (

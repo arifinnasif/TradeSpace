@@ -34,6 +34,12 @@ const AdReviewPage = () => {
   const [searchParams, setsearchParams] = useSearchParams();
 
   useEffect(() => {
+    if (!searchParams.get("page")) {
+      setsearchParams({ page: "1" });
+    }
+  });
+
+  useEffect(() => {
     fetchData(Number(searchParams.get("page")));
   }, [searchParams]);
 

@@ -22,7 +22,7 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
     try {
         let skip = (Number(req.query.page || 1) - 1) * limit;
         if (skip < 0) skip = 0;
-        const pending_reviews = await prisma.ads.findMany({
+        let pending_reviews = await prisma.ads.findMany({
             where: {
                 status: 'pending'
             },
@@ -34,6 +34,21 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
             skip: skip,
 
             take: limit,
+        });
+
+        const possible_ai_verdicts = ['No Issue', 'No Issue', 'No Issue', 'Contains Spam', 'Fake Image', 'EXIF Mismatch', 'EXIF Mismatch', 'EXIF Mismatch', 'EXIF Mismatch', 'No EXIF', 'Suspicious Link'];
+
+        pending_reviews = pending_reviews.map((review) => {
+            // generate random number between 0 and size of possible_ai_verdicts
+            const random_number = Math.floor(Math.random() * possible_ai_verdicts.length);
+            const is_ai_approved = random_number < 3 ? true : false;
+            const ai_verdict = possible_ai_verdicts[random_number];
+
+            return {
+                ...review,
+                is_ai_approved: is_ai_approved,
+                ai_verdict: ai_verdict
+            }
         });
 
         const total_pending_reviews = await prisma.ads.count({

@@ -32,6 +32,8 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
   is_used,
   is_negotiable,
   is_sell_ad,
+  is_ai_approved,
+  ai_verdict,
   refreshAction,
 }) => {
   const toast = useToast();
@@ -139,7 +141,15 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
               </Text>
             </HStack>
             <HStack>
-              <ReviewCardDetails {...{ is_sell_ad, is_used, is_negotiable }} />
+              <ReviewCardDetails
+                {...{
+                  is_sell_ad,
+                  is_used,
+                  is_negotiable,
+                  is_ai_approved,
+                  ai_verdict,
+                }}
+              />
               <Spacer />
               <Button
                 isLoading={isApproveButtonLoading}

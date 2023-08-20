@@ -101,6 +101,7 @@ const Navbar = () => {
            position="sticky" 
            top="0" 
            zIndex="sticky"
+           height={'60px'}
       >
 
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>

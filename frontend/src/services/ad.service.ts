@@ -40,6 +40,10 @@ class AdService {
     console.log((await API.get(`/ads`)).data.ad_list);
     return (await API.get(`/ads`)).data.ad_list;
   }
+
+  async postAd(ad: any) {
+    return (await API.post(`/ads`, ad)).data;
+  }
 }
 
 export const adService = new AdService();

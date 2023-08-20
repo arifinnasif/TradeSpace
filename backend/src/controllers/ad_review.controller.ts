@@ -20,6 +20,8 @@ dotenv.config();
 // get all pending reviews: /api/admin/ad_reviews
 export const get_all_pending_reviews = async (req: Request, res: Response) => {
     try {
+        let skip = (Number(req.query.page || 1) - 1) * limit;
+        if (skip < 0) skip = 0;
         const pending_reviews = await prisma.ads.findMany({
             where: {
                 status: 'pending'
@@ -29,13 +31,25 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
                 createdAt: 'desc'
             },
 
-            skip: (Number(req.query.page || 1) - 1) * limit,
+            skip: skip,
 
             take: limit,
         });
 
+        const total_pending_reviews = await prisma.ads.count({
+            where: {
+                status: 'pending'
+            }
+        });
+
+
         // console.log(pending_reviews);
-        return res.status(200).json(pending_reviews);
+        return res.status(200).json({
+            "current_page": req.query.page || 1,
+            "total_pages": Math.ceil(total_pending_reviews / limit),
+
+            "review_list": pending_reviews
+        });
     } catch (error: any) {
         return res.status(500).json({
             success: false,

@@ -33,8 +33,8 @@ export const login = async (userinfo: any) => {
     return response;
 };
 
-export const getAdReviews = async () => {
-    return (await API.get(`/admin/ad_reviews`, {
+export const getAdReviews = async (page?: number) => {
+    return (await API.get(`/admin/ad_reviews?page=${page}`, {
         withCredentials: true,
     })).data;
 }

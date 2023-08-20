@@ -9,6 +9,7 @@ function ReviewList() {
   const [isLoading, setIsLoading] = useState(false);
   const [reviewList, setReviewList] = useState<ReviewCardType[]>();
   async function fetchData() {
+    console.log("fetching data");
     setIsLoading(true);
     const reviews = await getAdReviews();
     setReviewList(reviews);
@@ -21,9 +22,10 @@ function ReviewList() {
   return (
     <Box>
       <VStack spacing={"0"}>
-        {reviewList?.map((p) => (
-          <ReviewCard key={p.id} {...p} refreshAction={fetchData} />
-        ))}
+        {reviewList?.map((p) => {
+          p.refreshAction = fetchData;
+          return <ReviewCard key={p.id} {...p} />;
+        })}
       </VStack>
     </Box>
   );

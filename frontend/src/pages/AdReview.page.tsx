@@ -10,13 +10,20 @@ const AdReviewPage = () => {
   async function fetchData() {
     console.log("fetching data");
     setIsLoading(true);
-    let reviews = await getAdReviews();
-    reviews = reviews.map((r) => {
-      r.refreshAction = fetchData;
-      return r;
-    });
-    setReviewList(reviews);
-    setIsLoading(false);
+
+    try {
+      let reviews = await getAdReviews();
+      reviews = reviews.map((r) => {
+        r.refreshAction = fetchData;
+        return r;
+      });
+      setReviewList(reviews);
+      setIsLoading(false);
+    } catch (error) {
+      setTimeout(() => {
+        fetchData();
+      }, 5000);
+    }
   }
 
   useEffect(() => {

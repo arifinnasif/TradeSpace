@@ -4,13 +4,13 @@ const { SECRET } = require("../constants");
 
 // import prisma
 
-import prisma from '../../prisma/prisma_client';
-// const prisma = new PrismaClient();
 
+import prisma from '../../prisma/prisma_client';
+
+// const prisma = new PrismaClient();
 
 // check if a user sends cookie with a token
 const cookieExtractor = function (req: any) {
-
   let token_from_authorization = null;
   let token_from_cookie = null;
   // console.log(req.headers.authorization);
@@ -22,6 +22,7 @@ const cookieExtractor = function (req: any) {
   if (token_from_authorization !== null) return token_from_authorization;
   // console.log(token);
   return token_from_cookie;
+
 };
 
 // options for passport-jwt
@@ -39,12 +40,10 @@ const opts = {
     we will use this id from the jwt-token to find the user
 */
 
-passport.use('user-rule',
+passport.use(
+  "user-rule",
   new Strategy(opts, async ({ username }, done) => {
     try {
-
-      console.log("user", username);
-
       const user: {
         username: string;
         email: string;
@@ -52,7 +51,7 @@ passport.use('user-rule',
         phone_verified?: boolean;
       } | null = await prisma.users.findUnique({
         where: {
-          username: username
+          username: username,
         },
 
         select: {
@@ -60,42 +59,36 @@ passport.use('user-rule',
           email: true,
           phone_verified: true,
           email_verified: true,
-        }
-      })
+        },
+      });
 
       if (!user) {
-        throw new Error('401 not authorized')
+        throw new Error("401 not authorized");
       }
 
       if (user.phone_verified === false || user.email_verified === false) {
-        throw new Error('401 not authorized')
+        throw new Error("401 not authorized");
       }
-
 
       delete user.email_verified;
       delete user.phone_verified;
 
-
-
-      return await done(null, user)
+      return await done(null, user);
       // will use this user for protected routes
     } catch (error: any) {
-      console.log(error.message)
-      done(null, false)
-
+      console.log(error.message);
+      done(null, false);
     }
   })
 );
 
-
-passport.use('non-phone-verified-user-rule',
+passport.use(
+  "non-phone-verified-user-rule",
   new Strategy(opts, async ({ username }, done) => {
     try {
-      console.log("nonuser", username);
-
       const user = await prisma.users.findUnique({
         where: {
-          username: username
+          username: username,
         },
 
         select: {
@@ -103,51 +96,46 @@ passport.use('non-phone-verified-user-rule',
           email: true,
           // phone_verified: true,
           // email_verified: true,
-        }
-      })
+        },
+      });
 
       if (!user) {
-        throw new Error('401 not authorized')
+        throw new Error("401 not authorized");
       }
 
-
-      return await done(null, user)
+      return await done(null, user);
       // will use this user for protected routes
     } catch (error: any) {
-      console.log(error.message)
-      done(null, false)
+      console.log(error.message);
+      done(null, false);
     }
   })
-)
+);
 
-
-passport.use('admin-rule',
+passport.use(
+  "admin-rule",
   new Strategy(opts, async ({ username }, done) => {
     try {
-
-      console.log("admin", username);
-
       const user = await prisma.admins.findUnique({
         where: {
-          username: username
+          username: username,
         },
 
         select: {
           username: true,
           email: true,
-        }
-      })
+        },
+      });
 
       if (!user) {
-        throw new Error('401 not authorized')
+        throw new Error("401 not authorized");
       }
 
-
-      return await done(null, user)
+      return await done(null, user);
       // will use this user for protected routes
     } catch (error: any) {
-      console.log(error.message)
-      done(null, false)
+      console.log(error.message);
+      done(null, false);
     }
   })
 );

@@ -15,6 +15,17 @@ const API = axios.create({
   withCredentials: true,
 });
 
+API.interceptors.request.use(
+  function (req) {
+    console.log("axios req config");
+    req.headers["Authorization"] = new Cookies().get("token"); // get updated token from cookies
+    return req;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
 // API.interceptors.request.use(
 //   function (req) {
 //     console.log("axios req config");

@@ -228,7 +228,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
         if (pending_review.status !== 'pending') return res.status(404).json({ "error": "ad not pending" });
 
         // delete from ads table
-        await prisma.ads.delete({
+        const deleted_review = await prisma.ads.delete({
             where: {
                 id: Number(req.params.id!)
             }
@@ -252,7 +252,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
         await notify_user(pending_review.op_username,
             'ad_declined',
             'Ad Declined',
-            `Your ad #${req.body.id} titled "${req.body.title}" has been declined by the admin for "${req.body.reason}"`);
+            `Your ad #${deleted_review.id} titled "${deleted_review.title}" has been declined by the admin for "${req.body.reason}"`);
 
         return res.status(200).json(archived_review);
     } catch (error: any) {

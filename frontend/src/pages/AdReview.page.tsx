@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminLayout from "../layout/AdminLayout";
 import { Center, Grid, GridItem } from "@chakra-ui/react";
 import ReviewList from "../components/Admin/ReviewList";
+import { ReviewCardType, getAdReviews } from "../services/admin.service";
 
 const AdReviewPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [reviewList, setReviewList] = useState<ReviewCardType[]>();
+  async function fetchData() {
+    console.log("fetching data");
+    setIsLoading(true);
+    let reviews = await getAdReviews();
+    reviews = reviews.map((r) => {
+      r.refreshAction = fetchData;
+      return r;
+    });
+    setReviewList(reviews);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <AdminLayout title="Ad Reviews" loading={isLoading}>
       {/* <Grid
@@ -20,7 +38,7 @@ const AdReviewPage = () => {
         </GridItem>
       </Grid> */}
       <Center>
-        <ReviewList />
+        <ReviewList reviewList={reviewList} />
       </Center>
     </AdminLayout>
   );

@@ -8,11 +8,10 @@ import {
   Select,
   FormErrorMessage,
   Textarea,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { FunctionComponent, useEffect, useState } from "react";
-
-
+import { homeService, CategoryType } from "../../services/Home.service";
 
 interface Step1Props {
   onNext: () => void;
@@ -24,14 +23,8 @@ interface Step1Props {
   setDescription: (phone: string) => void;
 }
 
-
 // temporary categories for now.
-const categories = ["Electronics",
-                    "Furniture",
-                    "Clothing",
-                    "Books",
-];
-
+// const categories = ["Electronics", "Furniture", "Clothing", "Books"];
 
 const Step1: FunctionComponent<Step1Props> = ({
   onNext,
@@ -42,102 +35,112 @@ const Step1: FunctionComponent<Step1Props> = ({
   setTitle,
   setDescription,
 }) => {
-
   // declaration of error states
-  const [categoryError, setCategoryError] = useState<boolean>(false)
-  const [titleError, setTitleError] = useState<boolean>(false)
-  const [descriptionError, setDescriptionError] = useState<boolean>(false)
+  const [categoryError, setCategoryError] = useState<boolean>(false);
+  const [titleError, setTitleError] = useState<boolean>(false);
+  const [descriptionError, setDescriptionError] = useState<boolean>(false);
+  const [categories, setCategories] = useState<CategoryType[]>();
 
-
-
+  useEffect(() => {
+    async function fetchData() {
+      const cats = await homeService.getCategories();
+      setCategories(cats);
+    }
+    fetchData();
+  }, []);
 
   // declaration of touched states and action
-  const [categoryTouched, setCategoryTouched] = useState<boolean>(false)
+  const [categoryTouched, setCategoryTouched] = useState<boolean>(false);
   const handleCategoryTouched = () => {
-    setCategoryTouched(true)
-  }
+    setCategoryTouched(true);
+  };
 
-  const [titleTouched, setTitleTouched] = useState<boolean>(false)
+  const [titleTouched, setTitleTouched] = useState<boolean>(false);
   const handleTitleTouched = () => {
-    setTitleTouched(true)
-  }
+    setTitleTouched(true);
+  };
 
-  const [descriptionTouched, setDescriptionTouched] = useState<boolean>(false)
+  const [descriptionTouched, setDescriptionTouched] = useState<boolean>(false);
   const handleDescriptionTouched = () => {
-    setDescriptionTouched(true)
-  }
+    setDescriptionTouched(true);
+  };
 
-
-
-
-  
   // change events definition
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCategory(e.target.value)
-  }
+    setCategory(e.target.value);
+  };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value)
-  }
+    setTitle(e.target.value);
+  };
 
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setDescription(e.target.value)
-  }
-
-
+  const handleDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setDescription(e.target.value);
+  };
 
   // error checking hooks for constant supervision
   useEffect(() => {
     if (categoryTouched && (category == undefined || category == "")) {
-      setCategoryError(true)
+      setCategoryError(true);
     } else {
-      setCategoryError(false)
+      setCategoryError(false);
     }
-  }, [category, categoryTouched])
-
+  }, [category, categoryTouched]);
 
   useEffect(() => {
-    if (titleTouched && (title == undefined || title.length < 5 || title.length > 50)) {
-      setTitleError(true)
+    if (
+      titleTouched &&
+      (title == undefined || title.length < 5 || title.length > 50)
+    ) {
+      setTitleError(true);
     } else {
-      setTitleError(false)
+      setTitleError(false);
     }
-  }, [title, titleTouched])
-
+  }, [title, titleTouched]);
 
   useEffect(() => {
-    if (descriptionTouched && (description != undefined && description.length > 100)) {
-      setDescriptionError(true)
+    if (
+      descriptionTouched &&
+      description != undefined &&
+      description.length > 100
+    ) {
+      setDescriptionError(true);
     } else {
-      setDescriptionError(false)
+      setDescriptionError(false);
     }
-  }, [description, descriptionTouched])
-
-
+  }, [description, descriptionTouched]);
 
   // validation function
   const isUserInputValid = () => {
-    if (categoryError || category == undefined || category == "" ||
-        titleError || title == undefined || title.length < 5 || title.length > 50 ||
-        descriptionError || (description != undefined && description.length > 100)
-       ) return false;
+    if (
+      categoryError ||
+      category == undefined ||
+      category == "" ||
+      titleError ||
+      title == undefined ||
+      title.length < 5 ||
+      title.length > 50 ||
+      descriptionError ||
+      (description != undefined && description.length > 100)
+    )
+      return false;
 
     return true;
-  }
-
+  };
 
   const toast = useToast();
 
-  const handleNextRequest = (e : React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    if(isUserInputValid()){
-      console.log(category)
-      console.log(title)
-      console.log(description)
+  const handleNextRequest = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (isUserInputValid()) {
+      console.log(category);
+      console.log(title);
+      console.log(description);
       onNext();
-    }
-    else {
-      console.log("Invalid Inputs")
+    } else {
+      console.log("Invalid Inputs");
       toast({
         title: "Invalid Inputs",
         description: "Please check your inputs and try again.",
@@ -146,36 +149,62 @@ const Step1: FunctionComponent<Step1Props> = ({
         isClosable: true,
       });
     }
-  }
-
+  };
 
   return (
     <>
-      <FormControl isRequired isInvalid={categoryError} onBlur={handleCategoryTouched}>
+      <FormControl
+        isRequired
+        isInvalid={categoryError}
+        onBlur={handleCategoryTouched}
+      >
         <FormLabel>Select Category</FormLabel>
-          <Select placeholder="Category" onChange={handleCategoryChange}>
-            {categories.map((category) => (
-              <option key={category} value={category}>{category}</option>
-            ))}
-          </Select>
-          {categoryError && <FormErrorMessage>Please select a category</FormErrorMessage>}
+        <Select placeholder="Category" onChange={handleCategoryChange}>
+          {categories?.map((category) => (
+            <option key={category.name} value={category.name}>
+              {category.name}
+            </option>
+          ))}
+        </Select>
+        {categoryError && (
+          <FormErrorMessage>Please select a category</FormErrorMessage>
+        )}
       </FormControl>
 
-
-      <FormControl isRequired isInvalid={titleError} onBlur={handleTitleTouched}>
+      <FormControl
+        isRequired
+        isInvalid={titleError}
+        onBlur={handleTitleTouched}
+      >
         <FormLabel>Title</FormLabel>
-        <Input type="text" placeholder="Title" value={title} onChange={handleTitleChange} />
-        {titleError && <FormErrorMessage>Title should be at the range of 5-50 characters</FormErrorMessage>}
+        <Input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={handleTitleChange}
+        />
+        {titleError && (
+          <FormErrorMessage>
+            Title should be at the range of 5-50 characters
+          </FormErrorMessage>
+        )}
       </FormControl>
 
-
-      <FormControl isInvalid={descriptionError} onBlur={handleDescriptionTouched}>
+      <FormControl
+        isInvalid={descriptionError}
+        onBlur={handleDescriptionTouched}
+      >
         <FormLabel>Description</FormLabel>
-        <Textarea placeholder='Provide your products description' value={description} onChange={handleDescriptionChange} />
-        {descriptionError && <FormErrorMessage>
-                                Description should be at the range of 0-100 characters
-                            </FormErrorMessage>}
-
+        <Textarea
+          placeholder="Provide your products description"
+          value={description}
+          onChange={handleDescriptionChange}
+        />
+        {descriptionError && (
+          <FormErrorMessage>
+            Description should be at the range of 0-100 characters
+          </FormErrorMessage>
+        )}
       </FormControl>
 
       <Button
@@ -191,6 +220,6 @@ const Step1: FunctionComponent<Step1Props> = ({
       </Button>
     </>
   );
-}
+};
 
 export default Step1;

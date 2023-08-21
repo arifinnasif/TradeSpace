@@ -15,7 +15,8 @@ import { ReactNode } from "react";
 
 import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
-import logo from "../../../../logos/tradespace-lettermark-white-navbar.png"
+import logo from "../../../../logos/tradespace-lettermark-combined-non-fill-teal.svg";
+import logoForDarkMode from "../../../../logos/tradespace-lettermark-combined-non-fill-teal-light.svg";
 
 const SocialButton = ({
   children,
@@ -26,7 +27,7 @@ const SocialButton = ({
   label: string;
   href: string;
 }) => {
-  return (   
+  return (
     <chakra.button
       bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
       rounded={"full"}
@@ -43,10 +44,8 @@ const SocialButton = ({
         bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
       }}
     >
-
       <VisuallyHidden>{label}</VisuallyHidden>
       {children}
-
     </chakra.button>
   );
 };
@@ -69,10 +68,15 @@ const Logo = () => {
     //     fill="#2F855A"
     //   />
     // </svg>
-    
+
     // our own logo will be used here
     <Flex alignItems="center">
-      <Image width = '100px' height = '25px' src={logo} alt="TradeSpace" />
+      <Image
+        width="100px"
+        height="25px"
+        src={useColorModeValue(logo, logoForDarkMode)}
+        alt="TradeSpace"
+      />
     </Flex>
   );
 };

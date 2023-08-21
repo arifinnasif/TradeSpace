@@ -13,7 +13,7 @@ import { FunctionComponent } from "react";
 import { FaThList } from "react-icons/fa";
 import { CategoryType } from "../../services/Home.service";
 
-const CategoryCard: FunctionComponent<CategoryType> = ({ category, count }) => {
+const CategoryCard: FunctionComponent<CategoryType> = ({ name, ads_count }) => {
   return (
     <Box p={"3"}>
       <Card
@@ -31,10 +31,10 @@ const CategoryCard: FunctionComponent<CategoryType> = ({ category, count }) => {
           <Stack>
             <CardBody>
               <Heading colorScheme={"teal"} size="md">
-                {category}
+                {name}
               </Heading>
 
-              <Text py="2">{count} Advertisements</Text>
+              <Text py="2">{ads_count} Advertisements</Text>
             </CardBody>
           </Stack>
         </HStack>

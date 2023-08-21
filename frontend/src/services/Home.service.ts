@@ -2,14 +2,15 @@ import { Cookies } from "react-cookie";
 import API from "../api/axios.config";
 
 export interface CategoryType {
-  category: string;
-  count: string;
+  name: string;
+  ads_count: string;
 }
 
 class HomeService {
-  async getCategories() {
+  async getCategories<CategoryType>() {
     // return API.get("/cats");
-    return await API.get("/home/categories");
+    console.log(await API.get(`/home/categories`));
+    return (await API.get(`/home/categories`)).data.categories_with_ads_count;
     // return [
     //   {
     //     category: "Mobile",

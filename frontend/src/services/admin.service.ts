@@ -9,19 +9,11 @@ export interface ReviewCardType {
     is_negotiable: boolean;
     is_sell_ad: boolean;
     promotion_type: string;
+    is_ai_approved: boolean;
+    ai_verdict: string;
     refreshAction: () => void;
 }
 
-export interface ReviewCardType {
-    id: string;
-    title: string;
-    category_name: string;
-    price: string;
-    is_used: boolean;
-    is_negotiable: boolean;
-    is_sell_ad: boolean;
-    promotion_type: string;
-}
 
 export const login = async (userinfo: any) => {
     const response = await API.post(`/admin/login`, userinfo, {
@@ -33,8 +25,8 @@ export const login = async (userinfo: any) => {
     return response;
 };
 
-export const getAdReviews = async () => {
-    return (await API.get(`/admin/ad_reviews`, {
+export const getAdReviews = async (page?: number) => {
+    return (await API.get(`/admin/ad_reviews?page=${page}`, {
         withCredentials: true,
     })).data;
 }

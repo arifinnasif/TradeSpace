@@ -15,7 +15,8 @@ import {
 
 import { AddIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 
-import logo from "../../../../logos/tradespace-lettermark-white-navbar.png";
+import logo from "../../../../logos/tradespace-lettermark-combined-non-fill-teal.svg";
+import logoForDarkMode from "../../../../logos/tradespace-lettermark-combined-non-fill-teal-light.svg";
 import React from "react";
 
 import { Link } from "react-router-dom";
@@ -105,7 +106,11 @@ const Navbar = () => {
             <Box>
               {/* link the image to home */}
               <Link to="/">
-                <Image width="145px" height="35px" src={logo} alt="Logo" />
+                <Image
+                  height="40px"
+                  src={useColorModeValue(logo, logoForDarkMode)}
+                  alt="Logo"
+                />
               </Link>
             </Box>
 

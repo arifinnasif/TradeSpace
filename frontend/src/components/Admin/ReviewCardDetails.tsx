@@ -1,20 +1,26 @@
-import { Flex, chakra, Badge } from "@chakra-ui/react";
+import { Flex, chakra, Badge, Text, HStack, Tooltip } from "@chakra-ui/react";
 import { Fragment, FunctionComponent } from "react";
+import { FaRobot } from "react-icons/fa";
 
 interface ReviewCardDetailsProps {
   is_sell_ad: boolean;
   is_used: boolean;
   is_negotiable: boolean;
+  is_ai_approved: boolean;
+  ai_verdict: string;
 }
 
 const ReviewCardDetails: FunctionComponent<ReviewCardDetailsProps> = ({
   is_sell_ad,
   is_used,
   is_negotiable,
+  is_ai_approved,
+  ai_verdict,
 }) => {
   const is_sell_ad_text = is_sell_ad ? "Sell Ad" : "Buy Ad";
   const is_used_text = is_used ? "Used" : "New";
   const is_negotiable_text = is_negotiable ? "Negotiable" : "Fixed";
+
   const details = [is_sell_ad_text, is_used_text, is_negotiable_text];
   return (
     <Flex alignItems="center" color="gray.500">
@@ -31,6 +37,31 @@ const ReviewCardDetails: FunctionComponent<ReviewCardDetailsProps> = ({
           )}
         </Fragment>
       ))}
+      <chakra.span mx={2} fontSize={{ base: "sm", sm: "md" }}>
+        |
+      </chakra.span>
+      <Fragment>
+        {/* <Text fontSize={{ base: "sm", sm: "md" }}>{data}</Text> */}
+        {is_ai_approved ? (
+          <Tooltip label={"AI verdict: There is no issue"}>
+            <Badge fontSize={"0.8em"} color={"green"}>
+              <HStack>
+                <FaRobot />
+                <Text>approvable</Text>
+              </HStack>
+            </Badge>
+          </Tooltip>
+        ) : (
+          <Tooltip label={`AI verdict: ${ai_verdict}`}>
+            <Badge fontSize={"0.8em"} color={"red"}>
+              <HStack>
+                <FaRobot />
+                <Text>declinable</Text>
+              </HStack>
+            </Badge>
+          </Tooltip>
+        )}
+      </Fragment>
     </Flex>
   );
 };

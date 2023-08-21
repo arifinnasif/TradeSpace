@@ -17,7 +17,8 @@ import {
 
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
-import logo from "../../../../logos/tradespace-lettermark-white-navbar.png";
+import logo from "../../../../logos/tradespace-lettermark-combined-non-fill-teal.svg";
+import logoForDarkMode from "../../../../logos/tradespace-lettermark-combined-non-fill-teal-light.svg";
 import React from "react";
 
 import { Link } from "react-router-dom";
@@ -70,7 +71,7 @@ const userName = () => {
   return "TradeSpace Admin";
 };
 
-const Navbar = () => {
+const AdminNavbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isHomeClicked, setIsHomeClicked] = React.useState(false);
 
@@ -95,12 +96,17 @@ const Navbar = () => {
             <Box>
               {/* link the image to home */}
               <Link to="/admin/">
-                <Image width="145px" height="35px" src={logo} alt="Logo" />
+                <Image
+                  height="40px"
+                  src={useColorModeValue(logo, logoForDarkMode)}
+                  alt="Logo"
+                />
               </Link>
             </Box>
 
             <HStack
               as={"nav"}
+              mt={2}
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
@@ -110,14 +116,14 @@ const Navbar = () => {
                   fontSize={22}
                   color={useColorModeValue("gray.600", "gray.300")}
                 >
-                  Admin
+                  Admin Panel
                 </Text>
               </Box>
-              <Box onClick={changeHomeClicked}>
+              {/* <Box onClick={changeHomeClicked}>
                 <NavLink href="/admin" isClicked={isHomeClicked}>
                   Home
                 </NavLink>
-              </Box>
+              </Box> */}
             </HStack>
           </HStack>
 
@@ -184,4 +190,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default AdminNavbar;

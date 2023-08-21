@@ -1,4 +1,9 @@
-<img src="./logos/tradespace-lettermark-white.svg">
+
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./logos/tradespace-lettermark-combined-non-fill-teal-light.svg">
+  <img alt="Shows an illustrated sun in light color mode and a moon with stars in dark color mode." src="./logos/tradespace-lettermark-combined-non-fill-teal.svg">
+</picture>
 
 <!-- <img src="./logos/tradespace-logo-256.svg" align="left"> -->
 

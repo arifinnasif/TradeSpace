@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../layout/AdminLayout";
-import { Center, Text, VStack, useColorModeValue } from "@chakra-ui/react";
+import {
+  Center,
+  Spacer,
+  Text,
+  VStack,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import ReviewList from "../components/Admin/ReviewList";
 import { ReviewCardType, getAdReviews } from "../services/admin.service";
 import Pagination from "../components/Pagination/Pagination";
@@ -73,8 +79,9 @@ const AdReviewPage = () => {
             Take a break, Young Puppet Master. There are no ads to review 😪
           </Text>
         ) : (
-          <VStack>
+          <VStack minH={400}>
             <ReviewList reviewList={reviewList} />
+            <Spacer height={"4"} />
             <Pagination
               currentPage={Number(searchParams.get("page"))}
               setCurrentPage={setCurrentPage}

@@ -23,6 +23,7 @@ import Login from "./pages/Login.page";
 import AdminLogin from "./pages/AdminLogin.page";
 import { useSelector } from "react-redux";
 import AdReviewPage from "./pages/AdReview.page";
+import SimpleSidebar from "./components/Sidebar/Sidebar";
 
 const PrivateRoutes = () => {
   const { isAuth } = useSelector((state: any) => state.auth);
@@ -73,6 +74,7 @@ function App() {
 
           <Route element={<PrivateRoutesAdmin />}>
             <Route path="/admin" element={<AdReviewPage />} />
+            <Route path="/admin/test/*" element={<SimpleSidebar />} />
           </Route>
 
           <Route path="/ads/" element={<GetAds />} />

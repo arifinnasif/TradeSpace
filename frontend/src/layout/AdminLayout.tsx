@@ -3,14 +3,16 @@ import AdminNavbar from "../components/Navbar/AdminNavbar";
 import Spinner from "../components/Spinner";
 import { Helmet } from "react-helmet-async";
 import FooterComponent from "../components/Footer/Footer";
+import SimpleSidebar from "../components/Sidebar/Sidebar";
+import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
 
-interface LayoutProps {
+interface AdminLayoutProps {
   children: React.ReactNode;
   title?: string;
   loading?: boolean;
 }
 
-const Layout: FunctionComponent<LayoutProps> = ({
+const AdminLayout: FunctionComponent<AdminLayoutProps> = ({
   children,
   title,
   loading,
@@ -19,7 +21,7 @@ const Layout: FunctionComponent<LayoutProps> = ({
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{title || "Home"} | TradeSpace </title>
+        <title>{title || "Home"} | TradeSpace Admin </title>
         <meta
           name="description"
           content="A marketplace for buying and selling used items"
@@ -47,7 +49,17 @@ const Layout: FunctionComponent<LayoutProps> = ({
       </Helmet>
       <div>
         <AdminNavbar />
-        {loading ? (
+        <Flex>
+          <SimpleSidebar />
+          <Box w={"100%"}>
+            <main>
+              {children}
+              <FooterComponent />
+            </main>
+          </Box>
+        </Flex>
+        {/* <SimpleSidebar /> */}
+        {/* {loading ? (
           <>
             <Spinner size={"100px"} />
           </>
@@ -56,10 +68,43 @@ const Layout: FunctionComponent<LayoutProps> = ({
             <main>{children}</main>
           </div>
         )}
-        <FooterComponent />
+        <FooterComponent /> */}
+
+        {/* <Grid
+          templateAreas={`"sidebar_section main_section"`}
+          gridTemplateRows={"20px 1fr"}
+          // gridTemplateColumns={"400px 1fr"}
+          // h='200px'
+          // w='100%'
+          // gap="3"
+          // color="blackAlpha.700"
+          // fontWeight="bold"
+          // mx="70px"
+        >
+          <GridItem
+            // py="2"
+            // textAlign="center"
+            // bg="orange.300"
+            area={"sidebar_section"}
+          >
+            <SimpleSidebar />
+          </GridItem>
+          <GridItem area={"main_section"}>
+            {loading ? (
+              <>
+                <Spinner size={"100px"} />
+              </>
+            ) : (
+              <div>
+                <main>{children}</main>
+              </div>
+            )}
+            <FooterComponent />
+          </GridItem>
+        </Grid> */}
       </div>
     </>
   );
 };
 
-export default Layout;
+export default AdminLayout;

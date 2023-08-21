@@ -71,7 +71,7 @@ const userName = () => {
   return "TradeSpace Admin";
 };
 
-const Navbar = () => {
+const AdminNavbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isHomeClicked, setIsHomeClicked] = React.useState(false);
 
@@ -119,11 +119,11 @@ const Navbar = () => {
                   Admin Panel
                 </Text>
               </Box>
-              <Box onClick={changeHomeClicked}>
+              {/* <Box onClick={changeHomeClicked}>
                 <NavLink href="/admin" isClicked={isHomeClicked}>
                   Home
                 </NavLink>
-              </Box>
+              </Box> */}
             </HStack>
           </HStack>
 
@@ -190,4 +190,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default AdminNavbar;

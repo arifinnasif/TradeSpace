@@ -51,4 +51,4 @@ let get_categories_with_ads_count = async (req: Request, res: Response) => {
   }
 };
 
-export { get_categories };
+export { get_categories, get_categories_with_ads_count };

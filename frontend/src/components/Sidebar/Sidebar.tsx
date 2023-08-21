@@ -38,11 +38,9 @@ interface LinkItemProps {
   link: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, link: "/admin/test" },
-  { name: "Trending", icon: FiTrendingUp, link: "/admin/test/trending" },
-  { name: "Explore", icon: FiCompass, link: "/admin/test/explore" },
-  { name: "Favourites", icon: FiStar, link: "/admin/test/favourites" },
-  { name: "Settings", icon: FiSettings, link: "/admin/test/settings" },
+  { name: "Dashboard", icon: FiHome, link: "/admin/" },
+  { name: "Ad Reviews", icon: FiTrendingUp, link: "/admin/ad_reviews" },
+  { name: "User Management", icon: FiCompass, link: "/admin/user_management" },
 ];
 
 export default function SimpleSidebar() {
@@ -87,6 +85,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       ))} */}
         <Center>
           <Tabs
+            defaultIndex={1}
             variant={"soft-rounded"}
             orientation="vertical"
             colorScheme="teal"

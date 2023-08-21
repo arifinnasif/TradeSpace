@@ -4,7 +4,7 @@ import Spinner from "../components/Spinner";
 import { Helmet } from "react-helmet-async";
 import FooterComponent from "../components/Footer/Footer";
 import SimpleSidebar from "../components/Sidebar/Sidebar";
-import { Box, Flex, Grid, GridItem } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Spacer } from "@chakra-ui/react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -51,9 +51,11 @@ const AdminLayout: FunctionComponent<AdminLayoutProps> = ({
         <AdminNavbar />
         <Flex>
           <SimpleSidebar />
-          <Box w={"100%"}>
+          {/* <Box></Box> */}
+          <Spacer />
+          <Box w={"88%"}>
             <main>
-              {children}
+              <Box id="nasif">{children}</Box>
               <FooterComponent />
             </main>
           </Box>

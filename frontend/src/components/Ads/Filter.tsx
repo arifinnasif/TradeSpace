@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ChakraProvider,
   Box,
@@ -38,7 +39,8 @@ const products = [
   // ... other products
 ];
 
-const App = () => {
+const Filter = () => {
+  const navigate = useNavigate();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortField, setSortField] = useState("Price");
   const [sortOrder, setSortOrder] = useState("Ascending");
@@ -61,17 +63,31 @@ const App = () => {
     setSortOrder(order);
   };
 
-  const filteredAndSortedProducts = products
-    .filter(
-      (product) =>
-        selectedCategories.length === 0 ||
-        selectedCategories.includes(product.category)
-    )
-    .sort((a, b) => {
-      const aValue = sortField === "Price" ? a.price : a.days_used;
-      const bValue = sortField === "Price" ? b.price : b.days_used;
-      return sortOrder === "Ascending" ? aValue - bValue : bValue - aValue;
-    });
+  const filteredAndSortedProducts = products;
+  // .filter(
+  //   (product) =>
+  //     selectedCategories.length === 0 ||
+  //     selectedCategories.includes(product.category)
+  // )
+  // .sort((a, b) => {
+  //   const aValue = sortField === "Price" ? a.price : a.days_used;
+  //   const bValue = sortField === "Price" ? b.price : b.days_used;
+  //   return sortOrder === "Ascending" ? aValue - bValue : bValue - aValue;
+  // });
+
+  const handleFilterClick = () => {
+    const selectedCategoriesQueryParam = selectedCategories
+      .map((cat) => `cat[]=${encodeURIComponent(cat)}`)
+      .join("&");
+    const sortQueryParam = `sort=${encodeURIComponent(
+      sortField
+    )},${encodeURIComponent(sortOrder)}`;
+
+    const queryParams = selectedCategoriesQueryParam + "&" + sortQueryParam;
+
+    // Construct the URL and navigate
+    navigate(`/ads?${queryParams}`);
+  };
 
   return (
     <ChakraProvider>
@@ -175,8 +191,10 @@ const App = () => {
           ))}
         </Stack>
       </Box>
+      <Button onClick={handleFilterClick}>Filter</Button>{" "}
+      {/* Add the filter button */}
     </ChakraProvider>
   );
 };
 
-export default App;
+export default Filter;

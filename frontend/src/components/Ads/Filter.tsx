@@ -144,6 +144,14 @@ const App = () => {
                 </MenuItem>
               </MenuList>
             </Menu>
+            <Flex mt={2}>
+              {sortField && sortOrder && (
+                <Tag size="md" variant="solid" colorScheme="blue">
+                  <TagLabel>{sortField}</TagLabel>
+                  <TagLabel>{sortOrder}</TagLabel>
+                </Tag>
+              )}
+            </Flex>
           </FormControl>
         </Flex>
         <Stack mt={4}>

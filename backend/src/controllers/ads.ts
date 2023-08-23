@@ -99,9 +99,9 @@ let postAd = async (req: Request, res: Response) => {
  
 1. get all ads: api/ads/
 
-2. search ads : api/ads/?search=keyword
+2. search ads : api/ads?search_string=keyword
 
-3. filter ads : api/ads/?
+3. filter ads : api/ads?
                         promo_types[]=promo1&promo_types[]=promo2&
                         cat[]=cat1&cat[]=cat2&
                         sort=price,asc/desc& // sort=days_used,desc

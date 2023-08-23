@@ -7,24 +7,18 @@ import { handle_payment_initialization } from "../../controllers/payment.control
 
 const router = express.Router();
 
-
-
-    
-
-
-
 /*
  
 1. get all ads,
    post ad  : api/ads/
    post ad is a protected route
 
-2. search ads : api/ads/?search=keyword
+2. search ads : api/ads?search_string=keyword
 
 3. filter ads : api/ads/?
                         promo_types[]=promo1&promo_types[]=promo2&
                         cat[]=cat1&cat[]=cat2&
-                        sort=high-to-low/low-to-high&
+                        sort=price,asc/desc& // sort=days_used,desc
                         geo=lat:long&
                         ad_type=sell/buy&
                         page=x&
@@ -32,17 +26,15 @@ const router = express.Router();
 
  */
 
-
-router.route("/")
-    .get(get_ads)
-    .post(userAuth, postAdValidation, validationMiddleware, postAd)
-
-
+router
+  .route("/")
+  .get(get_ads)
+  .post(userAuth, postAdValidation, validationMiddleware, postAd);
 
 // ad-details
-router.route("/:adId")
-    .get(get_ad_details)
-    .put(userAuth, handle_payment_initialization)
-
+router
+  .route("/:adId")
+  .get(get_ad_details)
+  .put(userAuth, handle_payment_initialization);
 
 export default router;

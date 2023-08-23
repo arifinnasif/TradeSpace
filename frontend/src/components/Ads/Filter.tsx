@@ -40,8 +40,8 @@ const products = [
 
 const App = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sortField, setSortField] = useState("price");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortField, setSortField] = useState("Price");
+  const [sortOrder, setSortOrder] = useState("Ascending");
 
   const handleCategoryChange = (category: string) => {
     if (selectedCategories.includes(category)) {
@@ -68,9 +68,9 @@ const App = () => {
         selectedCategories.includes(product.category)
     )
     .sort((a, b) => {
-      const aValue = sortField === "price" ? a.price : a.days_used;
-      const bValue = sortField === "price" ? b.price : b.days_used;
-      return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+      const aValue = sortField === "Price" ? a.price : a.days_used;
+      const bValue = sortField === "Price" ? b.price : b.days_used;
+      return sortOrder === "Ascending" ? aValue - bValue : bValue - aValue;
     });
 
   return (
@@ -125,8 +125,8 @@ const App = () => {
                     onChange={handleSortFieldChange}
                   >
                     <Stack spacing={2}>
-                      <Radio value="price">Price</Radio>
-                      <Radio value="days_used">Used Days</Radio>
+                      <Radio value="Price">Price</Radio>
+                      <Radio value="Days Used">Used Days</Radio>
                     </Stack>
                   </RadioGroup>
                 </MenuItem>
@@ -137,8 +137,8 @@ const App = () => {
                     onChange={handleSortOrderChange}
                   >
                     <Stack spacing={2}>
-                      <Radio value="asc">Ascending</Radio>
-                      <Radio value="desc">Descending</Radio>
+                      <Radio value="Ascending">Ascending</Radio>
+                      <Radio value="Descending">Descending</Radio>
                     </Stack>
                   </RadioGroup>
                 </MenuItem>
@@ -146,10 +146,14 @@ const App = () => {
             </Menu>
             <Flex mt={2}>
               {sortField && sortOrder && (
-                <Tag size="md" variant="solid" colorScheme="blue">
-                  <TagLabel>{sortField}</TagLabel>
-                  <TagLabel>{sortOrder}</TagLabel>
-                </Tag>
+                <>
+                  <Tag m="1" size="md" variant="solid" colorScheme="blue">
+                    <TagLabel>{sortField}</TagLabel>
+                  </Tag>
+                  <Tag m="1" size="md" variant="solid" colorScheme="blue">
+                    <TagLabel>{sortOrder}</TagLabel>
+                  </Tag>
+                </>
               )}
             </Flex>
           </FormControl>

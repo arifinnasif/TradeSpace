@@ -14,13 +14,13 @@ const SearchComponent: React.FC = () => {
   const handleEnterKey = (event: { key: string }) => {
     if (event.key === "Enter") {
       // Navigate to the specified link when "Enter" key is pressed
-      navigate(`/ads/?search_string=${searchTerm}`);
+      navigate(`/ads?search_string=${searchTerm}`);
     }
   };
 
   const handleButtonClick = () => {
     // Navigate to the specified link when the button is clicked
-    navigate(`/ads/?search_string=${searchTerm}`);
+    navigate(`/ads?search_string=${searchTerm}`);
   };
 
   return (

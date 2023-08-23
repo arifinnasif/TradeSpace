@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "../layout/Layout";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import AdsList from "../components/Ads/AdsList";
+import SearchComponent from "../components/Homepage/SearchBar";
 
 const GetAds = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +18,9 @@ const GetAds = () => {
         mx={"70px"}
         my={"10px"}
       >
+        <GridItem area={"SearchBar_Section"}>
+          <SearchComponent />
+        </GridItem>
         <GridItem area={"filter_section"}>Filter</GridItem>
         <GridItem area={"ad_section"}>
           <AdsList />

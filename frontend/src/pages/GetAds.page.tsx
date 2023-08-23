@@ -4,7 +4,6 @@ import { Grid, GridItem } from "@chakra-ui/layout";
 import AdsList from "../components/Ads/AdsList";
 import SearchComponent from "../components/Homepage/SearchBar";
 import {
-  Link,
   createSearchParams,
   useNavigate,
   useSearchParams,
@@ -29,7 +28,7 @@ const GetAds = () => {
       search: `?${createSearchParams(search_param)}`,
     });
 
-    navigate(0);
+    // navigate(0);
   };
 
   return (

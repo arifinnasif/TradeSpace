@@ -10,8 +10,8 @@ import { useSearchParams } from "react-router-dom";
 function AdsList() {
   const [isLoading, setIsLoading] = useState(false);
   const [adsList, setAdsList] = useState<AdCardType[]>();
-  const [search_string, setSearch_string] = useSearchParams();
-  const search_string_temp = search_string.get("search_string");
+  const [params, setParams] = useSearchParams();
+  // const search_string_temp = search_string.get("search_string");
   // const filter = search_string.get("filter");
   // console.log(filter);
   // console.log(search_string_temp);
@@ -19,14 +19,13 @@ function AdsList() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const ads = await adService.getAds(search_string);
-      console.log(ads);
+      const ads = await adService.getAds(params);
       setAdsList(ads);
       console.log(adsList);
       setIsLoading(false);
     }
     fetchData();
-  }, []);
+  }, [params]);
   return (
     <Box>
       <VStack spacing={"0"}>

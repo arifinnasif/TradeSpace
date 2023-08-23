@@ -35,7 +35,7 @@ const SearchComponent: FunctionComponent<SearchComponentProps> = ({
 
   const handleButtonClick = () => {
     // Navigate to the specified link when the button is clicked
-    navigate(`/ads?search_string=${searchTerm}`);
+    onEnterKey(searchTerm);
   };
 
   return (

@@ -20,7 +20,9 @@ function AdsList() {
     async function fetchData() {
       setIsLoading(true);
       const ads = await adService.getAds();
+      console.log(ads);
       setAdsList(ads);
+      console.log(adsList);
       setIsLoading(false);
     }
     fetchData();

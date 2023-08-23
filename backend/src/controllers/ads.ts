@@ -209,6 +209,9 @@ let get_ads = async (req: Request, res: Response) => {
       const fuse = new Fuse(ad_list, fuseOptions);
       // @ts-ignore
       ad_list = fuse.search(String(search_string));
+
+      //get rid of refIndex
+      ad_list = ad_list.map((ad: any) => ad.item);
     }
 
     // get total number of ads

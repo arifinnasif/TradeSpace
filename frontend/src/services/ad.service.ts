@@ -36,9 +36,26 @@ class AdService {
     return (await API.get(`/ads/${id}`)).data;
   }
 
-  async getAds() {
-    console.log((await API.get(`/ads`)).data.ad_list);
-    return (await API.get(`/ads`)).data.ad_list;
+  async getAds(search_string: URLSearchParams) {
+    // console.log((await API.get(`/ads`)).data.ad_list);
+    // console.log(search_string.getAll("cat"));
+    const search_term = search_string.get("search_string");
+    const response = (
+      await API.get(`/ads`, {
+        params: {
+          search_string: search_term,
+          // promo_types: ["promo1", "promo2"],
+          // cat: ["cat1", "cat2"],
+          // sort: "high-to-low",
+          // geo: "lat:long",
+          // ad_type: "sell",
+          // page: 1,
+          // limit: 10,
+        },
+      })
+    ).data.ad_list;
+    // console.log(response);
+    return response;
   }
 
   async postAd(ad: any) {

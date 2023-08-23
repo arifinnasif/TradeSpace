@@ -9,7 +9,7 @@ export interface CategoryType {
 class HomeService {
   async getCategories<CategoryType>() {
     // return API.get("/cats");
-    console.log(await API.get(`/home/categories`));
+    // console.log(await API.get(`/home/categories`));
     return (await API.get(`/home/categories`)).data.categories_with_ads_count;
     // return [
     //   {

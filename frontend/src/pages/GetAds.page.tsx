@@ -3,8 +3,12 @@ import Layout from "../layout/Layout";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import AdsList from "../components/Ads/AdsList";
 import SearchComponent from "../components/Homepage/SearchBar";
+import { useSearchParams } from "react-router-dom";
 
 const GetAds = () => {
+  const [search_string, setSearchParams] = useSearchParams();
+  const search_string_temp = searchParams.get("search_string");
+  console.log(search_string_temp);
   const [isLoading, setIsLoading] = useState(false);
   return (
     <Layout title="Ads" loading={isLoading}>

@@ -37,11 +37,11 @@ class AdService {
   }
 
   async getAds() {
-    console.log((await API.get(`/ads`)).data.ad_list);
-    return (
+    // console.log((await API.get(`/ads`)).data.ad_list);
+    const response = (
       await API.get(`/ads`, {
         params: {
-          search: "car",
+          search_string: "biten",
           // promo_types: ["promo1", "promo2"],
           // cat: ["cat1", "cat2"],
           // sort: "high-to-low",
@@ -52,6 +52,8 @@ class AdService {
         },
       })
     ).data.ad_list;
+    console.log(response);
+    return response;
   }
 
   async postAd(ad: any) {

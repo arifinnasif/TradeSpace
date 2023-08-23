@@ -3,13 +3,35 @@ import Layout from "../layout/Layout";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import AdsList from "../components/Ads/AdsList";
 import SearchComponent from "../components/Homepage/SearchBar";
-import { useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 
 const GetAds = () => {
-  const [search_string, setSearch_string] = useSearchParams();
-  const search_string_temp = search_string.get("search_string");
-  // console.log(search_string_temp);
+  const [params, setParams] = useSearchParams();
+  const search_string_temp = String(params.get("search_string"));
+  console.log(search_string_temp);
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleSearchSubmit = () => {
+    const search_term = {
+      search_string: search_string_temp,
+    };
+    navigate({
+      pathname: "/ads",
+      search: `?${createSearchParams(search_term)}`,
+    });
+  };
+
+  const handleEnterKeyforSearch = (event: { key: string }) => {
+    if (event.key === "Enter") {
+      handleSearchSubmit();
+    }
+  };
   return (
     <Layout title="Ads" loading={isLoading}>
       <Grid
@@ -23,7 +45,7 @@ const GetAds = () => {
         my={"10px"}
       >
         <GridItem area={"SearchBar_Section"}>
-          <SearchComponent />
+          <SearchComponent onEnterKey={handleEnterKeyforSearch} />
         </GridItem>
         <GridItem area={"filter_section"}>Filter</GridItem>
         <GridItem area={"ad_section"}>

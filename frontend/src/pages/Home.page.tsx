@@ -7,7 +7,7 @@ import { Grid, GridItem } from "@chakra-ui/layout";
 const HomePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   return (
-    <Layout title="Hello" loading={isLoading}>
+    <Layout title="Home" loading={isLoading}>
       <Grid
         templateAreas={`"SearchBar_section"
                         "CategoryList_section"`}

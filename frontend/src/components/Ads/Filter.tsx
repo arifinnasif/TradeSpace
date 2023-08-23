@@ -190,8 +190,18 @@ const Filter = () => {
             </Box>
           ))}
         </Stack>
+        <Button
+          onClick={handleFilterClick}
+          w="70%" // Set the width to 100% to make it a block button
+          display="block" // Set the display to "block" to make it a block button
+          mx="auto" // Center the button
+          mt={4} // Add some margin on top
+          colorScheme="teal" // Use the teal color scheme
+        >
+          Filter
+        </Button>
       </Box>
-      <Button onClick={handleFilterClick}>Filter</Button>{" "}
+
       {/* Add the filter button */}
     </ChakraProvider>
   );

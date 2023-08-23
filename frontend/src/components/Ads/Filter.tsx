@@ -5,6 +5,9 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Stack,
+  Button,
+  Input,
   Menu,
   MenuButton,
   MenuList,
@@ -36,10 +39,11 @@ const products = [
 ];
 
 const App = () => {
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [sortOption, setSortOption] = useState("price-asc");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [sortField, setSortField] = useState("price");
+  const [sortOrder, setSortOrder] = useState("asc");
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = (category: string) => {
     if (selectedCategories.includes(category)) {
       setSelectedCategories((prevCategories) =>
         prevCategories.filter((cat) => cat !== category)
@@ -49,6 +53,14 @@ const App = () => {
     }
   };
 
+  const handleSortFieldChange = (field: React.SetStateAction<string>) => {
+    setSortField(field);
+  };
+
+  const handleSortOrderChange = (order: React.SetStateAction<string>) => {
+    setSortOrder(order);
+  };
+
   const filteredAndSortedProducts = products
     .filter(
       (product) =>
@@ -56,7 +68,6 @@ const App = () => {
         selectedCategories.includes(product.category)
     )
     .sort((a, b) => {
-      const [sortField, sortOrder] = sortOption.split("-");
       const aValue = sortField === "price" ? a.price : a.days_used;
       const bValue = sortField === "price" ? b.price : b.days_used;
       return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
@@ -69,9 +80,7 @@ const App = () => {
           <FormControl>
             <FormLabel>Filter by Categories</FormLabel>
             <Menu>
-              <MenuButton as={Tag} cursor="pointer">
-                Select Categories
-              </MenuButton>
+              <MenuButton as={Button}>Select Categories</MenuButton>
               <MenuList>
                 {["Category 1", "Category 2", "Category 3"].map((category) => (
                   <MenuItem key={category}>
@@ -107,30 +116,37 @@ const App = () => {
           <FormControl>
             <FormLabel>Sort by</FormLabel>
             <Menu>
-              <MenuButton as={Tag} cursor="pointer">
-                Sort by:{" "}
-                {sortOption === "price-asc"
-                  ? "Price Ascending"
-                  : "Price Descending"}
-              </MenuButton>
+              <MenuButton as={Button}>Sort Options</MenuButton>
               <MenuList>
-                <MenuItem onClick={() => setSortOption("price-asc")}>
-                  Price Ascending
+                <MenuItem>
+                  <FormLabel>Sort Field</FormLabel>
+                  <RadioGroup
+                    value={sortField}
+                    onChange={handleSortFieldChange}
+                  >
+                    <Stack spacing={2}>
+                      <Radio value="price">Price</Radio>
+                      <Radio value="days_used">Used Days</Radio>
+                    </Stack>
+                  </RadioGroup>
                 </MenuItem>
-                <MenuItem onClick={() => setSortOption("price-desc")}>
-                  Price Descending
-                </MenuItem>
-                <MenuItem onClick={() => setSortOption("days_used-asc")}>
-                  Days Used Ascending
-                </MenuItem>
-                <MenuItem onClick={() => setSortOption("days_used-desc")}>
-                  Days Used Descending
+                <MenuItem>
+                  <FormLabel>Sort Order</FormLabel>
+                  <RadioGroup
+                    value={sortOrder}
+                    onChange={handleSortOrderChange}
+                  >
+                    <Stack spacing={2}>
+                      <Radio value="asc">Ascending</Radio>
+                      <Radio value="desc">Descending</Radio>
+                    </Stack>
+                  </RadioGroup>
                 </MenuItem>
               </MenuList>
             </Menu>
           </FormControl>
         </Flex>
-        <Box mt={4}>
+        <Stack mt={4}>
           {filteredAndSortedProducts.map((product) => (
             <Box
               key={product.id}
@@ -138,7 +154,6 @@ const App = () => {
               borderRadius="lg"
               p={4}
               shadow="md"
-              my={2}
             >
               <strong>{product.name}</strong>
               <div>Category: {product.category}</div>
@@ -146,7 +161,7 @@ const App = () => {
               <div>Days Used: {product.days_used}</div>
             </Box>
           ))}
-        </Box>
+        </Stack>
       </Box>
     </ChakraProvider>
   );

@@ -8,7 +8,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import Filter from "../components/Ads/Filter";
+import Filter from "../components/Ads/Filter2";
 
 const GetAds = () => {
   const [params, setParams] = useSearchParams();

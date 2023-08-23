@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { Button, Input, InputGroup } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 const SearchComponent: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,7 +14,15 @@ const SearchComponent: React.FC = () => {
   const handleEnterKey = (event: { key: string }) => {
     if (event.key === "Enter") {
       // Navigate to the specified link when "Enter" key is pressed
-      navigate(`/ads?search_string=${searchTerm}`);
+      // navigate(`/ads?search_string=${searchTerm}`);
+
+      const params = {
+        search_string: searchTerm,
+      };
+      navigate({
+        pathname: "/ads",
+        search: `?${createSearchParams(params)}`,
+      });
     }
   };
 

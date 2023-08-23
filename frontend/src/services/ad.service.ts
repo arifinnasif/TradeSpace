@@ -38,7 +38,20 @@ class AdService {
 
   async getAds() {
     console.log((await API.get(`/ads`)).data.ad_list);
-    return (await API.get(`/ads`)).data.ad_list;
+    return (
+      await API.get(`/ads`, {
+        params: {
+          search: "car",
+          // promo_types: ["promo1", "promo2"],
+          // cat: ["cat1", "cat2"],
+          // sort: "high-to-low",
+          // geo: "lat:long",
+          // ad_type: "sell",
+          // page: 1,
+          // limit: 10,
+        },
+      })
+    ).data.ad_list;
   }
 
   async postAd(ad: any) {

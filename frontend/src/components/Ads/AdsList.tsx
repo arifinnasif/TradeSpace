@@ -12,7 +12,9 @@ function AdsList() {
   const [adsList, setAdsList] = useState<AdCardType[]>();
   const [search_string, setSearch_string] = useSearchParams();
   const search_string_temp = search_string.get("search_string");
-  console.log(search_string_temp);
+  // const filter = search_string.get("filter");
+  // console.log(filter);
+  // console.log(search_string_temp);
 
   useEffect(() => {
     async function fetchData() {

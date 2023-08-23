@@ -19,7 +19,7 @@ function AdsList() {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const ads = await adService.getAds();
+      const ads = await adService.getAds(search_string);
       console.log(ads);
       setAdsList(ads);
       console.log(adsList);

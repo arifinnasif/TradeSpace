@@ -1,10 +1,10 @@
 import React, { ChangeEvent, FunctionComponent, useState } from "react";
 import { Button, Input, InputGroup } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
-import { createSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface SearchComponentProps {
-  onEnterKey: (event: { key: string }) => void;
+  onEnterKey: (search_term: string) => void;
 }
 
 const SearchComponent: FunctionComponent<SearchComponentProps> = ({
@@ -17,21 +17,21 @@ const SearchComponent: FunctionComponent<SearchComponentProps> = ({
     setSearchTerm(event.target.value);
   };
 
-  // const handleEnterKey = (event: { key: string }) => {
-  //   if (event.key === "Enter") {
-  //     // Navigate to the specified link when "Enter" key is pressed
-  //     // navigate(`/ads?search_string=${searchTerm}`);
+  const handleEnterKey = (event: { key: string }) => {
+    if (event.key === "Enter") {
+      // Navigate to the specified link when "Enter" key is pressed
+      // navigate(`/ads?search_string=${searchTerm}`);
 
-  //     // const params = {
-  //     //   search_string: searchTerm,
-  //     // };
-  //     // navigate({
-  //     //   pathname: "/ads",
-  //     //   search: `?${createSearchParams(params)}`,
-  //     // });
-  //     onEnterKey(event);
-  //   }
-  // };
+      // const params = {
+      //   search_string: searchTerm,
+      // };
+      // navigate({
+      //   pathname: "/ads",
+      //   search: `?${createSearchParams(params)}`,
+      // });
+      onEnterKey(searchTerm);
+    }
+  };
 
   const handleButtonClick = () => {
     // Navigate to the specified link when the button is clicked
@@ -45,7 +45,7 @@ const SearchComponent: FunctionComponent<SearchComponentProps> = ({
         placeholder="What are you looking for?"
         _placeholder={{ color: "teal" }}
         onChange={handleInputChange}
-        onKeyDown={onEnterKey}
+        onKeyDown={handleEnterKey}
         focusBorderColor="teal.400"
         size={"lg"}
         borderColor={"teal"}

@@ -17,21 +17,17 @@ const GetAds = () => {
 
   const navigate = useNavigate();
 
-  const handleSearchSubmit = () => {
-    const search_term = {
-      search_string: search_string_temp,
+  const handleSearchSubmit = (search_term: string) => {
+    const search_param = {
+      search_string: search_term,
     };
+    console.log(search_param);
     navigate({
       pathname: "/ads",
-      search: `?${createSearchParams(search_term)}`,
+      search: `?${createSearchParams(search_param)}`,
     });
   };
 
-  const handleEnterKeyforSearch = (event: { key: string }) => {
-    if (event.key === "Enter") {
-      handleSearchSubmit();
-    }
-  };
   return (
     <Layout title="Ads" loading={isLoading}>
       <Grid
@@ -45,7 +41,7 @@ const GetAds = () => {
         my={"10px"}
       >
         <GridItem area={"SearchBar_Section"}>
-          <SearchComponent onEnterKey={handleEnterKeyforSearch} />
+          <SearchComponent onEnterKey={handleSearchSubmit} />
         </GridItem>
         <GridItem area={"filter_section"}>Filter</GridItem>
         <GridItem area={"ad_section"}>

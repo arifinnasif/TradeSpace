@@ -24,6 +24,8 @@ import {
 
 import { FunctionComponent, 
          useEffect, 
+         useMemo, 
+         useRef, 
          useState 
 } from "react";
 
@@ -45,21 +47,30 @@ import { LatLng } from "leaflet";
 
 
 // This function is necessary for the map to show current location
-function LocationMarker() {
+function LocationMarker({ setMarkerPosition } : { setMarkerPosition : (position : LatLng) => void }) {
   const [position, setPosition] = useState<LatLng | null>(null)
+ 
   const map = useMapEvents({
     locationfound(e) {
       setPosition(e.latlng)
+      setMarkerPosition(e.latlng)
       map.flyTo(e.latlng, map.getZoom())
     },
   })
-
+ 
   useEffect(() => {
     map.locate();
   }, []);
 
   return position === null ? null : (
-    <Marker position={position}>
+    <Marker position={position}
+            draggable={true}
+            eventHandlers={{
+              dragend: (e) => {
+                setMarkerPosition(e.target.getLatLng());
+              },
+            }}
+    >
       <Popup>You are here</Popup>
     </Marker>
   )
@@ -95,6 +106,7 @@ const Step3: FunctionComponent<Step3Props> = ({
   const position = { lat: 23.7266, lng: 90.3927 }
   const [showMap, setShowMap] = useState(false);
   const [mapKey, setMapKey] = useState(0);
+  const [markerPosition, setMarkerPosition] = useState<LatLng | null>(null);
 
 
   // map related functions
@@ -267,10 +279,16 @@ const Step3: FunctionComponent<Step3Props> = ({
                     A pretty CSS3 popup. <br /> Easily customizable.
                   </Popup>
                 </Marker> */}
-                <LocationMarker />
+                <LocationMarker setMarkerPosition={setMarkerPosition}/>
               </MapContainer>
             </div>
             </PopoverBody>
+            {markerPosition && (
+              <div>
+                <p>Current Latitude: {markerPosition.lat.toFixed(6)}</p>
+                <p>Current Longitude: {markerPosition.lng.toFixed(6)}</p>
+              </div>
+            )}
           </PopoverContent>
         </Popover>
 

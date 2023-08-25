@@ -221,12 +221,12 @@ const Step3: FunctionComponent<Step3Props> = ({
           <PopoverContent style={{ width: '500px', height: '500px', overflow: 'hidden'}}>
             <PopoverArrow />
             <PopoverCloseButton onClick={() => setShowMap(false)}/>
-            <PopoverHeader>Map</PopoverHeader>
+            <PopoverHeader>Choose your address on map</PopoverHeader>
             <PopoverBody style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
             <div style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}>
               <MapContainer
                 center={position}
-                zoom={13}
+                zoom={17}
                 style={{ width: '100%', height: '100%' }}
               >
                 <TileLayer

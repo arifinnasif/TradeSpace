@@ -32,6 +32,14 @@ import { MapContainer,
          Popup 
 } from "react-leaflet";
 
+// this particular import is important
+// it is the only way to make leaflet work with react
+// without it, the map will show up with different tiles popping up
+// at different positions like there's no tomorrow
+// Also a height is required for the map to show up
+// I set the height at 500px in the PopoverContent 
+import "leaflet/dist/leaflet.css"
+
 
 
 interface Step3Props {
@@ -194,11 +202,11 @@ const Step3: FunctionComponent<Step3Props> = ({
               Show Map
             </Button>
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent style={{ width: '500px', height: '500px', overflow: 'hidden'}}>
             <PopoverArrow />
             <PopoverCloseButton />
             <PopoverHeader>Map</PopoverHeader>
-            <PopoverBody>
+            <PopoverBody style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
             <div style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}>
               <MapContainer
                 center={[51.505, -0.09]}

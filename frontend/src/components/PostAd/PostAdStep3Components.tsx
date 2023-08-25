@@ -30,7 +30,8 @@ import { FunctionComponent,
 import { MapContainer, 
          TileLayer, 
          Marker, 
-         Popup 
+         Popup, 
+         useMapEvents
 } from "react-leaflet";
 
 // this particular import is important
@@ -40,6 +41,30 @@ import { MapContainer,
 // Also a height is required for the map to show up
 // I set the height at 500px in the PopoverContent 
 import "leaflet/dist/leaflet.css"
+import { LatLng } from "leaflet";
+
+
+// This function is necessary for the map to show current location
+function LocationMarker() {
+  const [position, setPosition] = useState<LatLng | null>(null)
+  const map = useMapEvents({
+    locationfound(e) {
+      setPosition(e.latlng)
+      map.flyTo(e.latlng, map.getZoom())
+    },
+  })
+
+  useEffect(() => {
+    map.locate();
+  }, []);
+
+  return position === null ? null : (
+    <Marker position={position}>
+      <Popup>You are here</Popup>
+    </Marker>
+  )
+}
+
 
 
 
@@ -67,7 +92,7 @@ const Step3: FunctionComponent<Step3Props> = ({
 }) => {
 
   // Map related states
-  const position = { lat: 51.505, lng: -0.09 }
+  const position = { lat: 23.7266, lng: 90.3927 }
   const [showMap, setShowMap] = useState(false);
   const [mapKey, setMapKey] = useState(0);
 
@@ -78,6 +103,9 @@ const Step3: FunctionComponent<Step3Props> = ({
     // set a random number as key to force re-render
     setMapKey(Math.random());
   };
+
+
+
 
 
 
@@ -227,17 +255,19 @@ const Step3: FunctionComponent<Step3Props> = ({
               <MapContainer
                 center={position}
                 zoom={17}
+                scrollWheelZoom={false}
                 style={{ width: '100%', height: '100%' }}
               >
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
-                <Marker position={position}>
+                {/* <Marker position={position}>
                   <Popup>
                     A pretty CSS3 popup. <br /> Easily customizable.
                   </Popup>
-                </Marker>
+                </Marker> */}
+                <LocationMarker />
               </MapContainer>
             </div>
             </PopoverBody>

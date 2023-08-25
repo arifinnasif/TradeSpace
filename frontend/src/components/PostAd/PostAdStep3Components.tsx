@@ -1,6 +1,7 @@
 "use client";
 
 import { AddIcon } from "@chakra-ui/icons";
+
 import {
   FormControl,
   FormLabel,
@@ -64,6 +65,21 @@ const Step3: FunctionComponent<Step3Props> = ({
   setIsPhonePublic,
   setAddress,
 }) => {
+
+  // Map related states
+  const position = { lat: 51.505, lng: -0.09 }
+  const [showMap, setShowMap] = useState(false);
+  const [mapKey, setMapKey] = useState(0);
+
+
+  // map related functions
+  const handleShowMap = () => {
+    setShowMap(true);
+    // set a random number as key to force re-render
+    setMapKey(Math.random());
+  };
+
+
 
 
   // declaration of error states
@@ -196,20 +212,20 @@ const Step3: FunctionComponent<Step3Props> = ({
         <br/>
         <br/>
 
-        <Popover placement="bottom" closeOnBlur={false}> 
+        <Popover placement="bottom" closeOnBlur={false} isOpen={showMap} key={mapKey}> 
           <PopoverTrigger>
-            <Button>
+            <Button onClick={handleShowMap}>
               Show Map
             </Button>
           </PopoverTrigger>
           <PopoverContent style={{ width: '500px', height: '500px', overflow: 'hidden'}}>
             <PopoverArrow />
-            <PopoverCloseButton />
+            <PopoverCloseButton onClick={() => setShowMap(false)}/>
             <PopoverHeader>Map</PopoverHeader>
             <PopoverBody style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
             <div style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}>
               <MapContainer
-                center={[51.505, -0.09]}
+                center={position}
                 zoom={13}
                 style={{ width: '100%', height: '100%' }}
               >
@@ -217,7 +233,7 @@ const Step3: FunctionComponent<Step3Props> = ({
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
-                <Marker position={[51.505, -0.09]}>
+                <Marker position={position}>
                   <Popup>
                     A pretty CSS3 popup. <br /> Easily customizable.
                   </Popup>
@@ -227,6 +243,7 @@ const Step3: FunctionComponent<Step3Props> = ({
             </PopoverBody>
           </PopoverContent>
         </Popover>
+
         {addressError && 
         <FormErrorMessage>Address should be at the range of 5-50 characters</FormErrorMessage>}
       </FormControl>

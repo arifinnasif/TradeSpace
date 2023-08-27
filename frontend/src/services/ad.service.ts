@@ -38,6 +38,7 @@ export interface AdCardType {
 
 class AdService {
   async getAdDetails<AdDetailsType>(id: number) {
+    console.log((await API.get(`/ads/${id}`)).data);
     return (await API.get(`/ads/${id}`)).data;
   }
 

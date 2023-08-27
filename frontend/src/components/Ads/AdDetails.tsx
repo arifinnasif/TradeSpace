@@ -21,7 +21,7 @@ import {
   PopoverHeader,
   PopoverTrigger,
 } from "@chakra-ui/react";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useRef, useState } from "react";
 import {
   FaUser,
   FaThList,
@@ -32,8 +32,20 @@ import {
   FaMedal,
 } from "react-icons/fa";
 import { AdDetailsType } from "../../services/ad.service";
-import { TileLayer } from "leaflet";
-import { MapContainer } from "react-leaflet";
+import { 
+  MapContainer, 
+  TileLayer, 
+  Marker, 
+  Popup, 
+} from "react-leaflet";
+
+// this particular import is important
+// it is the only way to make leaflet work with react
+// without it, the map will show up with different tiles popping up
+// at different positions like there's no tomorrow
+// Also a height is required for the map to show up
+// I set the height at 500px in the PopoverContent 
+import "leaflet/dist/leaflet.css"
 
 // interface AdDetailsProps {
 //   ad_id: number
@@ -67,9 +79,8 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
   const [showMap, setShowMap] = useState(false);
   const handleShowMap = () => {
     setShowMap(!showMap);
-    // set a random number as key to force re-render
-    setMapKey(Math.random());
   };
+
 
   return (
     // <Box>
@@ -198,36 +209,25 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
                   onClick={handleShowMap}
                   bg={"blue.500"}
                   color={"white"}
-                  width={"100%"}
                   _hover={{
                     bg: "blue.800",
                   }}
                 >
-                  Mark Location on Map
+                  See Pickup point on Map
                 </Button>
               </PopoverTrigger>
               <PopoverContent style={{ width: '500px', height: '500px', overflow: 'hidden'}}>
                 <PopoverArrow />
                 <PopoverCloseButton onClick={() => setShowMap(false)}/>
                 <PopoverHeader>
-                  Choose your address on map
-                  {/* add a search box later if possible */}
-                  {/* <FormControl>
-                    <ReactSearchAutocomplete items={countries}
-                                              onSelect={(item) => console.log(item)}
-                                              autoFocus
-                                              styling={{borderRadius: '5px', zIndex: 9999}}
-                                              placeholder="Search for your address"
-
-                    />
-                  </FormControl> */}
+                  Pick up address
                 </PopoverHeader>
                 <PopoverBody style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
                 <div style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}>
                   
                               
                   <MapContainer
-                    center={[ad!.latitude, ad!.longitude]}
+                    center={[ad.address!.latitude, ad.address!.longitude]}
                     zoom={17}
                     scrollWheelZoom={false}
                     style={{ width: '100%', height: '100%' }}
@@ -236,25 +236,18 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    {/* <Marker position={position}>
+                    <Marker 
+                     position={[ad!.address!.latitude, ad!.address!.longitude]}
+                            draggable={false}
+                    >
+                      {/* make the pop-up open by default */}
                       <Popup>
-                        A pretty CSS3 popup. <br /> Easily customizable.
+                        {ad.address!.description}
                       </Popup>
-                    </Marker> */}
-                    <LocationMarker markerPosition={markerPosition}
-                                    setMapCenter={setMapCenter}
-                                    setMarkerPosition={setMarkerPosition}
-                    />
+                    </Marker>
                   </MapContainer>
                 </div>
                 </PopoverBody>
-                
-                {markerPosition && (
-                  <div>
-                    <p>Current Latitude: {markerPosition.lat.toFixed(6)}</p>
-                    <p>Current Longitude: {markerPosition.lng.toFixed(6)}</p>
-                  </div>
-                )}
               </PopoverContent>
             </Popover>
         </HStack>

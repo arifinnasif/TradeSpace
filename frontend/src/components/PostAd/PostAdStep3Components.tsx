@@ -18,14 +18,11 @@ import {
   PopoverContent,
   PopoverArrow,
   PopoverBody,
-  PopoverCloseButton,
   PopoverHeader,
 } from "@chakra-ui/react";
 
 import { FunctionComponent, 
-         useEffect, 
-         useMemo, 
-         useRef, 
+         useEffect,  
          useState 
 } from "react";
 
@@ -35,6 +32,9 @@ import { MapContainer,
          Popup, 
          useMapEvents
 } from "react-leaflet";
+
+
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 // this particular import is important
 // it is the only way to make leaflet work with react
@@ -103,7 +103,8 @@ const Step3: FunctionComponent<Step3Props> = ({
 }) => {
 
   // Map related states
-  const position = { lat: 23.7266, lng: 90.3927 }
+  // const position = { lat: 23.7266, lng: 90.3927 }
+  const position = { lat: 51.5704, lng: 0.1276 }
   const [showMap, setShowMap] = useState(false);
   const [mapKey, setMapKey] = useState(0);
   const [markerPosition, setMarkerPosition] = useState<LatLng | null>(null);
@@ -111,7 +112,7 @@ const Step3: FunctionComponent<Step3Props> = ({
 
   // map related functions
   const handleShowMap = () => {
-    setShowMap(true);
+    setShowMap(!showMap);
     // set a random number as key to force re-render
     setMapKey(Math.random());
   };
@@ -200,6 +201,13 @@ const Step3: FunctionComponent<Step3Props> = ({
     }
   }
 
+  const countries = [
+    "nigeria",
+    "japan",
+    "india",
+    "united states",
+    "south korea",
+  ];
 
   return (
     <>
@@ -245,25 +253,54 @@ const Step3: FunctionComponent<Step3Props> = ({
       </FormControl>
 
       <FormControl isRequired isInvalid={addressError} onBlur={handleAddressTouched}>
-        <FormLabel>Address</FormLabel>
+        <FormLabel>Describe your Address</FormLabel>
         <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
 
         {/* map */}
         <br/>
         <br/>
 
-        <Popover placement="bottom" closeOnBlur={false} isOpen={showMap} key={mapKey}> 
+        <Popover placement="bottom" 
+                 closeOnBlur={false} 
+                 isOpen={showMap} 
+                //  key={mapKey}
+        > 
           <PopoverTrigger>
-            <Button onClick={handleShowMap}>
-              Show Map
+            {/* <Button onClick={handleShowMap}>
+              Mark Location on Map
+            </Button> */}
+            <Button
+              onClick={handleShowMap}
+              bg={"blue.500"}
+              color={"white"}
+              width={"100%"}
+              _hover={{
+                bg: "blue.800",
+              }}
+            >
+              Mark Location on Map
             </Button>
           </PopoverTrigger>
           <PopoverContent style={{ width: '500px', height: '500px', overflow: 'hidden'}}>
             <PopoverArrow />
-            <PopoverCloseButton onClick={() => setShowMap(false)}/>
-            <PopoverHeader>Choose your address on map</PopoverHeader>
+            {/* <PopoverCloseButton onClick={() => setShowMap(false)}/> */}
+            <PopoverHeader>
+              Choose your address on map
+              {/* add a search box later if possible */}
+              {/* <FormControl>
+                <ReactSearchAutocomplete items={countries}
+                                          onSelect={(item) => console.log(item)}
+                                          autoFocus
+                                          styling={{borderRadius: '5px', zIndex: 9999}}
+                                          placeholder="Search for your address"
+
+                />
+              </FormControl> */}
+            </PopoverHeader>
             <PopoverBody style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
             <div style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}>
+               
+                           
               <MapContainer
                 center={position}
                 zoom={17}

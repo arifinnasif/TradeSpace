@@ -20,6 +20,7 @@ import Step3 from "./PostAdStep3Components";
 import Step4 from "./PostAdStep4Components";
 
 import { adService } from "../../services/ad.service";
+import { LatLng } from "leaflet";
 
 const PostAdComponent = () => {
 
@@ -45,6 +46,9 @@ const PostAdComponent = () => {
   const [address, setAddress] = useState<string>()
   const [price, setPrice] = useState<number>()
   const [images, setImages] = useState<string[]>([])
+  const [markerPosition, setMarkerPosition] = useState<LatLng | null>(null);
+  const initialPosition = new LatLng(51.5704, 0.1276);
+  const [mapCenter, setMapCenter] = useState<LatLng>(initialPosition);
 
 
 
@@ -172,9 +176,13 @@ const PostAdComponent = () => {
                                                         images={images}
                                                         is_phone_public={is_phone_public}
                                                         address={address}
+                                                        markerPosition={markerPosition}
+                                                        mapCenter={mapCenter}
                                                         setImages={setImages}
                                                         setIsPhonePublic={setIs_phone_public}
                                                         setAddress={setAddress}
+                                                        setMarkerPosition={setMarkerPosition}
+                                                        setMapCenter={setMapCenter}
                                                />} 
                        />
         }

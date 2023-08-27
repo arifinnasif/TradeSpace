@@ -43,27 +43,34 @@ import { ReactSearchAutocomplete } from "react-search-autocomplete";
 // Also a height is required for the map to show up
 // I set the height at 500px in the PopoverContent 
 import "leaflet/dist/leaflet.css"
-import { LatLng } from "leaflet";
+import { LatLng, marker } from "leaflet";
 
 
 // This function is necessary for the map to show current location
-function LocationMarker({ setMarkerPosition } : { setMarkerPosition : (position : LatLng) => void }) {
-  const [position, setPosition] = useState<LatLng | null>(null)
+function LocationMarker({ markerPosition,
+                          setMarkerPosition,
+                          setMapCenter
+                        } : { markerPosition : LatLng | null,
+                              setMarkerPosition : (position : LatLng) => void,
+                              setMapCenter : (position : LatLng) => void
+                            }) 
+{
  
   const map = useMapEvents({
     locationfound(e) {
-      setPosition(e.latlng)
+      setMapCenter(e.latlng)
       setMarkerPosition(e.latlng)
       map.flyTo(e.latlng, map.getZoom())
     },
   })
  
   useEffect(() => {
-    map.locate();
+    if (markerPosition == null)
+      map.locate();
   }, []);
 
-  return position === null ? null : (
-    <Marker position={position}
+  return markerPosition === null ? null : (
+    <Marker position={markerPosition}
             draggable={true}
             eventHandlers={{
               dragend: (e) => {
@@ -71,7 +78,7 @@ function LocationMarker({ setMarkerPosition } : { setMarkerPosition : (position 
               },
             }}
     >
-      <Popup>You are here</Popup>
+      <Popup>Move the marker to show your address</Popup>
     </Marker>
   )
 }
@@ -85,9 +92,13 @@ interface Step3Props {
   images: string[];
   is_phone_public: boolean;
   address?: string;
+  markerPosition: LatLng | null;
+  mapCenter: LatLng;
   setImages: (images: string[]) => void;
   setIsPhonePublic: (is_phone_public: boolean) => void;
   setAddress: (address: string) => void;
+  setMarkerPosition: (position: LatLng) => void;
+  setMapCenter: (position: LatLng) => void;
 }
 
 
@@ -97,17 +108,21 @@ const Step3: FunctionComponent<Step3Props> = ({
   images,
   is_phone_public,
   address,
+  markerPosition,
+  mapCenter,
   setImages,
   setIsPhonePublic,
   setAddress,
+  setMarkerPosition,
+  setMapCenter,
 }) => {
 
   // Map related states
-  // const position = { lat: 23.7266, lng: 90.3927 }
-  const position = { lat: 51.5704, lng: 0.1276 }
+  // const position = { lat: 51.5704, lng: 0.1276 }
+  const initialPosition = new LatLng(51.5704, 0.1276);
+  // const [position, setPosition] = useState<LatLng>(initialPosition);
   const [showMap, setShowMap] = useState(false);
   const [mapKey, setMapKey] = useState(0);
-  const [markerPosition, setMarkerPosition] = useState<LatLng | null>(null);
 
 
   // map related functions
@@ -125,6 +140,7 @@ const Step3: FunctionComponent<Step3Props> = ({
 
   // declaration of error states
   const [addressError, setAddressError] = useState<boolean>(false)
+  const [mapError, setMapError] = useState<boolean>(false)
 
 
 
@@ -133,6 +149,7 @@ const Step3: FunctionComponent<Step3Props> = ({
   const handleAddressTouched = () => {
     setAddressTouched(true)
   }
+
 
 
 
@@ -158,10 +175,22 @@ const Step3: FunctionComponent<Step3Props> = ({
   useEffect(() => {
     if (addressTouched && (address == undefined || address.length < 5 || address.length > 50)) {
       setAddressError(true)
-    } else {
+    }
+    else {
       setAddressError(false)
     }
+    
   }, [address, addressTouched])
+
+
+  useEffect(() => {
+    if(addressTouched && (markerPosition == undefined || markerPosition == null)) {
+      setMapError(true)
+    } 
+    else {
+      setMapError(false)
+    }
+  }, [markerPosition, addressTouched])
 
 
 
@@ -169,9 +198,12 @@ const Step3: FunctionComponent<Step3Props> = ({
   // validation function
   const isUserInputValid = () => {
     if (addressError || 
+        // mapError ||
         address == undefined || 
         address.length < 5 || 
-        address.length > 50
+        address.length > 50 ||
+        markerPosition == undefined ||
+        markerPosition == null
        ) 
       return false;
 
@@ -186,6 +218,7 @@ const Step3: FunctionComponent<Step3Props> = ({
     if(isUserInputValid()){
       console.log(is_phone_public)
       console.log(address)
+      console.log(markerPosition)
       console.log(images)
       onNext();
     }
@@ -193,7 +226,7 @@ const Step3: FunctionComponent<Step3Props> = ({
       console.log("Invalid Inputs")
       toast({
         title: "Invalid Inputs",
-        description: "Please check your inputs and try again.",
+        description: "Please check your inputs and try again.\nMake sure to place your address in the map",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -302,7 +335,7 @@ const Step3: FunctionComponent<Step3Props> = ({
                
                            
               <MapContainer
-                center={position}
+                center={mapCenter}
                 zoom={17}
                 scrollWheelZoom={false}
                 style={{ width: '100%', height: '100%' }}
@@ -316,7 +349,10 @@ const Step3: FunctionComponent<Step3Props> = ({
                     A pretty CSS3 popup. <br /> Easily customizable.
                   </Popup>
                 </Marker> */}
-                <LocationMarker setMarkerPosition={setMarkerPosition}/>
+                <LocationMarker markerPosition={markerPosition}
+                                setMapCenter={setMapCenter}
+                                setMarkerPosition={setMarkerPosition}
+                />
               </MapContainer>
             </div>
             </PopoverBody>
@@ -330,7 +366,9 @@ const Step3: FunctionComponent<Step3Props> = ({
         </Popover>
 
         {addressError && 
-        <FormErrorMessage>Address should be at the range of 5-50 characters</FormErrorMessage>}
+        <FormErrorMessage>Address description should be at the range of 5-50 characters</FormErrorMessage>}
+        {mapError &&
+        <FormErrorMessage>Please place your address on the map</FormErrorMessage>}
       </FormControl>
 
 

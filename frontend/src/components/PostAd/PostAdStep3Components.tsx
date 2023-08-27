@@ -19,6 +19,7 @@ import {
   PopoverArrow,
   PopoverBody,
   PopoverHeader,
+  PopoverCloseButton,
 } from "@chakra-ui/react";
 
 import { FunctionComponent, 
@@ -288,8 +289,9 @@ const Step3: FunctionComponent<Step3Props> = ({
       <FormControl isRequired isInvalid={addressError} onBlur={handleAddressTouched}>
         <FormLabel>Describe your Address</FormLabel>
         <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
+        {addressError && 
+        <FormErrorMessage>Address description should be at the range of 5-50 characters</FormErrorMessage>}
 
-        {/* map */}
         <br/>
         <br/>
 
@@ -316,7 +318,7 @@ const Step3: FunctionComponent<Step3Props> = ({
           </PopoverTrigger>
           <PopoverContent style={{ width: '500px', height: '500px', overflow: 'hidden'}}>
             <PopoverArrow />
-            {/* <PopoverCloseButton onClick={() => setShowMap(false)}/> */}
+            <PopoverCloseButton onClick={() => setShowMap(false)}/>
             <PopoverHeader>
               Choose your address on map
               {/* add a search box later if possible */}
@@ -356,6 +358,7 @@ const Step3: FunctionComponent<Step3Props> = ({
               </MapContainer>
             </div>
             </PopoverBody>
+            
             {markerPosition && (
               <div>
                 <p>Current Latitude: {markerPosition.lat.toFixed(6)}</p>
@@ -364,9 +367,6 @@ const Step3: FunctionComponent<Step3Props> = ({
             )}
           </PopoverContent>
         </Popover>
-
-        {addressError && 
-        <FormErrorMessage>Address description should be at the range of 5-50 characters</FormErrorMessage>}
         {mapError &&
         <FormErrorMessage>Please place your address on the map</FormErrorMessage>}
       </FormControl>

@@ -84,6 +84,8 @@ const PostAdComponent = () => {
     console.log(days_used)
     console.log(is_phone_public)
     console.log(address)
+    console.log(markerPosition!.lat)
+    console.log(markerPosition!.lng)
     console.log(price)
     console.log(images)
 
@@ -101,7 +103,11 @@ const PostAdComponent = () => {
           days: days_used
         },
         is_phone_public: is_phone_public,
-        address: address,
+        address: {
+          description: address,
+          latitude: markerPosition!.lat,
+          longitude: markerPosition!.lng
+        },
         price: price,
         images: images
       })

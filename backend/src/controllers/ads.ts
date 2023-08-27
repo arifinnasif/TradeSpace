@@ -71,7 +71,9 @@ let postAd = async (req: Request, res: Response) => {
         is_sell_ad: is_sell_ad,
 
         days_used: convertUsageTimeToDays(is_used, usage_time),
-        address: address,
+        address: address.description,
+        latitude: address.latitude,
+        longitude: address.longitude,
         promotion_type: "normal",
 
         // ticket: promotion!.ticket, // promotion is not null here. Validated in validators/ads.ts

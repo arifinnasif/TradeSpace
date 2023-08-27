@@ -18,6 +18,11 @@ export interface AdDetailsType {
   phone?: string;
   promotion_type?: string;
   createdAt: string;
+  address?: {
+    description: string;
+    latitude: number;
+    longitude: number;
+  };
 }
 
 export interface AdCardType {

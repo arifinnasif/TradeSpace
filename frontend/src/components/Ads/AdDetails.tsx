@@ -13,8 +13,15 @@ import {
   VStack,
   Button,
   Divider,
+  Popover,
+  PopoverArrow,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
 } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import {
   FaUser,
   FaThList,
@@ -25,6 +32,8 @@ import {
   FaMedal,
 } from "react-icons/fa";
 import { AdDetailsType } from "../../services/ad.service";
+import { TileLayer } from "leaflet";
+import { MapContainer } from "react-leaflet";
 
 // interface AdDetailsProps {
 //   ad_id: number
@@ -54,6 +63,14 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
   //   }
   //   fetchData();
   // }, [id]);
+
+  const [showMap, setShowMap] = useState(false);
+  const handleShowMap = () => {
+    setShowMap(!showMap);
+    // set a random number as key to force re-render
+    setMapKey(Math.random());
+  };
+
   return (
     // <Box>
 
@@ -166,9 +183,80 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
           <Button leftIcon={<ChatIcon />} colorScheme="teal" size="lg">
             Chat
           </Button>
-          <Button leftIcon={<FaMapMarkerAlt />} colorScheme="teal" size="lg">
+          {/* <Button leftIcon={<FaMapMarkerAlt />} colorScheme="teal" size="lg">
             Address
-          </Button>
+          </Button> */}
+          <Popover  placement="bottom" 
+                    closeOnBlur={false} 
+                    isOpen={showMap} 
+          > 
+              <PopoverTrigger>
+                {/* <Button onClick={handleShowMap}>
+                  Mark Location on Map
+                </Button> */}
+                <Button
+                  onClick={handleShowMap}
+                  bg={"blue.500"}
+                  color={"white"}
+                  width={"100%"}
+                  _hover={{
+                    bg: "blue.800",
+                  }}
+                >
+                  Mark Location on Map
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent style={{ width: '500px', height: '500px', overflow: 'hidden'}}>
+                <PopoverArrow />
+                <PopoverCloseButton onClick={() => setShowMap(false)}/>
+                <PopoverHeader>
+                  Choose your address on map
+                  {/* add a search box later if possible */}
+                  {/* <FormControl>
+                    <ReactSearchAutocomplete items={countries}
+                                              onSelect={(item) => console.log(item)}
+                                              autoFocus
+                                              styling={{borderRadius: '5px', zIndex: 9999}}
+                                              placeholder="Search for your address"
+
+                    />
+                  </FormControl> */}
+                </PopoverHeader>
+                <PopoverBody style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
+                <div style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}>
+                  
+                              
+                  <MapContainer
+                    center={[ad!.latitude, ad!.longitude]}
+                    zoom={17}
+                    scrollWheelZoom={false}
+                    style={{ width: '100%', height: '100%' }}
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {/* <Marker position={position}>
+                      <Popup>
+                        A pretty CSS3 popup. <br /> Easily customizable.
+                      </Popup>
+                    </Marker> */}
+                    <LocationMarker markerPosition={markerPosition}
+                                    setMapCenter={setMapCenter}
+                                    setMarkerPosition={setMarkerPosition}
+                    />
+                  </MapContainer>
+                </div>
+                </PopoverBody>
+                
+                {markerPosition && (
+                  <div>
+                    <p>Current Latitude: {markerPosition.lat.toFixed(6)}</p>
+                    <p>Current Longitude: {markerPosition.lng.toFixed(6)}</p>
+                  </div>
+                )}
+              </PopoverContent>
+            </Popover>
         </HStack>
       </GridItem>
     </Grid>

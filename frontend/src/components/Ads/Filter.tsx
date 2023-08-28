@@ -21,6 +21,7 @@ import {
   Radio,
 } from "@chakra-ui/react";
 import { CategoryType, homeService } from "../../services/Home.service";
+import SortFilter from "./SortFilter";
 
 const Filter = () => {
   const navigate = useNavigate();
@@ -129,6 +130,10 @@ const Filter = () => {
               </Flex>
             )}
           </FormControl>
+          <SortFilter
+            handleSortFieldChange={handleSortFieldChange}
+            handleSortOrderChange={handleSortOrderChange}
+          />
         </Flex>
 
         <Button

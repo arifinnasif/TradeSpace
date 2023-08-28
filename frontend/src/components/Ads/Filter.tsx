@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { CategoryType, homeService } from "../../services/Home.service";
 import SortFilter from "./SortFilter";
+import CategoryFilter from "./CategoryFilter";
 
 const Filter = () => {
   const navigate = useNavigate();
@@ -94,42 +95,7 @@ const Filter = () => {
     <ChakraProvider>
       <Box p={4}>
         <Flex justify="space-between" align="center">
-          <FormControl>
-            <FormLabel>Filter by Categories</FormLabel>
-            <Menu>
-              <MenuButton as={Button}>Select Categories</MenuButton>
-              <MenuList>
-                {categoryList.current.map((category) => (
-                  <MenuItem key={category}>
-                    <Checkbox
-                      isChecked={selectedCategories.includes(category)}
-                      onChange={() => handleCategoryChange(category)}
-                    >
-                      {category}
-                    </Checkbox>
-                  </MenuItem>
-                ))}
-              </MenuList>
-            </Menu>
-            {selectedCategories.length > 0 && (
-              <Flex mt={2} flexWrap="wrap">
-                {selectedCategories.map((category) => (
-                  <Tag
-                    key={category}
-                    size="md"
-                    variant="solid"
-                    colorScheme="teal"
-                    m="1"
-                  >
-                    <TagLabel>{category}</TagLabel>
-                    <TagCloseButton
-                      onClick={() => handleCategoryChange(category)}
-                    />
-                  </Tag>
-                ))}
-              </Flex>
-            )}
-          </FormControl>
+          <CategoryFilter handleCategoryChange={handleCategoryChange} />
           <SortFilter
             handleSortFieldChange={handleSortFieldChange}
             handleSortOrderChange={handleSortOrderChange}

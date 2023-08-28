@@ -20,7 +20,7 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
-import { homeService } from "../../services/Home.service";
+import { CategoryType, homeService } from "../../services/Home.service";
 
 const products = [
   {
@@ -42,20 +42,22 @@ const products = [
 
 const Filter = () => {
   const navigate = useNavigate();
-  const [categoryList, setCategoryList] = useState<string[]>([]);
+  // const [categoryList, setCategoryList] = useState<CategoryType[]>();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortField, setSortField] = useState("Price");
   const [sortOrder, setSortOrder] = useState("Ascending");
   const [isLoading, setIsLoading] = useState(false);
-
+  const categoryList = React.useRef<CategoryType[]>([]);
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
       const cats = await homeService.getCategories();
-      setCategoryList(cats);
-      console.log(categoryList);
+      // console.log(cats);
+      categoryList.current = cats;
+      console.log(categoryList.current);
       setIsLoading(false);
     }
+    fetchData();
   }, []);
 
   const handleCategoryChange = (category: string) => {

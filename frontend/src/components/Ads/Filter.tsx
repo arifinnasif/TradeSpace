@@ -47,14 +47,15 @@ const Filter = () => {
   const [sortField, setSortField] = useState("Price");
   const [sortOrder, setSortOrder] = useState("Ascending");
   const [isLoading, setIsLoading] = useState(false);
-  const categoryList = React.useRef<CategoryType[]>([]);
+  const categoryList = React.useRef<string[]>([]);
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
       const cats = await homeService.getCategories();
       // console.log(cats);
-      categoryList.current = cats;
-      console.log(categoryList.current);
+      // assign only names to categoryList
+      categoryList.current = cats.map((cat: CategoryType) => cat.name);
+
       setIsLoading(false);
     }
     fetchData();
@@ -78,7 +79,6 @@ const Filter = () => {
     setSortOrder(order);
   };
 
-  const filteredAndSortedProducts = products;
   // .filter(
   //   (product) =>
   //     selectedCategories.length === 0 ||
@@ -99,8 +99,10 @@ const Filter = () => {
     )},${encodeURIComponent(sortOrder)}`;
 
     const queryParams = selectedCategoriesQueryParam + "&" + sortQueryParam;
+    // const queryParams = selectedCategoriesQueryParam;
 
     // Construct the URL and navigate
+    // console.log(queryParams);
     navigate(`/ads?${queryParams}`);
   };
 
@@ -113,7 +115,7 @@ const Filter = () => {
             <Menu>
               <MenuButton as={Button}>Select Categories</MenuButton>
               <MenuList>
-                {["Category 1", "Category 2", "Category 3"].map((category) => (
+                {categoryList.current.map((category) => (
                   <MenuItem key={category}>
                     <Checkbox
                       isChecked={selectedCategories.includes(category)}
@@ -156,8 +158,8 @@ const Filter = () => {
                     onChange={handleSortFieldChange}
                   >
                     <Stack spacing={2}>
-                      <Radio value="Price">Price</Radio>
-                      <Radio value="Days Used">Used Days</Radio>
+                      <Radio value="price">Price</Radio>
+                      <Radio value="days_used">Days Used</Radio>
                     </Stack>
                   </RadioGroup>
                 </MenuItem>
@@ -168,8 +170,8 @@ const Filter = () => {
                     onChange={handleSortOrderChange}
                   >
                     <Stack spacing={2}>
-                      <Radio value="Ascending">Ascending</Radio>
-                      <Radio value="Descending">Descending</Radio>
+                      <Radio value="asc">Ascending</Radio>
+                      <Radio value="desc">Descending</Radio>
                     </Stack>
                   </RadioGroup>
                 </MenuItem>
@@ -179,37 +181,27 @@ const Filter = () => {
               {sortField && sortOrder && (
                 <>
                   <Tag m="1" size="md" variant="solid" colorScheme="blue">
-                    <TagLabel>{sortField}</TagLabel>
+                    {/* if sortField==price, tagLabel is Price */}
+                    <TagLabel>
+                      {sortField === "price" ? "Price" : "Days Used"}
+                    </TagLabel>
                   </Tag>
                   <Tag m="1" size="md" variant="solid" colorScheme="blue">
-                    <TagLabel>{sortOrder}</TagLabel>
+                    <TagLabel>
+                      {sortOrder === "asc" ? "Ascending" : "Descending"}
+                    </TagLabel>
                   </Tag>
                 </>
               )}
             </Flex>
           </FormControl>
         </Flex>
-        <Stack mt={4}>
-          {filteredAndSortedProducts.map((product) => (
-            <Box
-              key={product.id}
-              borderWidth="1px"
-              borderRadius="lg"
-              p={4}
-              shadow="md"
-            >
-              <strong>{product.name}</strong>
-              <div>Category: {product.category}</div>
-              <div>Price: {product.price}</div>
-              <div>Days Used: {product.days_used}</div>
-            </Box>
-          ))}
-        </Stack>
+
         <Button
           onClick={handleFilterClick}
-          w="70%" // Set the width to 100% to make it a block button
+          w="50%" // Set the width to 100% to make it a block button
           display="block" // Set the display to "block" to make it a block button
-          mx="auto" // Center the button
+          mx="" // Center the button
           mt={4} // Add some margin on top
           colorScheme="teal" // Use the teal color scheme
         >

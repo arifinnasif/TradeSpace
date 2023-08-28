@@ -2,6 +2,7 @@
 
 import { AddIcon } from "@chakra-ui/icons";
 import {
+  Image,
   FormControl,
   FormLabel,
   Input,
@@ -12,10 +13,10 @@ import {
   Box,
   Flex,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import { FunctionComponent, useEffect, useState } from "react";
-
-
+import { uploadFile } from "../../services/fileupload.service";
 
 interface Step3Props {
   onPrev: () => void;
@@ -28,7 +29,6 @@ interface Step3Props {
   setAddress: (address: string) => void;
 }
 
-
 const Step3: FunctionComponent<Step3Props> = ({
   onPrev,
   onNext,
@@ -39,76 +39,86 @@ const Step3: FunctionComponent<Step3Props> = ({
   setIsPhonePublic,
   setAddress,
 }) => {
+  // selectedFile
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isBusyUploading, setIsBusyUploading] = useState<boolean>(false);
 
+  const selectFileClickAction = async () => {
+    console.log(selectedFile, isBusyUploading);
+    if (selectedFile == null && !isBusyUploading) return;
+    setIsBusyUploading(true);
+    console.log("started");
+    uploadFile(selectedFile!, "ads").then((url: string) => {
+      setImages([...images, url]);
+      setSelectedFile(null);
+      setIsBusyUploading(false);
+      console.log("done");
+    });
+  };
 
   // declaration of error states
-  const [addressError, setAddressError] = useState<boolean>(false)
-
-
+  const [addressError, setAddressError] = useState<boolean>(false);
 
   // declaration of touched states and action
-  const [addressTouched, setAddressTouched] = useState<boolean>(false)
+  const [addressTouched, setAddressTouched] = useState<boolean>(false);
   const handleAddressTouched = () => {
-    setAddressTouched(true)
-  }
-
-
-
+    setAddressTouched(true);
+  };
 
   // change events definition
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImages(e.target.value.split(","))
-  }
+    // setImages(e.target.value.split(","));
+    if (!e.target.files) return;
+    setSelectedFile(e.target.files[0]);
+    selectFileClickAction();
+  };
 
-  const handleIs_phone_publicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsPhonePublic(e.target.checked)
-  }
+  const handleIs_phone_publicChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIsPhonePublic(e.target.checked);
+  };
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value)
-  }
-
-
-
-
+    setAddress(e.target.value);
+  };
 
   // error checking hooks for constant supervision
   useEffect(() => {
-    if (addressTouched && (address == undefined || address.length < 5 || address.length > 50)) {
-      setAddressError(true)
+    if (
+      addressTouched &&
+      (address == undefined || address.length < 5 || address.length > 50)
+    ) {
+      setAddressError(true);
     } else {
-      setAddressError(false)
+      setAddressError(false);
     }
-  }, [address, addressTouched])
-
-
-
+  }, [address, addressTouched]);
 
   // validation function
   const isUserInputValid = () => {
-    if (addressError || 
-        address == undefined || 
-        address.length < 5 || 
-        address.length > 50
-       ) 
+    if (
+      addressError ||
+      address == undefined ||
+      address.length < 5 ||
+      address.length > 50
+    )
       return false;
 
     return true;
-  }
+  };
 
   const toast = useToast();
 
-
-  const handleNextRequest = (e : React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    if(isUserInputValid()){
-      console.log(is_phone_public)
-      console.log(address)
-      console.log(images)
+  const handleNextRequest = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (isUserInputValid()) {
+      console.log(is_phone_public);
+      console.log(address);
+      console.log(images);
       onNext();
-    }
-    else {
-      console.log("Invalid Inputs")
+    } else {
+      console.log("Invalid Inputs");
       toast({
         title: "Invalid Inputs",
         description: "Please check your inputs and try again.",
@@ -117,39 +127,42 @@ const Step3: FunctionComponent<Step3Props> = ({
         isClosable: true,
       });
     }
-  }
-
+  };
 
   return (
     <>
       <FormControl>
-
         <FormLabel>Upload images</FormLabel>
 
+        <HStack>
+          {images.map((url, key) => (
+            <Image boxSize="100px" objectFit="cover" key={key} src={url} />
+          ))}
           <Input
             type="file"
             accept="image/*"
-            multiple
+            isDisabled={isBusyUploading}
             onChange={handleImagesChange}
             style={{ display: "none" }}
             id="imageInput"
           />
 
           <label htmlFor="imageInput">
-        
-            <Input  as={Box}
-                    display="flex" 
-                    width="100px"
-                    height="100px"
-                    alignItems="center"
-                    justifyContent="center"
-                    border="1px dashed gray"
-                    borderRadius="md"
-                    cursor="pointer"
+            <Input
+              as={Box}
+              display="flex"
+              width="100px"
+              height="100px"
+              alignItems="center"
+              justifyContent="center"
+              border="1px dashed gray"
+              borderRadius="md"
+              cursor="pointer"
             >
-              <AddIcon boxSize={8}/>
+              <AddIcon boxSize={8} />
             </Input>
           </label>
+        </HStack>
 
         {/* why not <Input .../> here? */}
         {/* Well it's just ugly for file imput. */}
@@ -158,18 +171,32 @@ const Step3: FunctionComponent<Step3Props> = ({
       </FormControl>
 
       <FormControl>
-        <Checkbox isChecked={is_phone_public} onChange={handleIs_phone_publicChange}>
+        <Checkbox
+          isChecked={is_phone_public}
+          onChange={handleIs_phone_publicChange}
+        >
           Make my phone number public for this Ad
         </Checkbox>
       </FormControl>
 
-      <FormControl isRequired isInvalid={addressError} onBlur={handleAddressTouched}>
+      <FormControl
+        isRequired
+        isInvalid={addressError}
+        onBlur={handleAddressTouched}
+      >
         <FormLabel>Address</FormLabel>
-        <Input type="text" placeholder="Address" value={address} onChange={handleAddressChange} />
-        {addressError && 
-        <FormErrorMessage>Address should be at the range of 5-50 characters</FormErrorMessage>}
+        <Input
+          type="text"
+          placeholder="Address"
+          value={address}
+          onChange={handleAddressChange}
+        />
+        {addressError && (
+          <FormErrorMessage>
+            Address should be at the range of 5-50 characters
+          </FormErrorMessage>
+        )}
       </FormControl>
-
 
       <Flex justifyContent={"space-between"}>
         <Button
@@ -196,6 +223,6 @@ const Step3: FunctionComponent<Step3Props> = ({
       </Flex>
     </>
   );
-}
+};
 
 export default Step3;

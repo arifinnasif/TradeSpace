@@ -22,30 +22,12 @@ import {
 } from "@chakra-ui/react";
 import { CategoryType, homeService } from "../../services/Home.service";
 
-const products = [
-  {
-    id: 1,
-    name: "Product A",
-    category: "Category 1",
-    price: 100,
-    days_used: 5,
-  },
-  {
-    id: 2,
-    name: "Product B",
-    category: "Category 2",
-    price: 50,
-    days_used: 10,
-  },
-  // ... other products
-];
-
 const Filter = () => {
   const navigate = useNavigate();
   // const [categoryList, setCategoryList] = useState<CategoryType[]>();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [sortField, setSortField] = useState("Price");
-  const [sortOrder, setSortOrder] = useState("Ascending");
+  const [sortField, setSortField] = useState("price");
+  const [sortOrder, setSortOrder] = useState("desc");
   const [isLoading, setIsLoading] = useState(false);
   const categoryList = React.useRef<string[]>([]);
   useEffect(() => {
@@ -94,6 +76,7 @@ const Filter = () => {
     const selectedCategoriesQueryParam = selectedCategories
       .map((cat) => `cat[]=${encodeURIComponent(cat)}`)
       .join("&");
+
     const sortQueryParam = `sort=${encodeURIComponent(
       sortField
     )},${encodeURIComponent(sortOrder)}`;

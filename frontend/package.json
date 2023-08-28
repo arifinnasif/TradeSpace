@@ -19,6 +19,7 @@
     "@types/validator": "^13.9.0",
     "axios": "^1.4.0",
     "chakra-ui-search": "^1.1.1",
+    "firebase": "^10.3.0",
     "formik": "^2.4.3",
     "formik-chakra-ui": "^1.6.1",
     "framer-motion": "^10.13.1",

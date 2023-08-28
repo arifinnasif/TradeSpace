@@ -43,12 +43,12 @@ const Step3: FunctionComponent<Step3Props> = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isBusyUploading, setIsBusyUploading] = useState<boolean>(false);
 
-  const selectFileClickAction = async () => {
-    console.log(selectedFile, isBusyUploading);
-    if (selectedFile == null && !isBusyUploading) return;
+  const selectFileClickAction = (arg_file: File) => {
+    console.log(arg_file, isBusyUploading);
+    if (arg_file == null && !isBusyUploading) return;
     setIsBusyUploading(true);
     console.log("started");
-    uploadFile(selectedFile!, "ads").then((url: string) => {
+    uploadFile(arg_file!, "ads").then((url: string) => {
       setImages([...images, url]);
       setSelectedFile(null);
       setIsBusyUploading(false);
@@ -66,11 +66,12 @@ const Step3: FunctionComponent<Step3Props> = ({
   };
 
   // change events definition
-  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     // setImages(e.target.value.split(","));
     if (!e.target.files) return;
+    console.log(e.target.files[0]);
     setSelectedFile(e.target.files[0]);
-    selectFileClickAction();
+    selectFileClickAction(e.target.files[0]);
   };
 
   const handleIs_phone_publicChange = (

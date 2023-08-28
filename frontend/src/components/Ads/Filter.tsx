@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ChakraProvider,
@@ -20,6 +20,7 @@ import {
   RadioGroup,
   Radio,
 } from "@chakra-ui/react";
+import { homeService } from "../../services/Home.service";
 
 const products = [
   {
@@ -41,9 +42,21 @@ const products = [
 
 const Filter = () => {
   const navigate = useNavigate();
+  const [categoryList, setCategoryList] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [sortField, setSortField] = useState("Price");
   const [sortOrder, setSortOrder] = useState("Ascending");
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const cats = await homeService.getCategories();
+      setCategoryList(cats);
+      console.log(categoryList);
+      setIsLoading(false);
+    }
+  }, []);
 
   const handleCategoryChange = (category: string) => {
     if (selectedCategories.includes(category)) {

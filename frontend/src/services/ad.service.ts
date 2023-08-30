@@ -56,7 +56,7 @@ class AdService {
         },
       })
     ).data.ad_list;
-    // console.log(response);
+    console.log(response);
     return response;
   }
 

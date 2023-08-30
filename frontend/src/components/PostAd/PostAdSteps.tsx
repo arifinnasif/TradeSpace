@@ -9,8 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 import Layout from "../../layout/Layout";
 import PostAdForm from "./PostAdForm";
@@ -23,16 +22,15 @@ import { adService } from "../../services/ad.service";
 import { LatLng } from "leaflet";
 
 const PostAdComponent = () => {
-
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(25);
 
-  
   let navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
 
   // declaration of states
+
   const [category, setCategory] = useState<string>()
   const [title, setTitle] = useState<string>()
   const [is_sell_ad, setIs_sell_ad] = useState<boolean>(false)
@@ -51,7 +49,6 @@ const PostAdComponent = () => {
   const [mapCenter, setMapCenter] = useState<LatLng>(initialPosition);
 
 
-
   // after pressing next button
   const handleNextStep = () => {
     setStep(step + 1);
@@ -62,17 +59,15 @@ const PostAdComponent = () => {
     }
   };
 
-
-
   // after pressing previous button
   const handlePrevStep = () => {
     setStep(step - 1);
     setProgress(progress - 25);
   };
 
-
   // after pressing submit button
   const handleSubmit = async () => {
+
     console.log(category)
     console.log(title)
     console.log(is_sell_ad)
@@ -100,7 +95,7 @@ const PostAdComponent = () => {
         usage_time: {
           years: years_used,
           months: months_used,
-          days: days_used
+          days: days_used,
         },
         is_phone_public: is_phone_public,
         address: {
@@ -109,17 +104,15 @@ const PostAdComponent = () => {
           longitude: markerPosition!.lng
         },
         price: price,
-        images: images
-      })
+        images: images,
+      });
 
-      console.log(response)
-      navigate("/")
-    } catch(error) {
-      console.log(error)
+      console.log(response);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
     }
-
   };
-
 
   // calculate navbar height
   // const [navbarHeight, setNavbarHeight] = useState(0);
@@ -133,18 +126,19 @@ const PostAdComponent = () => {
   // }, []);
   // for now fixed height 60 will be used
 
-
   return (
     <>
-      <Layout title="Hello" loading={isLoading}>
+      <Layout title="Post Ad" loading={isLoading}>
         {/* stick to it's position */}
-        <Progress value={progress} 
-                  size="xs"  
-                  colorScheme="teal" 
-                  position="sticky" 
-                  top="60px"
-                  zIndex="sticky" 
+        <Progress
+          value={progress}
+          size="xs"
+          colorScheme="teal"
+          position="sticky"
+          top="60px"
+          zIndex="sticky"
         />
+
         {step === 1 && <PostAdForm header="Tell us about your product" 
                                    formContent= {<Step1 onNext={handleNextStep} 
                                                         category={category} 
@@ -211,6 +205,7 @@ const PostAdComponent = () => {
                                                 />} 
                        />
         }
+
       </Layout>
     </>
   );

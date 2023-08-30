@@ -270,7 +270,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
                 title: pending_review.title,
                 description: pending_review.description,
                 price: pending_review.price,
-                image1: pending_review.image1,
+                // image1: pending_review.image1,
                 address: pending_review.address,
             }
         });

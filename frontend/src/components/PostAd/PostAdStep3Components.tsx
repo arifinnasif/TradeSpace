@@ -3,6 +3,7 @@
 import { AddIcon } from "@chakra-ui/icons";
 
 import {
+  Image,
   FormControl,
   FormLabel,
   Input,
@@ -20,7 +21,12 @@ import {
   PopoverBody,
   PopoverHeader,
   PopoverCloseButton,
+  HStack,
 } from "@chakra-ui/react";
+import { FunctionComponent, useEffect, useState } from "react";
+import { uploadFile } from "../../services/fileupload.service";
+
+  
 
 import { FunctionComponent, 
          useEffect,  
@@ -87,6 +93,7 @@ function LocationMarker({ markerPosition,
 
 
 
+
 interface Step3Props {
   onPrev: () => void;
   onNext: () => void;
@@ -102,7 +109,6 @@ interface Step3Props {
   setMapCenter: (position: LatLng) => void;
 }
 
-
 const Step3: FunctionComponent<Step3Props> = ({
   onPrev,
   onNext,
@@ -117,6 +123,27 @@ const Step3: FunctionComponent<Step3Props> = ({
   setMarkerPosition,
   setMapCenter,
 }) => {
+
+  // selectedFile
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isBusyUploading, setIsBusyUploading] = useState<boolean>(false);
+
+  const selectFileClickAction = (arg_file: File) => {
+    console.log(arg_file, isBusyUploading);
+    if (arg_file == null && !isBusyUploading) return;
+    setIsBusyUploading(true);
+    console.log("started");
+    uploadFile(arg_file!, "ads").then((url: string) => {
+      setImages([...images, url]);
+      setSelectedFile(null);
+      setIsBusyUploading(false);
+      console.log("done");
+    });
+  };
+
+  // declaration of error states
+  const [addressError, setAddressError] = useState<boolean>(false);
+
 
   // Map related states
   // const position = { lat: 51.5704, lng: 0.1276 }
@@ -146,34 +173,53 @@ const Step3: FunctionComponent<Step3Props> = ({
 
 
   // declaration of touched states and action
-  const [addressTouched, setAddressTouched] = useState<boolean>(false)
+  const [addressTouched, setAddressTouched] = useState<boolean>(false);
   const handleAddressTouched = () => {
-    setAddressTouched(true)
-  }
-
-
-
+    setAddressTouched(true);
+  };
 
 
   // change events definition
-  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImages(e.target.value.split(","))
-  }
+  const handleImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    // setImages(e.target.value.split(","));
+    if (!e.target.files) return;
+    console.log(e.target.files[0]);
+    setSelectedFile(e.target.files[0]);
+    selectFileClickAction(e.target.files[0]);
+  };
 
-  const handleIs_phone_publicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsPhonePublic(e.target.checked)
-  }
+  const handleIs_phone_publicChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIsPhonePublic(e.target.checked);
+  };
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value)
-  }
-
-
-
-
+    setAddress(e.target.value);
+  };
 
   // error checking hooks for constant supervision
   useEffect(() => {
+
+    if (
+      addressTouched &&
+      (address == undefined || address.length < 5 || address.length > 50)
+    ) {
+      setAddressError(true);
+    } else {
+      setAddressError(false);
+    }
+  }, [address, addressTouched]);
+
+  // validation function
+  const isUserInputValid = () => {
+    if (
+      addressError ||
+      address == undefined ||
+      address.length < 5 ||
+      address.length > 50
+    )
+
     if (addressTouched && (address == undefined || address.length < 5 || address.length > 50)) {
       setAddressError(true)
     }
@@ -206,12 +252,21 @@ const Step3: FunctionComponent<Step3Props> = ({
         markerPosition == undefined ||
         markerPosition == null
        ) 
+
       return false;
 
     return true;
-  }
+  };
 
   const toast = useToast();
+
+
+  const handleNextRequest = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (isUserInputValid()) {
+      console.log(is_phone_public);
+      console.log(address);
+      console.log(images);
 
 
   const handleNextRequest = (e : React.MouseEvent<HTMLButtonElement>) => {
@@ -222,9 +277,8 @@ const Step3: FunctionComponent<Step3Props> = ({
       console.log(markerPosition)
       console.log(images)
       onNext();
-    }
-    else {
-      console.log("Invalid Inputs")
+    } else {
+      console.log("Invalid Inputs");
       toast({
         title: "Invalid Inputs",
         description: "Please check your inputs and try again.\nMake sure to place your address in the map",
@@ -233,7 +287,8 @@ const Step3: FunctionComponent<Step3Props> = ({
         isClosable: true,
       });
     }
-  }
+  };
+
 
   const countries = [
     "nigeria",
@@ -243,36 +298,41 @@ const Step3: FunctionComponent<Step3Props> = ({
     "south korea",
   ];
 
+
   return (
     <>
       <FormControl>
-
         <FormLabel>Upload images</FormLabel>
 
+        <HStack>
+          {images.map((url, key) => (
+            <Image boxSize="100px" objectFit="cover" key={key} src={url} />
+          ))}
           <Input
             type="file"
             accept="image/*"
-            multiple
+            isDisabled={isBusyUploading}
             onChange={handleImagesChange}
             style={{ display: "none" }}
             id="imageInput"
           />
 
           <label htmlFor="imageInput">
-        
-            <Input  as={Box}
-                    display="flex" 
-                    width="100px"
-                    height="100px"
-                    alignItems="center"
-                    justifyContent="center"
-                    border="1px dashed gray"
-                    borderRadius="md"
-                    cursor="pointer"
+            <Input
+              as={Box}
+              display="flex"
+              width="100px"
+              height="100px"
+              alignItems="center"
+              justifyContent="center"
+              border="1px dashed gray"
+              borderRadius="md"
+              cursor="pointer"
             >
-              <AddIcon boxSize={8}/>
+              <AddIcon boxSize={8} />
             </Input>
           </label>
+        </HStack>
 
         {/* why not <Input .../> here? */}
         {/* Well it's just ugly for file imput. */}
@@ -281,10 +341,14 @@ const Step3: FunctionComponent<Step3Props> = ({
       </FormControl>
 
       <FormControl>
-        <Checkbox isChecked={is_phone_public} onChange={handleIs_phone_publicChange}>
+        <Checkbox
+          isChecked={is_phone_public}
+          onChange={handleIs_phone_publicChange}
+        >
           Make my phone number public for this Ad
         </Checkbox>
       </FormControl>
+
 
       <FormControl isRequired isInvalid={addressError} onBlur={handleAddressTouched}>
         <FormLabel>Describe your Address</FormLabel>
@@ -371,7 +435,6 @@ const Step3: FunctionComponent<Step3Props> = ({
         <FormErrorMessage>Please place your address on the map</FormErrorMessage>}
       </FormControl>
 
-
       <Flex justifyContent={"space-between"}>
         <Button
           onClick={onPrev}
@@ -397,6 +460,6 @@ const Step3: FunctionComponent<Step3Props> = ({
       </Flex>
     </>
   );
-}
+};
 
 export default Step3;

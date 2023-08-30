@@ -47,7 +47,10 @@ let postAd = async (req: Request, res: Response) => {
     usage_time,
     is_phone_public,
     address,
+    images
   } = req.body;
+
+  console.log(req.body);
 
   // retrieve ticket count for promotion type
   // const promotion = await prisma.promotions.findUnique({
@@ -57,6 +60,7 @@ let postAd = async (req: Request, res: Response) => {
 
   try {
     // create a new ad
+    console.log(images[0]);
     await prisma.ads.create({
       data: {
         op_username: user.username,
@@ -75,6 +79,11 @@ let postAd = async (req: Request, res: Response) => {
         latitude: address.latitude,
         longitude: address.longitude,
         promotion_type: "normal",
+        image1: images[0],
+        // image2: images[0],
+        // image3: images[0],
+        // image4: images[0],
+        // image5: images[0],
 
         // ticket: promotion!.ticket, // promotion is not null here. Validated in validators/ads.ts
         // Hence, ! is used.
@@ -187,6 +196,7 @@ let get_ads = async (req: Request, res: Response) => {
         category_name: true,
         title: true,
         price: true,
+        image1: true,
         is_negotiable: true,
         is_used: true,
         is_sell_ad: true,
@@ -269,6 +279,7 @@ let get_ad_details = async (req: Request, res: Response) => {
         title: true,
         description: true,
         price: true,
+        image1: true,
         is_negotiable: true,
         is_used: true,
         is_sell_ad: true,

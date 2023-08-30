@@ -96,8 +96,8 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
           <Flex ml="0 !important">
             <Image
               rounded="md"
-              // w={{ base: "100%", md: "18rem" }}
-              // h="auto"
+              w={{ base: "100%", md: "18rem" }}
+              h="auto"
               boxSize="150px"
               objectFit="cover"
               src={image1}

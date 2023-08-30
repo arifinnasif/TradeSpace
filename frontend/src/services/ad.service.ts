@@ -7,6 +7,7 @@ export interface AdDetailsType {
   category_name: string;
   title: string;
   description?: string;
+  image1: string;
   price?: number;
   is_negotiable: boolean;
   is_sell_ad: boolean;
@@ -25,6 +26,7 @@ export interface AdCardType {
   title: string;
   category_name: string;
   price: string;
+  image1: string;
   is_used: boolean;
   is_negotiable: boolean;
   is_sell_ad: boolean;
@@ -32,7 +34,7 @@ export interface AdCardType {
 }
 
 class AdService {
-  async getAdDetails<AdDetailsType>(id: number) {
+  async getAdDetails(id: number): Promise<AdDetailsType> {
     return (await API.get(`/ads/${id}`)).data;
   }
 

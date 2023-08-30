@@ -105,11 +105,7 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
         </HStack>
       </GridItem>
       <GridItem pl="2" area={"image_section"}>
-        <Image
-          boxSize="400px"
-          objectFit="cover"
-          src="https://placehold.co/600x400"
-        />
+        <Image boxSize="400px" objectFit="cover" src={ad?.image1} />
       </GridItem>
       <GridItem p="5" fontWeight="bold" fontSize="xl" area={"feature_section"}>
         <VStack align="left">

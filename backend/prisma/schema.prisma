@@ -66,6 +66,8 @@ model ads {
   receipt_image   Bytes?
   is_phone_public Boolean    @default(false)
   address         String
+  latitude        Float?
+  longitude       Float?
   promotion       promotions @relation(fields: [promotion_type], references: [promotion_type])
   promotion_type  String
   ticket          Int        @default(1)

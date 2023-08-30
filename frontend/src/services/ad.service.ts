@@ -18,6 +18,11 @@ export interface AdDetailsType {
   phone?: string;
   promotion_type?: string;
   createdAt: string;
+  address?: {
+    description: string;
+    latitude: number;
+    longitude: number;
+  };
 }
 
 export interface AdCardType {
@@ -33,6 +38,7 @@ export interface AdCardType {
 
 class AdService {
   async getAdDetails<AdDetailsType>(id: number) {
+    console.log((await API.get(`/ads/${id}`)).data);
     return (await API.get(`/ads/${id}`)).data;
   }
 

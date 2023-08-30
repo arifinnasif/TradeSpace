@@ -71,7 +71,9 @@ let postAd = async (req: Request, res: Response) => {
         is_sell_ad: is_sell_ad,
 
         days_used: convertUsageTimeToDays(is_used, usage_time),
-        address: address,
+        address: address.description,
+        latitude: address.latitude,
+        longitude: address.longitude,
         promotion_type: "normal",
 
         // ticket: promotion!.ticket, // promotion is not null here. Validated in validators/ads.ts
@@ -274,6 +276,8 @@ let get_ad_details = async (req: Request, res: Response) => {
         address: true,
         promotion_type: true,
         createdAt: true,
+        latitude: true,
+        longitude: true,
       },
     });
 
@@ -290,6 +294,13 @@ let get_ad_details = async (req: Request, res: Response) => {
       years: Math.floor(ad_details.days_used / 365),
       months: Math.floor((ad_details.days_used % 365) / 30),
       days: Math.floor((ad_details.days_used % 365) % 30),
+    };
+
+    // prepare the address object
+    let address = {
+      description: ad_details.address,
+      latitude: ad_details.latitude,
+      longitude: ad_details.longitude,
     };
 
     // if is_phone_public is true, fetch phone number from user table
@@ -311,12 +322,22 @@ let get_ad_details = async (req: Request, res: Response) => {
     // remove op from ad_details
     delete ad_details.op;
 
+    // remove address from ad_details
+    delete ad_details.address;
+
+    // remove latitude from ad_details
+    delete ad_details.latitude;
+
+    // remove longitude from ad_details
+    delete ad_details.longitude;
+
     // add usage_time and phone to ad_details
     const ad_details_json = {
       ...ad_details,
       usage_time: usage_time,
       phone: phone,
       op_fullname: op_fullname,
+      address: address,
     };
 
     return res.json(ad_details_json);

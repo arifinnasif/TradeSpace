@@ -8,6 +8,7 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
+import Filter from "../components/Ads/Filter";
 
 const GetAds = () => {
   const [params, setParams] = useSearchParams();
@@ -46,7 +47,9 @@ const GetAds = () => {
         <GridItem area={"SearchBar_Section"}>
           <SearchComponent onEnterKey={handleSearchSubmit} />
         </GridItem>
-        <GridItem area={"filter_section"}>Filter</GridItem>
+        <GridItem area={"filter_section"}>
+          <Filter />
+        </GridItem>
         <GridItem area={"ad_section"}>
           <AdsList />
         </GridItem>

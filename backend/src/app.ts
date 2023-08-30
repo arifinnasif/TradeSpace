@@ -34,8 +34,8 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cookieParser());
-app.use(cors({ origin: true, credentials: true }));
-// app.use(cors({ origin: "http://127.0.0.1:5173", credentials: true }));
+// app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ origin: "http://127.0.0.1:5173", credentials: true }));
 app.use(passport.initialize());
 
 // initialize backend router

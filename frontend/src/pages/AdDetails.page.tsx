@@ -19,7 +19,7 @@ const AdDetailsPage = () => {
   }, [id]);
   return (
     <Layout title="Hello" loading={isLoading}>
-      <AdDetils {...ad!} />
+      {ad !== undefined ? <AdDetils {...ad} /> : null}
     </Layout>
   );
 };

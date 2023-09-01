@@ -144,6 +144,7 @@ model threads {
   ad              ads          @relation("ADS_THREAD", fields: [ad_id], references: [id])
   ad_id           Int
   text_chats      text_chats[] @relation("THREADS_TEXT_CHAT")
+  updated_at      DateTime     @default(now())
 }
 
 model text_chats {

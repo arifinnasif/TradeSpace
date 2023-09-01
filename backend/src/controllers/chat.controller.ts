@@ -118,6 +118,16 @@ export const send_message = async (req: Request, res: Response) => {
             }
         });
 
+        // update the thread
+        await prisma.threads.update({
+            where: {
+                id: thread_id
+            },
+            data: {
+                updated_at: new Date()
+            }
+        });
+
         return res.status(201).json({
             success: true,
             message: new_message
@@ -180,6 +190,74 @@ export const get_messages = async (req: Request, res: Response) => {
 
 
         return res.status(200).json(messages_to_send);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            error: "Internal Server Error!"
+        });
+    }
+}
+
+
+// get chat inbox: GET /api/chat/inbox
+export const get_inbox = async (req: Request, res: Response) => {
+    try {
+        // get the threads
+        const threads_from_db = await prisma.threads.findMany({
+            where: {
+                OR: [
+                    { op_username: req.user.username },
+                    { client_username: req.user.username }
+                ]
+            },
+            include: {
+                ad: {
+                    select: {
+                        title: true,
+                        is_sell_ad: true
+                    }
+                },
+                text_chats: {
+
+                    orderBy: {
+                        createdAt: 'desc'
+                    },
+                    take: 1
+                }
+            },
+
+            orderBy: {
+                updated_at: 'desc'
+            }
+        });
+
+        let threads_to_send = threads_from_db.map(thread => {
+
+            const last_message = thread.text_chats.length > 0 ? thread.text_chats[0] : null;
+
+
+
+            return {
+                thread_id: thread.id,
+                receiver: thread.op_username === req.user.username ? thread.client_username : thread.op_username,
+                ad_id: thread.ad_id,
+                ad_title: thread.ad.title,
+                is_sell_ad: thread.ad.is_sell_ad,
+                am_i_op: thread.op_username === req.user.username,
+                last_message: last_message ? {
+                    sender: last_message.sender_username,
+                    timestamp: last_message.createdAt,
+                    message: last_message.text,
+                    is_my_msg: last_message.sender_username === req.user.username
+                } : null
+            }
+        });
+
+        // remove threads with no messages
+        threads_to_send = threads_to_send.filter(thread => thread.last_message !== null);
+
+        return res.status(200).json(threads_to_send);
     } catch (error) {
         console.log(error);
         return res.status(500).json({

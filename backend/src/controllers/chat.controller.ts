@@ -109,12 +109,12 @@ export const send_message = async (req: Request, res: Response) => {
         }
 
         // add the message to the thread
-        const new_message = await prisma.text_chats.create({
+        const new_message = await prisma.chats.create({
             data: {
                 thread_id: thread_id,
                 sender_username: req.user.username,
                 receiver_username: thread.op_username === req.user.username ? thread.client_username : thread.op_username,
-                text: req.body.message
+                message: req.body.message
             }
         });
 
@@ -169,7 +169,7 @@ export const get_messages = async (req: Request, res: Response) => {
         }
 
         // mark the messages as read
-        await prisma.text_chats.updateMany({
+        await prisma.chats.updateMany({
             where: {
                 thread_id: thread_id,
                 receiver_username: req.user.username,
@@ -182,7 +182,7 @@ export const get_messages = async (req: Request, res: Response) => {
 
 
         // get the messages
-        const messages_from_db = await prisma.text_chats.findMany({
+        const messages_from_db = await prisma.chats.findMany({
             where: {
                 thread_id: thread_id
             },
@@ -195,7 +195,7 @@ export const get_messages = async (req: Request, res: Response) => {
             return {
                 sender_username: msg.sender_username,
                 receiver_username: msg.receiver_username,
-                message: msg.text,
+                message: msg.message,
                 timestamp: msg.createdAt,
                 is_read_by_receiver: msg.is_read_by_receiver,
                 is_my_message: msg.sender_username === req.user.username
@@ -242,7 +242,7 @@ export const get_inbox = async (req: Request, res: Response) => {
                         name: true
                     }
                 },
-                text_chats: {
+                chats: {
 
                     orderBy: {
                         createdAt: 'desc'
@@ -258,7 +258,7 @@ export const get_inbox = async (req: Request, res: Response) => {
 
         let threads_to_send = threads_from_db.map(thread => {
 
-            const last_message = thread.text_chats.length > 0 ? thread.text_chats[0] : null;
+            const last_message = thread.chats.length > 0 ? thread.chats[0] : null;
 
 
 
@@ -273,7 +273,7 @@ export const get_inbox = async (req: Request, res: Response) => {
                 last_message: last_message ? {
                     sender_username: last_message.sender_username,
                     receiver_username: last_message.receiver_username,
-                    message: last_message.text,
+                    message: last_message.message,
                     timestamp: last_message.createdAt,
                     is_read_by_receiver: last_message.is_read_by_receiver,
                     is_my_msg: last_message.sender_username === req.user.username

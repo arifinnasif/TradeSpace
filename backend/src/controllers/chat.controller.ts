@@ -130,3 +130,61 @@ export const send_message = async (req: Request, res: Response) => {
         });
     }
 }
+
+// get messages: GET /api/chat/threads/:thread_id
+export const get_messages = async (req: Request, res: Response) => {
+    try {
+        // check if the thread exists
+        const thread_id = req.params.thread_id;
+
+        const thread = await prisma.threads.findUnique({
+            where: {
+                id: thread_id
+            }
+        });
+
+        if (!thread) {
+            return res.status(404).json({
+                success: false,
+                error: "Thread not found!"
+            });
+        }
+
+        // check if the user is the participant of the thread
+        if (thread.op_username !== req.user.username && thread.client_username !== req.user.username) {
+            return res.status(403).json({
+                success: false,
+                error: "You are not the participant of this thread!"
+            });
+        }
+
+        // get the messages
+        const messages_from_db = await prisma.text_chats.findMany({
+            where: {
+                thread_id: thread_id
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+
+        const messages_to_send = messages_from_db.map(message => {
+            return {
+                sender: message.sender_username,
+                receiver: message.receiver_username,
+                text: message.text,
+                timestamp: message.createdAt,
+                is_my_message: message.sender_username === req.user.username
+            }
+        });
+
+
+        return res.status(200).json(messages_to_send);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            error: "Internal Server Error!"
+        });
+    }
+}

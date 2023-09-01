@@ -232,6 +232,16 @@ export const get_inbox = async (req: Request, res: Response) => {
                         is_sell_ad: true
                     }
                 },
+                op: {
+                    select: {
+                        name: true
+                    }
+                },
+                client: {
+                    select: {
+                        name: true
+                    }
+                },
                 text_chats: {
 
                     orderBy: {
@@ -254,7 +264,8 @@ export const get_inbox = async (req: Request, res: Response) => {
 
             return {
                 thread_id: thread.id,
-                receiver: thread.op_username === req.user.username ? thread.client_username : thread.op_username,
+                receiver_fullname: thread.op_username === req.user.username ? thread.client.name : thread.op.name,
+                receiver_username: thread.op_username === req.user.username ? thread.client_username : thread.op_username,
                 ad_id: thread.ad_id,
                 ad_title: thread.ad.title,
                 is_sell_ad: thread.ad.is_sell_ad,

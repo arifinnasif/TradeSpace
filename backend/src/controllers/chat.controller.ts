@@ -1,0 +1,64 @@
+import { Request, Response, NextFunction } from 'express';
+import prisma from '../../prisma/prisma_client';
+import _ from 'lodash';
+import * as dotenv from "dotenv";
+
+
+dotenv.config();
+
+
+// get chat thread: /api/chat/:ad_id
+export const get_chat_thread = async (req: Request, res: Response) => {
+
+    try {
+        const ad_id = Number(req.params.ad_id);
+
+
+        // check if the ad exists
+        const ad = await prisma.ads.findUnique({
+            where: {
+                id: ad_id
+            }
+        });
+
+        if (!ad || ad.status !== 'approved') {
+            return res.status(404).json({
+                success: false,
+                error: "ad not found!"
+            });
+        }
+
+        // check if the user is the owner of the ad
+        if (ad.op_username === req.user.username) {
+            return res.status(403).json({
+                success: false,
+                error: "You are the owner of this ad! You can't chat with yourself!"
+            });
+        }
+
+        // get the chat thread
+        const chat_thread = await prisma.threads.findFirst({
+            where: {
+                AND: [
+                    { ad_id: ad_id },
+                    { client_username: req.user.username }
+                ]
+
+            },
+            select: {
+                id: true,
+            }
+        });
+
+        return res.status(200).json({
+            success: true,
+            thread_id: chat_thread?.id
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            error: "Internal Server Error!"
+        });
+    }
+}

@@ -8,7 +8,7 @@ import adsRouter from "./ads/ads";
 import adminRouter from "./admin";
 import profileRouter from "./user";
 import homeRouter from "./home/home";
-import chatRouter from "./chat/chat";
+import chatRouter from "./chat";
 
 // initialize routers
 router.use("/auth", authRouter);

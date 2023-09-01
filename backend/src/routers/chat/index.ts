@@ -1,14 +1,12 @@
 import { Router } from "express";
 
+import { get_chat_thread, get_inbox, get_unread_msg_count } from "../../controllers/chat.controller";
+import threadRouter from "./threads";
 import { userAuth } from "../../middlewares/auth-middleware";
-import { get_chat_thread, get_inbox, get_messages, get_unread_msg_count, send_message } from "../../controllers/chat.controller";
 
 const router = Router();
 
-router
-    .route("/threads/:thread_id")
-    .get(userAuth, get_messages)
-    .post(userAuth, send_message)
+router.use("/threads", userAuth, threadRouter);
 
 router
     .route("/inbox")

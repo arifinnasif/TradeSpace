@@ -22,46 +22,12 @@ import Promotion from "./PromotionComponent";
 import { FaThList } from "react-icons/fa";
 import AdCardDetail from "./AdCardDetail";
 
-interface ProductCardProps {
-  id: number;
-  title: string;
-  detail: string[];
-  location: string;
-  updated_at: string;
-  price: string;
-  image: string;
-  isFeatured?: boolean;
-}
-
-const productsList: ProductCardProps[] = [
-  {
-    id: 1,
-    title: "Ford F-150 SUV 2021",
-    location: "Paris",
-    detail: ["2021", "Petrol", "4500 cc", "Automatic"],
-    updated_at: "17 days ago",
-    price: "$ 400k",
-    isFeatured: true,
-    image:
-      "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb",
-  },
-  {
-    id: 2,
-    title: "Haval Jolion Top",
-    location: "New York",
-    detail: ["2021", "Petrol", "3500 cc", "Automatic"],
-    updated_at: "1 days ago",
-    price: "$ 450k",
-    image:
-      "https://images.unsplash.com/photo-1502877338535-766e1452684a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb",
-  },
-];
-
 const AdCard: FunctionComponent<AdCardType> = ({
   id,
   title,
   category_name,
   price,
+  image1,
   is_used,
   is_negotiable,
   is_sell_ad,
@@ -87,8 +53,9 @@ const AdCard: FunctionComponent<AdCardType> = ({
             rounded="md"
             w={{ base: "100%", md: "18rem" }}
             h="auto"
+            boxSize="150px"
             objectFit="cover"
-            src={productsList[0].image}
+            src={image1}
             alt="product image"
           />
         </Flex>

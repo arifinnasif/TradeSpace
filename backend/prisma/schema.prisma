@@ -58,14 +58,16 @@ model ads {
   is_used         Boolean    @default(true)
   is_sell_ad      Boolean    @default(true)
   days_used       Int?
-  image1          Bytes?
-  image2          Bytes?
-  image3          Bytes?
-  image4          Bytes?
-  image5          Bytes?
-  receipt_image   Bytes?
+  image1          String?
+  image2          String?
+  image3          String?
+  image4          String?
+  image5          String?
+  receipt_image   String?
   is_phone_public Boolean    @default(false)
   address         String
+  latitude        Float?
+  longitude       Float?
   promotion       promotions @relation(fields: [promotion_type], references: [promotion_type])
   promotion_type  String
   ticket          Int        @default(1)

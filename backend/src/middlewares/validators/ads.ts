@@ -79,8 +79,12 @@ const is_phone_public = check('is_phone_public').optional().isBoolean()
 
 
 // check if address is valid.
-const address = check('address').isLength({ min: 5, max: 100 })
-                            .withMessage('Address length should be between 5 and 100 characters.')
+const address = [
+    check('address.description').isLength({ min: 5, max: 100 })
+                            .withMessage('Address length should be between 5 and 100 characters.'),
+    check('address.latitude').isNumeric(),
+    check('address.longitude').isNumeric(),
+]
     
 
                             
@@ -99,4 +103,4 @@ const address = check('address').isLength({ min: 5, max: 100 })
 
 
 export const postAdValidation = [category, title, description, price, is_negotiable, 
-                                is_sell_ad, is_used, ...usage_time, is_phone_public, address]
+                                is_sell_ad, is_used, ...usage_time, is_phone_public, ...address]

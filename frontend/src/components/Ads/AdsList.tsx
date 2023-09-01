@@ -5,20 +5,31 @@ import AdCard from "./AdCard";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { adService, AdCardType } from "../../services/ad.service";
+import { useSearchParams } from "react-router-dom";
 
 function AdsList() {
   const [isLoading, setIsLoading] = useState(false);
   const [adsList, setAdsList] = useState<AdCardType[]>();
+  const [params, setParams] = useSearchParams();
+  // const search_string_temp = search_string.get("search_string");
+  // const filter = search_string.get("filter");
+  // console.log(filter);
+  // console.log(search_string_temp);
+  // for (const [key, value] of params) {
+  //   console.log(`${key}: ${value}`);
+  // }
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const ads = await adService.getAds();
+      console.log(params.get("cat"));
+      const ads = await adService.getAds(params);
       setAdsList(ads);
+      console.log(adsList);
       setIsLoading(false);
     }
     fetchData();
-  }, []);
+  }, [params]);
   return (
     <Box>
       <VStack spacing={"0"}>

@@ -114,7 +114,8 @@ export const send_message = async (req: Request, res: Response) => {
                 thread_id: thread_id,
                 sender_username: req.user.username,
                 receiver_username: thread.op_username === req.user.username ? thread.client_username : thread.op_username,
-                message: req.body.message
+                message: req.body.message,
+                is_image: req.body.is_image,
             }
         });
 
@@ -197,10 +198,13 @@ export const get_messages = async (req: Request, res: Response) => {
                 receiver_username: msg.receiver_username,
                 message: msg.message,
                 timestamp: msg.createdAt,
+                is_image: msg.is_image,
                 is_read_by_receiver: msg.is_read_by_receiver,
                 is_my_message: msg.sender_username === req.user.username
             }
         });
+
+
 
 
         return res.status(200).json(messages_to_send);
@@ -273,7 +277,7 @@ export const get_inbox = async (req: Request, res: Response) => {
                 last_message: last_message ? {
                     sender_username: last_message.sender_username,
                     receiver_username: last_message.receiver_username,
-                    message: last_message.message,
+                    message: last_message.is_image ? "sent an image" : last_message.message,
                     timestamp: last_message.createdAt,
                     is_read_by_receiver: last_message.is_read_by_receiver,
                     is_my_msg: last_message.sender_username === req.user.username

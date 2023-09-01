@@ -252,6 +252,16 @@ export const get_inbox = async (req: Request, res: Response) => {
                         createdAt: 'desc'
                     },
                     take: 1
+                },
+                _count: {
+                    select: {
+                        chats: {
+                            where: {
+                                receiver_username: req.user.username,
+                                is_read_by_receiver: false
+                            }
+                        }
+                    }
                 }
             },
 
@@ -260,10 +270,11 @@ export const get_inbox = async (req: Request, res: Response) => {
             }
         });
 
+        console.log(threads_from_db);
+
         let threads_to_send = threads_from_db.map(thread => {
 
             const last_message = thread.chats.length > 0 ? thread.chats[0] : null;
-
 
 
             return {
@@ -273,6 +284,7 @@ export const get_inbox = async (req: Request, res: Response) => {
                 ad_id: thread.ad_id,
                 ad_title: thread.ad.title,
                 is_sell_ad: thread.ad.is_sell_ad,
+                unread_messages_count: thread._count.chats,
                 am_i_op: thread.op_username === req.user.username,
                 last_message: last_message ? {
                     sender_username: last_message.sender_username,

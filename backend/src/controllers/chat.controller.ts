@@ -297,3 +297,27 @@ export const get_inbox = async (req: Request, res: Response) => {
         });
     }
 }
+
+
+// get unread messages count: GET /api/chat/unread_msg_count
+export const get_unread_msg_count = async (req: Request, res: Response) => {
+    try {
+        const unread_messages_count = await prisma.chats.count({
+            where: {
+                receiver_username: req.user.username,
+                is_read_by_receiver: false
+            }
+        });
+
+        return res.status(200).json({
+            success: true,
+            unread_messages_count: unread_messages_count
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            error: "Internal Server Error!"
+        });
+    }
+}

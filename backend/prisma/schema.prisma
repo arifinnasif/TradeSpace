@@ -77,7 +77,6 @@ model ads {
   threads         threads[]  @relation("ADS_THREAD")
 }
 
-
 model archived_ads {
   id          Int      @id @default(autoincrement())
   op_username String
@@ -148,13 +147,14 @@ model threads {
 }
 
 model text_chats {
-  id                Int      @id @default(autoincrement())
-  thread            threads  @relation("THREADS_TEXT_CHAT", fields: [thread_id], references: [id])
-  thread_id         String
-  sender            users    @relation("TEXT_CHAT_SENDER", fields: [sender_username], references: [username])
-  sender_username   String
-  receiver          users    @relation("TEXT_CHAT_RECEIVER", fields: [receiver_username], references: [username])
-  receiver_username String
-  text              String
-  createdAt         DateTime @default(now())
+  id                  Int      @id @default(autoincrement())
+  thread              threads  @relation("THREADS_TEXT_CHAT", fields: [thread_id], references: [id])
+  thread_id           String
+  sender              users    @relation("TEXT_CHAT_SENDER", fields: [sender_username], references: [username])
+  sender_username     String
+  receiver            users    @relation("TEXT_CHAT_RECEIVER", fields: [receiver_username], references: [username])
+  receiver_username   String
+  text                String
+  is_read_by_receiver Boolean  @default(false)
+  createdAt           DateTime @default(now())
 }

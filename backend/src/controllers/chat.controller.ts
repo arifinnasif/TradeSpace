@@ -168,6 +168,19 @@ export const get_messages = async (req: Request, res: Response) => {
             });
         }
 
+        // mark the messages as read
+        await prisma.text_chats.updateMany({
+            where: {
+                thread_id: thread_id,
+                receiver_username: req.user.username,
+                is_read_by_receiver: false
+            },
+            data: {
+                is_read_by_receiver: true
+            }
+        });
+
+
         // get the messages
         const messages_from_db = await prisma.text_chats.findMany({
             where: {
@@ -178,13 +191,14 @@ export const get_messages = async (req: Request, res: Response) => {
             }
         });
 
-        const messages_to_send = messages_from_db.map(message => {
+        const messages_to_send = messages_from_db.map(msg => {
             return {
-                sender: message.sender_username,
-                receiver: message.receiver_username,
-                text: message.text,
-                timestamp: message.createdAt,
-                is_my_message: message.sender_username === req.user.username
+                sender_username: msg.sender_username,
+                receiver_username: msg.receiver_username,
+                message: msg.text,
+                timestamp: msg.createdAt,
+                is_read_by_receiver: msg.is_read_by_receiver,
+                is_my_message: msg.sender_username === req.user.username
             }
         });
 
@@ -246,9 +260,11 @@ export const get_inbox = async (req: Request, res: Response) => {
                 is_sell_ad: thread.ad.is_sell_ad,
                 am_i_op: thread.op_username === req.user.username,
                 last_message: last_message ? {
-                    sender: last_message.sender_username,
-                    timestamp: last_message.createdAt,
+                    sender_username: last_message.sender_username,
+                    receiver_username: last_message.receiver_username,
                     message: last_message.text,
+                    timestamp: last_message.createdAt,
+                    is_read_by_receiver: last_message.is_read_by_receiver,
                     is_my_msg: last_message.sender_username === req.user.username
                 } : null
             }

@@ -18,26 +18,26 @@ model stuffs {
 }
 
 model users {
-  username            String          @id
-  name                String
-  email               String          @unique
-  password            String
-  dob                 DateTime
-  gender              String
-  phone               String          @unique
-  email_verified      Boolean         @default(false)
-  phone_verified      Boolean         @default(false)
-  mute_end_date       DateTime        @default("1970-01-01T00:00:00.000Z")
-  profile_pic         Bytes?
+  username       String          @id
+  name           String
+  email          String          @unique
+  password       String
+  dob            DateTime
+  gender         String
+  phone          String          @unique
+  email_verified Boolean         @default(false)
+  phone_verified Boolean         @default(false)
+  mute_end_date  DateTime        @default("1970-01-01T00:00:00.000Z")
+  profile_pic    Bytes?
   // verified            Boolean         @default(false) // do we need this?
-  createdAt           DateTime        @default(now())
-  posted_ads          ads[]           @relation("OP")
-  notifications       notifications[]
-  transactions        transactions[]
-  threads_op          threads[]       @relation("THREAD_OP")
-  threads_client      threads[]       @relation("THREAD_CLIENT")
-  text_chats_sender   text_chats[]    @relation("TEXT_CHAT_SENDER")
-  text_chats_receiver text_chats[]    @relation("TEXT_CHAT_RECEIVER")
+  createdAt      DateTime        @default(now())
+  posted_ads     ads[]           @relation("OP")
+  notifications  notifications[]
+  transactions   transactions[]
+  threads_op     threads[]       @relation("THREAD_OP")
+  threads_client threads[]       @relation("THREAD_CLIENT")
+  chats_sender   chats[]         @relation("CHAT_SENDER")
+  chats_receiver chats[]         @relation("CHAT_RECEIVER")
 }
 
 model temp_emailtoken {
@@ -135,26 +135,27 @@ model transactions {
 }
 
 model threads {
-  id              String       @id
-  op              users        @relation("THREAD_OP", fields: [op_username], references: [username])
+  id              String   @id
+  op              users    @relation("THREAD_OP", fields: [op_username], references: [username])
   op_username     String
-  client          users        @relation("THREAD_CLIENT", fields: [client_username], references: [username])
+  client          users    @relation("THREAD_CLIENT", fields: [client_username], references: [username])
   client_username String
-  ad              ads          @relation("ADS_THREAD", fields: [ad_id], references: [id])
+  ad              ads      @relation("ADS_THREAD", fields: [ad_id], references: [id])
   ad_id           Int
-  text_chats      text_chats[] @relation("THREADS_TEXT_CHAT")
-  updated_at      DateTime     @default(now())
+  chats           chats[]  @relation("THREADS_CHATS")
+  updated_at      DateTime @default(now())
 }
 
-model text_chats {
+model chats {
   id                  Int      @id @default(autoincrement())
-  thread              threads  @relation("THREADS_TEXT_CHAT", fields: [thread_id], references: [id])
+  thread              threads  @relation("THREADS_CHATS", fields: [thread_id], references: [id])
   thread_id           String
-  sender              users    @relation("TEXT_CHAT_SENDER", fields: [sender_username], references: [username])
+  sender              users    @relation("CHAT_SENDER", fields: [sender_username], references: [username])
   sender_username     String
-  receiver            users    @relation("TEXT_CHAT_RECEIVER", fields: [receiver_username], references: [username])
+  receiver            users    @relation("CHAT_RECEIVER", fields: [receiver_username], references: [username])
   receiver_username   String
-  text                String
+  message             String
+  is_image            Boolean  @default(false)
   is_read_by_receiver Boolean  @default(false)
   createdAt           DateTime @default(now())
 }

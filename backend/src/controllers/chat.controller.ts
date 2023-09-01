@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import prisma from '../../prisma/prisma_client';
 import _ from 'lodash';
 import * as dotenv from "dotenv";
+import { v4 as uuidv4 } from 'uuid';
 
 
 dotenv.config();
@@ -50,9 +51,27 @@ export const get_chat_thread = async (req: Request, res: Response) => {
             }
         });
 
+        // if thread doesn't exist, create a new thread
+        if (!chat_thread) {
+            const new_thread = await prisma.threads.create({
+                data: {
+                    id: uuidv4(),
+                    ad_id: ad_id,
+                    op_username: ad.op_username,
+                    client_username: req.user.username
+                }
+            });
+
+            return res.status(201).json({
+                success: true,
+                thread_id: new_thread.id
+            });
+
+        }
+
         return res.status(200).json({
             success: true,
-            thread_id: chat_thread?.id
+            thread_id: chat_thread.id
         });
     } catch (error) {
         console.log(error);

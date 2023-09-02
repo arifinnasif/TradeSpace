@@ -1,21 +1,7 @@
-import {
-  chakra,
-  VStack,
-  HStack,
-  Text,
-  Container,
-  Box,
-  Icon,
-  Button,
-  SimpleGrid,
-  useColorModeValue,
-  Center,
-} from "@chakra-ui/react";
+import { chakra, Container, SimpleGrid, Center } from "@chakra-ui/react";
 // Here we have used react-icons package for the icons
 
-import { BsFillCloudCheckFill } from "react-icons/bs";
-import { AiOutlineCloudServer } from "react-icons/ai";
-import { FaServer } from "react-icons/fa";
+import { FaBicycle, FaCarSide, FaRocket } from "react-icons/fa";
 import Layout from "../layout/Layout";
 import { useState } from "react";
 import AdCard from "../components/Promotions/AdCard";
@@ -23,9 +9,9 @@ import PricingCard from "../components/Promotions/PricingCard";
 
 const plansList = [
   {
-    title: "Hobby",
+    title: "Silver",
     price: 49,
-    icon: BsFillCloudCheckFill,
+    icon: FaBicycle,
     features: [
       "Deploy 5 apps",
       "2 Servers",
@@ -34,9 +20,9 @@ const plansList = [
     ],
   },
   {
-    title: "Growth",
+    title: "Gold",
     price: 79,
-    icon: AiOutlineCloudServer,
+    icon: FaCarSide,
     features: [
       "Deploy 10 apps",
       "4 Servers",
@@ -46,21 +32,9 @@ const plansList = [
     ],
   },
   {
-    title: "Business",
+    title: "Platinum",
     price: 99,
-    icon: FaServer,
-    features: [
-      "Deploy unlimited apps",
-      "unlimited Servers",
-      "Push to deploy",
-      "Collaborate with your team",
-      "Setup load balanced clusters",
-    ],
-  },
-  {
-    title: "Business",
-    price: 99,
-    icon: FaServer,
+    icon: FaRocket,
     features: [
       "Deploy unlimited apps",
       "unlimited Servers",

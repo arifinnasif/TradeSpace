@@ -40,9 +40,9 @@ const PricingCard = ({ title, price, icon, features }: PricingCardProps) => {
           </Text>
           {price}
         </Text>
-        <Text fontSize="md" color="gray.500">
+        {/* <Text fontSize="md" color="gray.500">
           per month
-        </Text>
+        </Text> */}
       </Box>
       <VStack spacing={2} alignItems="flex-start" my={6}>
         {features.map((feature, index) => (

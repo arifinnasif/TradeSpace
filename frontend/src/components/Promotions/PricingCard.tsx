@@ -61,7 +61,7 @@ const PricingCard = ({ title, price, icon, features }: PricingCardProps) => {
         rounded="md"
         w="100%"
       >
-        Get Started
+        Buy
       </Button>
     </Box>
   );

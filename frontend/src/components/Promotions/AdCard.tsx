@@ -24,6 +24,7 @@ const AdCard: FunctionComponent<AdCardProps> = ({ adId }) => {
       overflow="hidden"
       variant={"elevated"}
       shadow={"xl"}
+      bg={useColorModeValue("teal.50", "teal.900")}
     >
       <Image
         objectFit="cover"

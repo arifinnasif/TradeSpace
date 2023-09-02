@@ -79,7 +79,7 @@ const ThreeTiersPricing = () => {
 
       <Container maxW="7xl" py="8" px="0">
         <chakra.h2 fontSize="5xl" fontWeight="bold" textAlign="center" mb={5}>
-          Simple and affordable pricing
+          Promote this ad to get more customers
         </chakra.h2>
         <Center>
           <AdCard adId={1} />

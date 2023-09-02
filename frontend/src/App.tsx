@@ -24,7 +24,7 @@ import AdminLogin from "./pages/AdminLogin.page";
 import { useSelector } from "react-redux";
 import AdReviewPage from "./pages/AdReview.page";
 import SimpleSidebar from "./components/Sidebar/Sidebar";
-import Test from "./pages/Test.page";
+import Promotion from "./pages/Promotion.page";
 
 const PrivateRoutes = () => {
   const { isAuth } = useSelector((state: any) => state.auth);
@@ -81,7 +81,7 @@ function App() {
           <Route path="/ads/" element={<GetAds />} />
 
           <Route path="/ads/:id/" element={<AdDetailsPage />} />
-          <Route path="/test/" element={<Test />} />
+          <Route path="/ads/:id/promote" element={<Promotion />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

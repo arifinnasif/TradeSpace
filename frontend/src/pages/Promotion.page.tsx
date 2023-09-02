@@ -1,11 +1,11 @@
 import { chakra, Container, SimpleGrid, Center } from "@chakra-ui/react";
-// Here we have used react-icons package for the icons
 
 import { FaBicycle, FaCarSide, FaRocket } from "react-icons/fa";
 import Layout from "../layout/Layout";
 import { useState } from "react";
 import AdCard from "../components/Promotions/AdCard";
 import PricingCard from "../components/Promotions/PricingCard";
+import { useParams } from "react-router-dom";
 
 const plansList = [
   {
@@ -45,8 +45,9 @@ const plansList = [
   },
 ];
 
-const ThreeTiersPricing = () => {
+const PromotionPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams();
   return (
     <Layout title="Testing" loading={isLoading}>
       {/* <Box bg={"tomato"}> */}
@@ -56,7 +57,7 @@ const ThreeTiersPricing = () => {
           Promote this ad to get more customers
         </chakra.h2>
         <Center>
-          <AdCard adId={1} />
+          <AdCard adId={+id!} />
         </Center>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={1} mt={16}>
           {plansList.map((plan, index) => (
@@ -69,15 +70,4 @@ const ThreeTiersPricing = () => {
   );
 };
 
-export default ThreeTiersPricing;
-
-// const TestPage = () => {
-//   const [isLoading, setIsLoading] = useState(false);
-//   return (
-//     <Layout title="Testing" loading={isLoading}>
-//       <Box></Box>
-//     </Layout>
-//   );
-// };
-
-// export default TestPage;
+export default PromotionPage;

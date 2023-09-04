@@ -8,6 +8,7 @@ import { update_user_validation } from "../../middlewares/validators/update_user
 import { validationMiddleware } from "../../middlewares/validation.middleware";
 import user_transaction_router from "./transactions";
 import user_notification_router from "./notifications";
+import { get_user_own_ads } from "../../controllers/user_own_ads.controller";
 
 const router = express.Router();
 

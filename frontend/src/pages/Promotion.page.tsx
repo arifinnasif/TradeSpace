@@ -113,12 +113,18 @@ const PromotionPage = () => {
           Promote this ad to get more customers
         </chakra.h2>
         <Center>
-          <AdCard
-            title={adTitle}
-            description={adDescription}
-            price={adPrice}
-            image={adImage}
-          />
+          {isAdLoading ? (
+            <Center>
+              <Spinner size="100px" />
+            </Center>
+          ) : (
+            <AdCard
+              title={adTitle}
+              description={adDescription}
+              price={adPrice}
+              image={adImage}
+            />
+          )}
         </Center>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={1} mt={16}>
           {isPromotionListLoading ? (

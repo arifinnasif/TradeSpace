@@ -233,17 +233,20 @@ export const get_inbox = async (req: Request, res: Response) => {
                 ad: {
                     select: {
                         title: true,
+                        image1: true,
                         is_sell_ad: true
                     }
                 },
                 op: {
                     select: {
-                        name: true
+                        name: true,
+                        profile_pic: true
                     }
                 },
                 client: {
                     select: {
-                        name: true
+                        name: true,
+                        profile_pic: true
                     }
                 },
                 chats: {
@@ -281,8 +284,10 @@ export const get_inbox = async (req: Request, res: Response) => {
                 thread_id: thread.id,
                 receiver_fullname: thread.op_username === req.user.username ? thread.client.name : thread.op.name,
                 receiver_username: thread.op_username === req.user.username ? thread.client_username : thread.op_username,
+                receiver_profile_pic: thread.op_username === req.user.username ? thread.client.profile_pic : thread.op.profile_pic,
                 ad_id: thread.ad_id,
                 ad_title: thread.ad.title,
+                ad_image: thread.ad.image1,
                 is_sell_ad: thread.ad.is_sell_ad,
                 unread_messages_count: thread._count.chats,
                 am_i_op: thread.op_username === req.user.username,

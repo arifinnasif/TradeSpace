@@ -66,8 +66,10 @@ const PromotionPage = () => {
   const [adPrice, setAdPrice] = useState(0);
   const [adImage, setAdImage] = useState("");
   const { id } = useParams();
+  const [isPromotionRequestProcessing, setIsPromotionRequestProcessing] =
+    useState(false);
 
-  const fetAd = async (id: number) => {
+  const fetchAd = async (id: number) => {
     setIsAdLoading(true);
     const { title, description, price, image1 } = await adService.getAdDetails(
       id
@@ -83,7 +85,7 @@ const PromotionPage = () => {
     setIsPromotionListLoading(true);
     const promotion_list: PromotionType[] = await getPromotions();
     const usable_promotion_list = promotion_list.map((p) => ({
-      promotion_name: _.startCase(p.promotion_type),
+      promotion_name: p.promotion_type,
       price: p.cost,
       icon: FaBicycle,
       features: [
@@ -100,7 +102,7 @@ const PromotionPage = () => {
   };
 
   useEffect(() => {
-    fetAd(Number(id));
+    fetchAd(Number(id));
     fetchPromotions();
   }, []);
 
@@ -142,7 +144,10 @@ const PromotionPage = () => {
           ) : (
             promotions.map((plan, index) => (
               <PricingCard
-                isPromotionRequestProcessing={false}
+                isPromotionRequestProcessing={isPromotionRequestProcessing}
+                setIsPromotionRequestProcessing={
+                  setIsPromotionRequestProcessing
+                }
                 key={index}
                 adId={+id!}
                 {...plan}

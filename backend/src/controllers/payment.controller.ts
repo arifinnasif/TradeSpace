@@ -1,7 +1,6 @@
 import stripe from "../services/stripe";
 import prisma from "../../prisma/prisma_client";
 import { create_checkout_session } from "../services/stripe_checkout_session";
-import _ from "lodash";
 import { notify_user } from "./user_notification.controller";
 
 
@@ -97,12 +96,12 @@ export const handle_payment_initialization = async (req: any, res: any) => {
             });
         }
 
-        const [session_id, url] = await create_checkout_session(promotion_type, promotion.cost);
+        const [session_id, url, payment_intent] = await create_checkout_session(promotion_type, promotion.cost);
 
         // add to transaction table pending payment
         await prisma.transactions.create({
             data: {
-                stripe_checkout_id: session_id,
+                stripe_checkout_id: String(session_id),
                 status: 'pending',
                 username: req.user.username,
                 ad_id: Number(ad_id),
@@ -114,7 +113,7 @@ export const handle_payment_initialization = async (req: any, res: any) => {
 
         // send the checkout url to the frontend with redirection
 
-        return res.status(302).json({
+        return res.status(200).json({
             success: true,
             payment_gateway_url: url
         });
@@ -166,6 +165,8 @@ const fulfill_order = async (session: any) => {
 }
 
 const create_order = async (session: any) => {
+    console.log("Creating order+");
+    // console.log(session.payment_method_types[0])
     await prisma.transactions.update({
         where: {
             stripe_checkout_id: session.id
@@ -175,7 +176,7 @@ const create_order = async (session: any) => {
             method: session.payment_method_types[0],
         }
     });
-    console.log("Creating order");
+    console.log("Creating order-");
 }
 
 const mark_order_as_failed = async (session: any) => {
@@ -213,9 +214,12 @@ export const stripe_webhook_handler = async (req: any, res: any) => {
         case 'charge.succeeded': {
             // add receipt to transaction table
             const session: any = event.data.object;
-            const transaction = await prisma.transactions.update({
+            console.log("printing from charge succeed")
+            console.log(session);
+
+            const transaction = await prisma.transactions.updateMany({
                 where: {
-                    stripe_checkout_id: session.id
+                    stripe_payment_intent: session.payment_intent
                 },
                 data: {
                     receipt_url: session.receipt_url,
@@ -224,6 +228,8 @@ export const stripe_webhook_handler = async (req: any, res: any) => {
         }
         case 'checkout.session.completed': {
             const session: any = event.data.object;
+            console.log("printing from checkout session completed")
+            console.log(session);
             // Save an order in your database, marked as 'awaiting payment'
             create_order(session);
 
@@ -241,6 +247,8 @@ export const stripe_webhook_handler = async (req: any, res: any) => {
 
         case 'checkout.session.async_payment_succeeded': {
             const session = event.data.object;
+            console.log("printing from checkout session async payment succeeded")
+            console.log(session);
 
             // Fulfill the purchase...
             fulfill_order(session);

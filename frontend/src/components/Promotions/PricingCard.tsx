@@ -10,9 +10,9 @@ import {
   HStack,
   Button,
 } from "@chakra-ui/react";
-import _ from "lodash";
+import _, { set } from "lodash";
 import { promoteAd } from "../../services/promotion.service";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface PricingCardProps {
   adId: number;
@@ -20,6 +20,7 @@ interface PricingCardProps {
   price: number;
   features: string[];
   isPromotionRequestProcessing: boolean;
+  setIsPromotionRequestProcessing: (value: boolean) => void;
 
   icon: IconType;
 }
@@ -29,12 +30,21 @@ const PricingCard = ({
   promotion_name,
   price,
   icon,
+  isPromotionRequestProcessing,
+  setIsPromotionRequestProcessing,
   features,
 }: PricingCardProps) => {
   const buyButtonAction = async () => {
-    console.log("buy button clicked");
-    const { payment_gateway_url } = await promoteAd(adId, promotion_name);
-    Navigate(payment_gateway_url);
+    try {
+      setIsPromotionRequestProcessing(true);
+      console.log("buy button clicked");
+      const { payment_gateway_url } = await promoteAd(adId, promotion_name);
+      setIsPromotionRequestProcessing(false);
+      window.location.replace(payment_gateway_url);
+    } catch (error) {
+      // navigate(payment_gateway_url);
+      console.log(error);
+    }
   };
   return (
     <Box
@@ -72,6 +82,7 @@ const PricingCard = ({
         ))}
       </VStack>
       <Button
+        isDisabled={isPromotionRequestProcessing}
         colorScheme="teal"
         variant="solid"
         size="md"

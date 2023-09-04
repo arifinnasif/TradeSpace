@@ -51,7 +51,7 @@ const plansList = [
 ];
 
 interface UsablePromotionType {
-  title: string;
+  promotion_name: string;
   price: number;
   icon: IconType;
   features: string[];
@@ -83,7 +83,7 @@ const PromotionPage = () => {
     setIsPromotionListLoading(true);
     const promotion_list: PromotionType[] = await getPromotions();
     const usable_promotion_list = promotion_list.map((p) => ({
-      title: _.startCase(p.promotion_type),
+      promotion_name: _.startCase(p.promotion_type),
       price: p.cost,
       icon: FaBicycle,
       features: [
@@ -141,7 +141,12 @@ const PromotionPage = () => {
             </>
           ) : (
             promotions.map((plan, index) => (
-              <PricingCard key={index} {...plan} />
+              <PricingCard
+                isPromotionRequestProcessing={false}
+                key={index}
+                adId={+id!}
+                {...plan}
+              />
             ))
           )}
         </SimpleGrid>

@@ -10,15 +10,32 @@ import {
   HStack,
   Button,
 } from "@chakra-ui/react";
+import _ from "lodash";
+import { promoteAd } from "../../services/promotion.service";
+import { Navigate } from "react-router-dom";
 
 interface PricingCardProps {
-  title: string;
+  adId: number;
+  promotion_name: string;
   price: number;
   features: string[];
+  isPromotionRequestProcessing: boolean;
+
   icon: IconType;
 }
 
-const PricingCard = ({ title, price, icon, features }: PricingCardProps) => {
+const PricingCard = ({
+  adId,
+  promotion_name,
+  price,
+  icon,
+  features,
+}: PricingCardProps) => {
+  const buyButtonAction = async () => {
+    console.log("buy button clicked");
+    const { payment_gateway_url } = await promoteAd(adId, promotion_name);
+    Navigate(payment_gateway_url);
+  };
   return (
     <Box
       minW={{ base: "xs", sm: "xs", lg: "sm" }}
@@ -32,7 +49,7 @@ const PricingCard = ({ title, price, icon, features }: PricingCardProps) => {
       <Box textAlign="center">
         <Icon as={icon} h={10} w={10} color="teal.500" />
         <chakra.h2 fontSize="2xl" fontWeight="bold">
-          {title}
+          {_.startCase(promotion_name)}
         </chakra.h2>
         <Text fontSize="7xl" fontWeight="bold">
           <Text as="sup" fontSize="3xl" fontWeight="normal" top="-1em">
@@ -60,6 +77,7 @@ const PricingCard = ({ title, price, icon, features }: PricingCardProps) => {
         size="md"
         rounded="md"
         w="100%"
+        onClick={buyButtonAction}
       >
         Buy
       </Button>

@@ -16,10 +16,7 @@ export const get_promotions = async (req: any, res: any) => {
             }
         });
 
-        return res.status(200).json({
-            success: true,
-            promotions: promotions
-        });
+        return res.status(200).json(promotions);
     } catch (error: any) {
         return res.status(500).json({
             success: false,

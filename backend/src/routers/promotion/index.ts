@@ -5,7 +5,7 @@ import { get_promotions } from "../../controllers/payment.controller";
 const router = Router();
 
 router
-    .route("/promotions")
+    .route("/")
     .get(get_promotions);
 
 export default router;

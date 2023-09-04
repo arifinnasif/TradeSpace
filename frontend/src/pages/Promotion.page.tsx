@@ -82,7 +82,7 @@ const PromotionPage = () => {
 
   useEffect(() => {
     fetchPromotions();
-  });
+  }, []);
 
   return (
     <Layout title="Testing" loading={isLoading}>

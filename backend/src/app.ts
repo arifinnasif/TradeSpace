@@ -24,7 +24,7 @@ app.post("/webhook", stripe_webhook_handler);
 
 
 // import passport-middleware
-import "./middlewares/passport-middleware";
+import "./middlewares/passport.middleware";
 
 // initialize middleware
 app.use(express.json());

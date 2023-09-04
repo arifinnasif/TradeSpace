@@ -7,17 +7,17 @@ import {
   protectedRoute,
   registerUser,
   verifyEmail,
-} from "../../controllers/auth";
+} from "../../controllers/auth.controller";
 import {
   loginValidation,
   registerValidation,
-} from "../../middlewares/validators/auth";
+} from "../../middlewares/validators/auth.validator.middleware";
 
-import { validationMiddleware } from "../../middlewares/validations-middleware";
+import { validationMiddleware } from "../../middlewares/validation.middleware";
 import {
   nonPhoneVerifiedUserAuth,
   userAuth,
-} from "../../middlewares/auth-middleware";
+} from "../../middlewares/auth.middleware";
 import { verify_phone } from "../../controllers/phone_verification.controller";
 
 const router = express.Router();

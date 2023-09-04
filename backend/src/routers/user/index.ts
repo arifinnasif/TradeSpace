@@ -1,8 +1,8 @@
 import express from "express";
-import { userAuth } from "../../middlewares/auth-middleware";
-import { get_user_profile, update_user_profile } from "../../controllers/user_profile";
-import { update_user_validation } from "../../middlewares/validators/update_user";
-import { validationMiddleware } from "../../middlewares/validations-middleware";
+import { userAuth } from "../../middlewares/auth.middleware";
+import { get_user_profile, update_user_profile } from "../../controllers/user_profile.controller";
+import { update_user_validation } from "../../middlewares/validators/update_user.validator.middleware";
+import { validationMiddleware } from "../../middlewares/validation.middleware";
 import user_transaction_router from "./transactions";
 import user_notification_router from "./notifications";
 

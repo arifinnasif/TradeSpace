@@ -3,8 +3,8 @@ const router = express.Router();
 
 //import routers
 import authRouter from "./auth/auth";
-import thingsRouter from "./things/things";
-import adsRouter from "./ad/ad";
+import thingsRouter from "./things/thing";
+import adsRouter from "./ads/ad";
 import adminRouter from "./admin";
 import profileRouter from "./user";
 import homeRouter from "./home/home";

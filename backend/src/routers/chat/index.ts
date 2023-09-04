@@ -1,8 +1,8 @@
 import { Router } from "express";
 
 import { get_chat_thread, get_inbox, get_unread_msg_count } from "../../controllers/chat.controller";
-import threadRouter from "./threads";
-import { userAuth } from "../../middlewares/auth-middleware";
+import threadRouter from "./thread";
+import { userAuth } from "../../middlewares/auth.middleware";
 
 const router = Router();
 

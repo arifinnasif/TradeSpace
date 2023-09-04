@@ -1,11 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../../prisma/prisma_client';
 import { request_to_verify_opt } from '../services/twilio_phone_verification';
-import jwt from 'jsonwebtoken'
-import * as dotenv from "dotenv";
-
-
-dotenv.config();
 
 
 

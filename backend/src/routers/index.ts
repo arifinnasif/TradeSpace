@@ -4,7 +4,7 @@ const router = express.Router();
 //import routers
 import authRouter from "./auth/auth";
 import thingsRouter from "./things/things";
-import adsRouter from "./ads/ads";
+import adsRouter from "./ad/ad";
 import adminRouter from "./admin";
 import profileRouter from "./user";
 import homeRouter from "./home/home";

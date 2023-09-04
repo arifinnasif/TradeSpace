@@ -1,6 +1,5 @@
 import prima from '../../prisma/prisma_client';
-import * as dotenv from "dotenv";
-dotenv.config();
+
 
 
 // get all notifications: /api/profile/notifications
@@ -13,7 +12,7 @@ export const get_user_notifications = async (req: any, res: any) => {
                 }
             },
             orderBy: {
-                createdAt: 'desc'
+                created_at: 'desc'
             }
         });
 

@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { mute_user } from "../../controllers/mute_user.controller";
+import { mute_user } from "../../controllers/user_management.controller";
 
 const router = Router();
 

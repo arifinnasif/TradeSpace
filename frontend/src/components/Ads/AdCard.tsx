@@ -32,9 +32,10 @@ const AdCard: FunctionComponent<AdCardType> = ({
   is_negotiable,
   is_sell_ad,
   promotion_type,
+  width = "7xl",
 }) => {
   return (
-    <Container maxW="7xl" p={{ base: 5, md: 3 }} margin="0 auto">
+    <Container maxW={width} p={{ base: 5, md: 3 }} margin="0 auto">
       <Stack
         key={id}
         spacing={{ base: 0, md: 4 }}

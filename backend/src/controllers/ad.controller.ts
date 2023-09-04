@@ -2,8 +2,7 @@ import { Request, Response } from "express";
 import Fuse from "fuse.js";
 
 // import prisma client
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from '../../prisma/prisma_client';
 
 // for search functionality
 const fuseOptions = {
@@ -201,7 +200,7 @@ let get_ads = async (req: Request, res: Response) => {
         is_used: true,
         is_sell_ad: true,
         promotion_type: true,
-        createdAt: true,
+        created_at: true,
       },
     });
 
@@ -287,7 +286,7 @@ let get_ad_details = async (req: Request, res: Response) => {
         days_used: true,
         address: true,
         promotion_type: true,
-        createdAt: true,
+        created_at: true,
         latitude: true,
         longitude: true,
       },

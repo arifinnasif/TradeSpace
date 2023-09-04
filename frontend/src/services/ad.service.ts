@@ -18,7 +18,7 @@ export interface AdDetailsType {
   };
   phone?: string;
   promotion_type?: string;
-  createdAt: string;
+  created_at: string;
   address?: {
     description: string;
     latitude: number;
@@ -36,6 +36,7 @@ export interface AdCardType {
   is_negotiable: boolean;
   is_sell_ad: boolean;
   promotion_type: string;
+  width?: string;
 }
 
 class AdService {

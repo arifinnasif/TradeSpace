@@ -1,8 +1,8 @@
 import express from "express";
-import { userAuth } from "../../middlewares/auth-middleware";
-import { postAdValidation } from "../../middlewares/validators/ads";
-import { validationMiddleware } from "../../middlewares/validations-middleware";
-import { get_ad_details, get_ads, postAd } from "../../controllers/ads";
+import { userAuth } from "../../middlewares/auth.middleware";
+import { postAdValidation } from "../../middlewares/validators/ad.validator.middleware";
+import { validationMiddleware } from "../../middlewares/validation.middleware";
+import { get_ad_details, get_ads, postAd } from "../../controllers/ad.controller";
 import { handle_payment_initialization } from "../../controllers/payment.controller";
 
 const router = express.Router();

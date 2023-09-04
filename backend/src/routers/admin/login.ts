@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { loginAdmin } from "../../controllers/auth";
-import { adminLoginValidation } from "../../middlewares/validators/auth";
-import { validationMiddleware } from "../../middlewares/validations-middleware";
+import { loginAdmin } from "../../controllers/auth.controller";
+import { adminLoginValidation } from "../../middlewares/validators/auth.validator.middleware";
+import { validationMiddleware } from "../../middlewares/validation.middleware";
 
 const router = Router();
 

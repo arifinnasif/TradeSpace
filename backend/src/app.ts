@@ -9,9 +9,6 @@ import passport from "passport";
 import prisma from "../prisma/prisma_client";
 import { stripe_webhook_handler } from "./controllers/payment.controller"
 
-import * as dotenv from "dotenv";
-
-dotenv.config();
 
 const { CLIENT_URL } = require("./constants");
 

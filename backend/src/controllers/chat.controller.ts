@@ -1,11 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../../prisma/prisma_client';
 import _ from 'lodash';
-import * as dotenv from "dotenv";
 import { v4 as uuidv4 } from 'uuid';
 
-
-dotenv.config();
 
 
 // get chat thread: /api/chat/:ad_id

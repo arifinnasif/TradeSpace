@@ -2,12 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import prisma from '../../prisma/prisma_client';
 import { notify_user } from './user_notification.controller';
 import _ from 'lodash';
-import * as dotenv from "dotenv";
 
 const limit = 10;
 
-
-dotenv.config();
 
 /**
  * @param req 

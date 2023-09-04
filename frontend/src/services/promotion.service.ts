@@ -18,3 +18,14 @@ export const getPromotions = async () => {
 
     return response.data;
 };
+
+
+export const promoteAd = async (ad_id: number, promotion_type: string) => {
+    const response = await API.put(`/ads/${ad_id}/`, { promotion_type: promotion_type }, {
+        withCredentials: true,
+    });
+
+    console.log(response.data);
+
+    return response.data;
+};

@@ -32,20 +32,15 @@ import {
   FaMedal,
 } from "react-icons/fa";
 import { AdDetailsType } from "../../services/ad.service";
-import { 
-  MapContainer, 
-  TileLayer, 
-  Marker, 
-  Popup, 
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 // this particular import is important
 // it is the only way to make leaflet work with react
 // without it, the map will show up with different tiles popping up
 // at different positions like there's no tomorrow
 // Also a height is required for the map to show up
-// I set the height at 500px in the PopoverContent 
-import "leaflet/dist/leaflet.css"
+// I set the height at 500px in the PopoverContent
+import "leaflet/dist/leaflet.css";
 
 // interface AdDetailsProps {
 //   ad_id: number
@@ -59,7 +54,7 @@ import "leaflet/dist/leaflet.css"
 // days_used?: number,
 // phone?: string,
 // promotion_type?: string,
-// createdAt: string,
+// created_at: string,
 // }
 
 const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
@@ -80,7 +75,6 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
   const handleShowMap = () => {
     setShowMap(!showMap);
   };
-
 
   return (
     // <Box>
@@ -144,7 +138,7 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
           </HStack>
           <HStack>
             <Icon as={FaCalendarDay} />
-            <Text>{ad?.createdAt}</Text>
+            <Text>{ad?.created_at}</Text>
           </HStack>
           <HStack>
             <Icon as={FaThList} />
@@ -193,59 +187,60 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
           {/* <Button leftIcon={<FaMapMarkerAlt />} colorScheme="teal" size="lg">
             Address
           </Button> */}
-          <Popover  placement="bottom" 
-                    closeOnBlur={false} 
-                    isOpen={showMap} 
-          > 
-              <PopoverTrigger>
-                {/* <Button onClick={handleShowMap}>
+          <Popover placement="bottom" closeOnBlur={false} isOpen={showMap}>
+            <PopoverTrigger>
+              {/* <Button onClick={handleShowMap}>
                   Mark Location on Map
                 </Button> */}
-                <Button
-                  onClick={handleShowMap}
-                  bg={"blue.500"}
-                  color={"white"}
-                  _hover={{
-                    bg: "blue.800",
+              <Button
+                onClick={handleShowMap}
+                bg={"blue.500"}
+                color={"white"}
+                _hover={{
+                  bg: "blue.800",
+                }}
+              >
+                See Pickup point on Map
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent
+              style={{ width: "500px", height: "500px", overflow: "hidden" }}
+            >
+              <PopoverArrow />
+              <PopoverCloseButton onClick={() => setShowMap(false)} />
+              <PopoverHeader>Pick up address</PopoverHeader>
+              <PopoverBody
+                style={{ width: "100%", height: "100%", overflow: "hidden" }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    boxSizing: "border-box",
                   }}
                 >
-                  See Pickup point on Map
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent style={{ width: '500px', height: '500px', overflow: 'hidden'}}>
-                <PopoverArrow />
-                <PopoverCloseButton onClick={() => setShowMap(false)}/>
-                <PopoverHeader>
-                  Pick up address
-                </PopoverHeader>
-                <PopoverBody style={{ width: '100%', height: '100%', overflow: 'hidden'}}>
-                <div style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}>
-                  
-                              
                   <MapContainer
                     center={[ad.address!.latitude, ad.address!.longitude]}
                     zoom={17}
                     scrollWheelZoom={false}
-                    style={{ width: '100%', height: '100%' }}
+                    style={{ width: "100%", height: "100%" }}
                   >
                     <TileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    <Marker 
-                     position={[ad!.address!.latitude, ad!.address!.longitude]}
-                            draggable={false}
+                    <Marker
+                      position={[ad!.address!.latitude, ad!.address!.longitude]}
+                      draggable={false}
                     >
                       {/* make the pop-up open by default */}
-                      <Popup>
-                        {ad.address!.description}
-                      </Popup>
+                      <Popup>{ad.address!.description}</Popup>
                     </Marker>
                   </MapContainer>
                 </div>
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
         </HStack>
       </GridItem>
     </Grid>

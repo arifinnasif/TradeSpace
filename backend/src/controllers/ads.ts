@@ -201,7 +201,7 @@ let get_ads = async (req: Request, res: Response) => {
         is_used: true,
         is_sell_ad: true,
         promotion_type: true,
-        createdAt: true,
+        created_at: true,
       },
     });
 
@@ -287,7 +287,7 @@ let get_ad_details = async (req: Request, res: Response) => {
         days_used: true,
         address: true,
         promotion_type: true,
-        createdAt: true,
+        created_at: true,
         latitude: true,
         longitude: true,
       },

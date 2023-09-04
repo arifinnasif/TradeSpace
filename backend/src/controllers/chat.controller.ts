@@ -188,7 +188,7 @@ export const get_messages = async (req: Request, res: Response) => {
                 thread_id: thread_id
             },
             orderBy: {
-                createdAt: 'desc'
+                created_at: 'desc'
             }
         });
 
@@ -197,7 +197,7 @@ export const get_messages = async (req: Request, res: Response) => {
                 sender_username: msg.sender_username,
                 receiver_username: msg.receiver_username,
                 message: msg.message,
-                timestamp: msg.createdAt,
+                timestamp: msg.created_at,
                 is_image: msg.is_image,
                 is_read_by_receiver: msg.is_read_by_receiver,
                 is_my_message: msg.sender_username === req.user.username
@@ -249,7 +249,7 @@ export const get_inbox = async (req: Request, res: Response) => {
                 chats: {
 
                     orderBy: {
-                        createdAt: 'desc'
+                        created_at: 'desc'
                     },
                     take: 1
                 },
@@ -290,7 +290,7 @@ export const get_inbox = async (req: Request, res: Response) => {
                     sender_username: last_message.sender_username,
                     receiver_username: last_message.receiver_username,
                     message: last_message.is_image ? "sent an image" : last_message.message,
-                    timestamp: last_message.createdAt,
+                    timestamp: last_message.created_at,
                     is_read_by_receiver: last_message.is_read_by_receiver,
                     is_my_msg: last_message.sender_username === req.user.username
                 } : null

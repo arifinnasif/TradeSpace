@@ -27,6 +27,10 @@ let get_user_profile = async (req: Request, res: Response) => {
       where: { op_username: user.username },
     });
 
+    let soldAdsCount = await prisma.archived_ads.count({
+      where: { op_username: user.username },
+    });
+
     // user not found
     if (!userProfile) {
       return res.status(404).json({

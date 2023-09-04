@@ -18,7 +18,13 @@ let get_user_profile = async (req: Request, res: Response) => {
         phone: true,
         dob: true,
         gender: true,
+        profile_pic: true,
+        created_at: true,
       },
+    });
+
+    let postedAdsCount = await prisma.ads.count({
+      where: { op_username: user.username },
     });
 
     // user not found

@@ -3,6 +3,18 @@ import { Request, Response } from "express";
 // import prisma client
 import prisma from "../../prisma/prisma_client";
 
+// interface for user profile
+interface UserProfile {
+  username: string;
+  name: string;
+  email: string;
+  phone: string;
+  dob: Date;
+  gender: string;
+  profile_pic: string;
+  created_at: Date;
+}
+
 // get user profile: /api/profile
 let get_user_profile = async (req: Request, res: Response) => {
   const user: any = req.user;
@@ -30,6 +42,9 @@ let get_user_profile = async (req: Request, res: Response) => {
     let soldAdsCount = await prisma.archived_ads.count({
       where: { op_username: user.username },
     });
+
+    // add posted ads count to user profile
+    userProfile.posted_ads_count = postedAdsCount;
 
     // user not found
     if (!userProfile) {

@@ -8,6 +8,30 @@ import { notify_user } from "./user_notification.controller";
 dotenv.config();
 
 
+// get the list of promotions
+export const get_promotions = async (req: any, res: any) => {
+    try {
+        const promotions = await prisma.promotions.findMany({
+            where: {
+                NOT: {
+                    promotion_type: "normal"
+                }
+            }
+        });
+
+        return res.status(200).json({
+            success: true,
+            promotions: promotions
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+}
+
+
 
 
 

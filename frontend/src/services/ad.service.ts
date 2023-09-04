@@ -36,6 +36,7 @@ export interface AdCardType {
   is_negotiable: boolean;
   is_sell_ad: boolean;
   promotion_type: string;
+  width?: string;
 }
 
 class AdService {

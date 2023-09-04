@@ -23,7 +23,7 @@ let get_user_profile = async (req: Request, res: Response) => {
 
   // retrieve user profile from db
   try {
-    let userProfile = await prisma.users.findUnique({
+    const userProfilefromDB = await prisma.users.findUnique({
       where: { username: user.username },
       select: {
         username: true,
@@ -45,8 +45,17 @@ let get_user_profile = async (req: Request, res: Response) => {
       where: { op_username: user.username },
     });
 
-    // add posted ads count to user profile
-    userProfile.posted_ads_count = postedAdsCount;
+    // create user profile object
+    const userProfile: UserProfile = {
+      username: userProfilefromDB?.username,
+      name: userProfilefromDB?.name,
+      email: userProfilefromDB?.email,
+      phone: userProfilefromDB?.phone,
+      dob: userProfilefromDB?.dob,
+      gender: userProfilefromDB?.gender,
+      profile_pic: userProfilefromDB?.profile_pic,
+      created_at: userProfilefromDB?.created_at,
+    };
 
     // user not found
     if (!userProfile) {

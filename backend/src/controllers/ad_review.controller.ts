@@ -10,7 +10,6 @@ const limit = 10;
 dotenv.config();
 
 /**
- * @todo consult the frontend guy about the things to be shown in the pending review list card
  * @param req 
  * @param res 
  * @returns 
@@ -78,52 +77,31 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
 // get pending review details: /api/admin/ad_reviews/:id
 export const get_pending_review_details = async (req: Request, res: Response) => {
     try {
-        let review_details: {
-            id: number;
-            op_username: string;
-            op?: {
-                name: string;
-
-            };
-            category_name: string;
-            title: string;
-            description?: string | null;
-            price?: number | null;
-            is_negotiable: boolean;
-            is_used: boolean;
-            is_sell_ad: boolean;
-            is_phone_public: boolean;
-            days_used?: number | null;
-            address?: string | null;
-            promotion_type: string;
-            created_at: Date;
-            status?: string;
-        } | null
-            = await prisma.ads.findUnique({
-                where: { id: Number(req.params.id) },
-                select: {
-                    id: true,
-                    op_username: true,
-                    op: {
-                        select: {
-                            name: true
-                        },
+        const review_details = await prisma.ads.findUnique({
+            where: { id: Number(req.params.id) },
+            select: {
+                id: true,
+                op_username: true,
+                op: {
+                    select: {
+                        name: true
                     },
-                    category_name: true,
-                    title: true,
-                    description: true,
-                    price: true,
-                    is_negotiable: true,
-                    is_used: true,
-                    is_sell_ad: true,
-                    is_phone_public: true,
-                    days_used: true,
-                    address: true,
-                    promotion_type: true,
-                    created_at: true,
-                    status: true,
-                }
-            });
+                },
+                category_name: true,
+                title: true,
+                description: true,
+                price: true,
+                is_negotiable: true,
+                is_used: true,
+                is_sell_ad: true,
+                is_phone_public: true,
+                days_used: true,
+                address: true,
+                promotion_type: true,
+                created_at: true,
+                status: true,
+            }
+        });
 
 
         // ad not found
@@ -238,7 +216,6 @@ export const approve_pending_review = async (req: Request, res: Response) => {
  * if not pending, return 404
  * if pending, deletes the ad from ads table and add it to archived ads table
  * notify the user why his ad is declined
- * @todo add reason to archived ads table
  * @param req 
  * @param res 
  * @returns 
@@ -270,7 +247,8 @@ export const decline_pending_review = async (req: Request, res: Response) => {
                 title: pending_review.title,
                 description: pending_review.description,
                 price: pending_review.price,
-                // image1: pending_review.image1,
+                image1: pending_review.image1,
+                reason: `declined by admin for ${req.body.reason}`,
                 address: pending_review.address,
             }
         });

@@ -10,6 +10,7 @@ import { getPromotions, PromotionType } from "../services/promotion.service";
 import _ from "lodash";
 import { IconType } from "react-icons";
 import Spinner from "../components/Spinner";
+import { adService } from "../services/ad.service";
 
 const plansList = [
   {
@@ -58,8 +59,25 @@ interface UsablePromotionType {
 
 const PromotionPage = () => {
   const [isPromotionListLoading, setIsPromotionListLoading] = useState(false);
+  const [isAdLoading, setIsAdLoading] = useState(false);
   const [promotions, setPromotions] = useState<UsablePromotionType[]>([]);
+  const [adTitle, setAdTitle] = useState("");
+  const [adDescription, setAdDescription] = useState("");
+  const [adPrice, setAdPrice] = useState(0);
+  const [adImage, setAdImage] = useState("");
   const { id } = useParams();
+
+  const fetAd = async (id: number) => {
+    setIsAdLoading(true);
+    const { title, description, price, image1 } = await adService.getAdDetails(
+      id
+    );
+    setAdTitle(title);
+    setAdDescription(description!);
+    setAdPrice(price!);
+    setAdImage(image1);
+    setIsAdLoading(false);
+  };
 
   const fetchPromotions = async () => {
     setIsPromotionListLoading(true);
@@ -82,6 +100,7 @@ const PromotionPage = () => {
   };
 
   useEffect(() => {
+    fetAd(Number(id));
     fetchPromotions();
   }, []);
 
@@ -94,7 +113,12 @@ const PromotionPage = () => {
           Promote this ad to get more customers
         </chakra.h2>
         <Center>
-          <AdCard adId={+id!} />
+          <AdCard
+            title={adTitle}
+            description={adDescription}
+            price={adPrice}
+            image={adImage}
+          />
         </Center>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={1} mt={16}>
           {isPromotionListLoading ? (

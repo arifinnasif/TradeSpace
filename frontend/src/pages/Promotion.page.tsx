@@ -7,8 +7,9 @@ import AdCard from "../components/Promotions/AdCard";
 import PricingCard from "../components/Promotions/PricingCard";
 import { useParams } from "react-router-dom";
 import { getPromotions, PromotionType } from "../services/promotion.service";
-import { Icon } from "leaflet";
+import _ from "lodash";
 import { IconType } from "react-icons";
+import Spinner from "../components/Spinner";
 
 const plansList = [
   {
@@ -56,15 +57,15 @@ interface UsablePromotionType {
 }
 
 const PromotionPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPromotionListLoading, setIsPromotionListLoading] = useState(false);
   const [promotions, setPromotions] = useState<UsablePromotionType[]>([]);
   const { id } = useParams();
 
   const fetchPromotions = async () => {
-    setIsLoading(true);
+    setIsPromotionListLoading(true);
     const promotion_list: PromotionType[] = await getPromotions();
     const usable_promotion_list = promotion_list.map((p) => ({
-      title: p.promotion_type,
+      title: _.startCase(p.promotion_type),
       price: p.cost,
       icon: FaBicycle,
       features: [
@@ -77,7 +78,7 @@ const PromotionPage = () => {
     usable_promotion_list[usable_promotion_list.length - 1].icon = FaRocket;
     usable_promotion_list[usable_promotion_list.length - 2].icon = FaCarSide;
     setPromotions(usable_promotion_list);
-    setIsLoading(false);
+    setIsPromotionListLoading(false);
   };
 
   useEffect(() => {
@@ -85,7 +86,7 @@ const PromotionPage = () => {
   }, []);
 
   return (
-    <Layout title="Testing" loading={isLoading}>
+    <Layout title="Testing" loading={false}>
       {/* <Box bg={"tomato"}> */}
 
       <Container maxW="7xl" py="8" px="0">
@@ -96,9 +97,23 @@ const PromotionPage = () => {
           <AdCard adId={+id!} />
         </Center>
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={1} mt={16}>
-          {promotions.map((plan, index) => (
-            <PricingCard key={index} {...plan} />
-          ))}
+          {isPromotionListLoading ? (
+            <>
+              <Center>
+                <Spinner size="100px" />
+              </Center>
+              <Center>
+                <Spinner size="100px" />
+              </Center>
+              <Center>
+                <Spinner size="100px" />
+              </Center>
+            </>
+          ) : (
+            promotions.map((plan, index) => (
+              <PricingCard key={index} {...plan} />
+            ))
+          )}
         </SimpleGrid>
       </Container>
       {/* </Box> */}

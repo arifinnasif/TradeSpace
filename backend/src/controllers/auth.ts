@@ -7,10 +7,10 @@ import { request_to_send_opt } from "../services/twilio_phone_verification";
 import crypto from "crypto";
 
 // import prisma
-import { PrismaClient } from "@prisma/client";
+import prisma from '../../prisma/prisma_client';
 import { request } from "http";
 import { token } from "morgan";
-const prisma = new PrismaClient();
+
 
 declare global {
   namespace Express {

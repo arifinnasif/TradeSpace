@@ -13,8 +13,8 @@ model stuffs {
   description String?
   price       Float?
   image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
 
 model users {
@@ -28,9 +28,9 @@ model users {
   email_verified Boolean         @default(false)
   phone_verified Boolean         @default(false)
   mute_end_date  DateTime        @default("1970-01-01T00:00:00.000Z")
-  profile_pic    Bytes?
+  profile_pic    String?
   // verified            Boolean         @default(false) // do we need this?
-  createdAt      DateTime        @default(now())
+  created_at     DateTime        @default(now())
   posted_ads     ads[]           @relation("OP")
   notifications  notifications[]
   transactions   transactions[]
@@ -70,10 +70,10 @@ model ads {
   longitude       Float?
   promotion       promotions @relation(fields: [promotion_type], references: [promotion_type])
   promotion_type  String
-  ticket          Int        @default(1)
+  ai_verdict      Json?
   status          String     @default("pending")
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  created_at      DateTime   @default(now())
+  updated_at      DateTime   @updatedAt
   threads         threads[]  @relation("ADS_THREAD")
 }
 
@@ -83,9 +83,10 @@ model archived_ads {
   title       String
   description String?
   price       Float?
-  image1      Bytes?
+  image1      String?
+  reason      String?
   address     String
-  createdAt   DateTime @default(now())
+  created_at  DateTime @default(now())
 }
 
 model category {
@@ -116,7 +117,7 @@ model notifications {
   type        String   @default("general")
   title       String
   description String?
-  createdAt   DateTime @default(now())
+  created_at  DateTime @default(now())
 }
 
 model transactions {
@@ -130,7 +131,7 @@ model transactions {
   method                String?
   status                String    @default("pending")
   receipt_url           String?
-  createdAt             DateTime  @default(now())
+  created_at            DateTime  @default(now())
   payment_successful_at DateTime?
 }
 
@@ -157,5 +158,5 @@ model chats {
   message             String
   is_image            Boolean  @default(false)
   is_read_by_receiver Boolean  @default(false)
-  createdAt           DateTime @default(now())
+  created_at          DateTime @default(now())
 }

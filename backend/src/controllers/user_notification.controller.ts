@@ -13,7 +13,7 @@ export const get_user_notifications = async (req: any, res: any) => {
                 }
             },
             orderBy: {
-                createdAt: 'desc'
+                created_at: 'desc'
             }
         });
 

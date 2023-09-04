@@ -18,7 +18,7 @@ export interface AdDetailsType {
   };
   phone?: string;
   promotion_type?: string;
-  createdAt: string;
+  created_at: string;
   address?: {
     description: string;
     latitude: number;

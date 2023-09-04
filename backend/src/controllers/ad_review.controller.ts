@@ -28,7 +28,7 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
             },
 
             orderBy: {
-                createdAt: 'desc'
+                created_at: 'desc'
             },
 
             skip: skip,
@@ -96,7 +96,7 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
             days_used?: number | null;
             address?: string | null;
             promotion_type: string;
-            createdAt: Date;
+            created_at: Date;
             status?: string;
         } | null
             = await prisma.ads.findUnique({
@@ -120,7 +120,7 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
                     days_used: true,
                     address: true,
                     promotion_type: true,
-                    createdAt: true,
+                    created_at: true,
                     status: true,
                 }
             });

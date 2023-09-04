@@ -13,6 +13,8 @@ interface UserProfile {
   gender: string;
   profile_pic: string;
   created_at: Date;
+  posted_ads_count: number;
+  sold_ads_count: number;
 }
 
 // get user profile: /api/profile

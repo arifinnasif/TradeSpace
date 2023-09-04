@@ -9,12 +9,12 @@ export interface PromotionType {
 }
 
 
-export const get_promotions = async () => {
+export const getPromotions = async () => {
     const response = await API.get(`/promotions/`, {
         withCredentials: true,
     });
 
     console.log(response.data);
 
-    return response;
+    return response.data;
 };

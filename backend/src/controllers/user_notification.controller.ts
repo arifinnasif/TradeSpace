@@ -1,6 +1,5 @@
 import prima from '../../prisma/prisma_client';
-import * as dotenv from "dotenv";
-dotenv.config();
+
 
 
 // get all notifications: /api/profile/notifications

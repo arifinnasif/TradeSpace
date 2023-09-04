@@ -1,9 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import prisma from '../../prisma/prisma_client';
 import { notify_user } from './user_notification.controller';
-import * as dotenv from "dotenv";
 
-dotenv.config();
 
 /**
  * checks whether the user exists or not and then sets mute_end_date to the current date + duration

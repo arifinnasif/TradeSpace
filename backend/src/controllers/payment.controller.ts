@@ -2,10 +2,7 @@ import stripe from "../services/stripe";
 import prisma from "../../prisma/prisma_client";
 import { create_checkout_session } from "../services/stripe_checkout_session";
 import _ from "lodash";
-import * as dotenv from "dotenv";
 import { notify_user } from "./user_notification.controller";
-
-dotenv.config();
 
 
 // get the list of promotions

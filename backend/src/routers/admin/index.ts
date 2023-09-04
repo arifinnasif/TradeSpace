@@ -1,10 +1,10 @@
 import { Router } from "express";
 
 import ad_review_router from "./ad_review";
-import mute_user_router from "./mute_user";
+import mute_user_router from "./user_management";
 import admin_login_router from "./login";
-import transactionsRouter from "./transactions";
-import { adminAuth } from "../../middlewares/auth-middleware";
+import transactionsRouter from "./transaction";
+import { adminAuth } from "../../middlewares/auth.middleware";
 
 const router = Router();
 

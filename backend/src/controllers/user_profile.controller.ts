@@ -55,6 +55,8 @@ let get_user_profile = async (req: Request, res: Response) => {
       gender: userProfilefromDB?.gender,
       profile_pic: userProfilefromDB?.profile_pic,
       created_at: userProfilefromDB?.created_at,
+      posted_ads_count: postedAdsCount,
+      sold_ads_count: soldAdsCount,
     };
 
     // user not found

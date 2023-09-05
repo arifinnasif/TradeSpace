@@ -148,7 +148,7 @@ const Navbar = () => {
                 )}
               </Button>
               
-              {isLoggedIn() ?
+              {IsLoggedIn() ?
                 <Link to="/notifications">
                   <Button>
                     <BellIcon boxSize={6} />

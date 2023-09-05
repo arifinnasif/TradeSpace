@@ -64,8 +64,47 @@ function formatTimestamp(timestamp: string) {
     hour12: true,
   });
 
+  console.log(formattedTime);
   return formattedTime;
 }
+
+
+// this works for timestamp type 2023-08-15 12:36:57.568Z
+// might need later in future
+// function formatTimestamp(timestamp: string) {
+//   console.log(timestamp);
+//   // Split the timestamp into date and time parts
+//   const [datePart, timePart] = timestamp.split(' ');
+//   const [year, month, day] = datePart.split('-');
+//   const [hour, minute, second] = timePart.split(':');
+
+//   // Create a new Date object with the parsed components
+//   const formattedDate = new Date(
+//     parseInt(year),
+//     parseInt(month) - 1, // Months are zero-based
+//     parseInt(day),
+//     parseInt(hour),
+//     parseInt(minute),
+//     parseFloat(second)
+//   );
+
+//   // Format the date and time
+//   const formattedTime = formattedDate.toLocaleString('en-US', {
+//     timeZone: 'UTC',
+//     weekday: 'short',
+//     year: 'numeric',
+//     month: 'short',
+//     day: 'numeric',
+//     hour: 'numeric',
+//     minute: 'numeric',
+//     hour12: true,
+//   });
+
+//   console.log(formattedTime);
+//   return formattedTime;
+// }
+
+
 
 const GetNotifications = () => {
 
@@ -134,7 +173,7 @@ const GetNotifications = () => {
                           {notification.description}
                         </Text>
                         <Text pt='2' fontSize='xs'>
-                          {formatTimestamp(notification.createdAt)}
+                          {formatTimestamp(notification.created_at)}
                         </Text>
                       </Box>
                     ))}

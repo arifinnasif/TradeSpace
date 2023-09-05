@@ -111,7 +111,7 @@ function formatTimestamp(timestamp: string) {
 const GetNotifications = () => {
 
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [notifications, setNotifications] = useState<NotificationType[]>();
   
   
@@ -128,12 +128,15 @@ const GetNotifications = () => {
 
 
   useEffect(() => {
+    if (isLoading) {
+      return;
+    }
     async function setSeen() {
       await notificationService.updateNotificationSeenStatus();
     }
     setSeen();
   }
-  , []);
+  , [isLoading]);
   
   
   
@@ -173,10 +176,35 @@ const GetNotifications = () => {
                   </CardHeader>
                 </Center> */}
 
-                <CardBody>
+                {notifications?.map((notification) => (
+                  <CardBody key={notification.id}
+                            backgroundColor={notification.is_seen ? "white" : "red.100"}
+                  >
+                    <Stack divider={<StackDivider />} spacing='4'>
+                      <Box key={notification.id}
+                          // backgroundColor={notification.is_seen ? "lightgray" : "lightgray"}
+                      >
+                        <Heading size='sm' textTransform='uppercase'>
+                          {notification.title}
+                        </Heading>
+                        <Text pt='2' fontSize='sm'>
+                          {notification.description}
+                        </Text>
+                        <Text pt='2' fontSize='xs'>
+                          {formatTimestamp(notification.created_at)}
+                        </Text>
+                      </Box>
+                    </Stack>
+                  </CardBody>
+                ))
+                }
+
+                {/* <CardBody>
                   <Stack divider={<StackDivider />} spacing='4'>
                     {notifications?.map((notification) => (
-                      <Box key={notification.id}>
+                      <Box key={notification.id}
+                           backgroundColor={notification.is_seen ? "lightgray" : "lightgray"}
+                      >
                         <Heading size='sm' textTransform='uppercase'>
                           {notification.title}
                         </Heading>
@@ -189,7 +217,7 @@ const GetNotifications = () => {
                       </Box>
                     ))}
                   </Stack>
-                </CardBody>
+                </CardBody> */}
                 
               </Card>
 

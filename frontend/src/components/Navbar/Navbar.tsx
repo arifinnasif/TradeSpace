@@ -140,7 +140,7 @@ const Navbar = () => {
             break;
           }
         }
-        
+
       }
     }
 

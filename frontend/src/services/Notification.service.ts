@@ -18,6 +18,10 @@ class NotificationService {
     
     return ((await API.get(`profile/notifications`)).data as NotificationType[]);
   }
+
+  async updateNotificationSeenStatus() {
+    return ((await API.put(`profile/notifications`)).data);
+  }
 }
 
 export const notificationService = new NotificationService();

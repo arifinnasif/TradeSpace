@@ -125,6 +125,15 @@ const GetNotifications = () => {
     fetchData();
   }
   , []);
+
+
+  useEffect(() => {
+    async function setSeen() {
+      await notificationService.updateNotificationSeenStatus();
+    }
+    setSeen();
+  }
+  , []);
   
   
   

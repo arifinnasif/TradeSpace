@@ -43,6 +43,8 @@ import { notificationService,
 
 function formatTimestamp(timestamp: string) {
   const date = new Date(timestamp);
+  console.log(date);
+
   // console.log(date);
   // const hours = date.getHours();
   // console.log(hours);
@@ -54,7 +56,7 @@ function formatTimestamp(timestamp: string) {
   // return `${formattedTime} of ${date.toDateString()}`;
 
   const formattedTime = date.toLocaleString('en-US', {
-    timeZone: 'UTC',
+    timeZone: 'Asia/Dhaka',
     weekday: 'short',
     year: 'numeric',
     month: 'short',
@@ -64,7 +66,7 @@ function formatTimestamp(timestamp: string) {
     hour12: true,
   });
 
-  console.log(formattedTime);
+
   return formattedTime;
 }
 

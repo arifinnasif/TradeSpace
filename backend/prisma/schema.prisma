@@ -117,6 +117,7 @@ model notifications {
   type        String   @default("general")
   title       String
   description String?
+  is_seen     Boolean  @default(false)
   created_at  DateTime @default(now())
 }
 

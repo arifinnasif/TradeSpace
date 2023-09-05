@@ -2,43 +2,24 @@ import stripe from "../services/stripe";
 import prisma from "../../prisma/prisma_client";
 import { create_checkout_session } from "../services/stripe_checkout_session";
 import _ from "lodash";
-import * as dotenv from "dotenv";
 import { notify_user } from "./user_notification.controller";
 
-dotenv.config();
 
-
-// get all transactions: /api/admin/transactions
-export const get_all_transactions_admin = async (req: any, res: any) => {
+// get the list of promotions
+export const get_promotions = async (req: any, res: any) => {
     try {
-        const transactions = await prisma.transactions.findMany({
-            orderBy: {
-                createdAt: 'desc'
-            }
-        });
-
-        return res.status(200).json(transactions);
-    } catch (error: any) {
-        return res.status(500).json({
-            success: false,
-            error: error.message
-        });
-    }
-}
-
-// get user transactions: /api/profile/transactions/
-export const get_user_transactions = async (req: any, res: any) => {
-    try {
-        const transactions = await prisma.transactions.findMany({
+        const promotions = await prisma.promotions.findMany({
             where: {
-                username: req.user.username
-            },
-            orderBy: {
-                createdAt: 'desc'
+                NOT: {
+                    promotion_type: "normal"
+                }
             }
         });
 
-        return res.status(200).json(transactions);
+        return res.status(200).json({
+            success: true,
+            promotions: promotions
+        });
     } catch (error: any) {
         return res.status(500).json({
             success: false,
@@ -46,6 +27,9 @@ export const get_user_transactions = async (req: any, res: any) => {
         });
     }
 }
+
+
+
 
 
 export const handle_payment_initialization = async (req: any, res: any) => {

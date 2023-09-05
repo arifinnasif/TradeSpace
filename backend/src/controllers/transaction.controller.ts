@@ -5,7 +5,7 @@ export const get_all_transactions_admin = async (req: any, res: any) => {
     try {
         const transactions = await prisma.transactions.findMany({
             orderBy: {
-                createdAt: 'desc'
+                created_at: 'desc'
             }
         });
 
@@ -26,7 +26,7 @@ export const get_user_transactions = async (req: any, res: any) => {
                 username: req.user.username
             },
             orderBy: {
-                createdAt: 'desc'
+                created_at: 'desc'
             }
         });
 

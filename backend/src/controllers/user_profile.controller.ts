@@ -1,17 +1,16 @@
 import { Request, Response } from "express";
 
 // import prisma client
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+import prisma from '../../prisma/prisma_client';
 
 
 
 // get user profile: /api/profile
 let get_user_profile = async (req: Request, res: Response) => {
     const user: any = req.user;
-    
+
     // retrieve user profile from db
-    try{
+    try {
         const userProfile = await prisma.users.findUnique({
             where: { username: user.username },
             select: {
@@ -35,7 +34,7 @@ let get_user_profile = async (req: Request, res: Response) => {
         // return user profile
         return res.status(200).json(userProfile)
     }
-    catch(error: any) {
+    catch (error: any) {
         return res.status(500).json({
             success: false,
             error: error.message
@@ -49,9 +48,9 @@ let get_user_profile = async (req: Request, res: Response) => {
 // update user profile: /api/profile
 let update_user_profile = async (req: Request, res: Response) => {
     const user: any = req.user;
-    
+
     // update user profile in db [field: name, phone, dob]
-    try{
+    try {
         const updatedUserProfile = await prisma.users.update({
             where: { username: user.username },
             data: {
@@ -75,7 +74,7 @@ let update_user_profile = async (req: Request, res: Response) => {
             message: 'Profile updated successfully!'
         })
     }
-    catch(error: any) {
+    catch (error: any) {
         return res.status(500).json({
             success: false,
             error: error.message

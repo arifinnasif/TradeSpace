@@ -1,3 +1,9 @@
+// This is a demo form for future use.
+// used literally nowhere in the project.
+
+
+
+
 // For backend integration:
 
 // 1. Fetch categories from the database and put them categoris array.
@@ -26,7 +32,7 @@ import { Button,
 
 import { useEffect, useState } from 'react';
 
-import Layout from '../../layout/Layout';
+import Layout from '../layout/Layout';
 
 import { useNavigate } from 'react-router-dom';
 

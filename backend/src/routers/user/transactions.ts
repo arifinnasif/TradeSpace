@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { userAuth } from '../../middlewares/auth-middleware';
-import { get_user_transactions } from '../../controllers/transactions.controller';
+import { get_user_transactions } from '../../controllers/transaction.controller';
 
 
 const router = Router();

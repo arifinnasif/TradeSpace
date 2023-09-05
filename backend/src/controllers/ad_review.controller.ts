@@ -2,15 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import prisma from '../../prisma/prisma_client';
 import { notify_user } from './user_notification.controller';
 import _ from 'lodash';
-import * as dotenv from "dotenv";
 
 const limit = 10;
 
 
-dotenv.config();
-
 /**
- * @todo consult the frontend guy about the things to be shown in the pending review list card
  * @param req 
  * @param res 
  * @returns 
@@ -20,22 +16,51 @@ dotenv.config();
 // get all pending reviews: /api/admin/ad_reviews
 export const get_all_pending_reviews = async (req: Request, res: Response) => {
     try {
-        const pending_reviews = await prisma.ads.findMany({
+        let skip = (Number(req.query.page || 1) - 1) * limit;
+        if (skip < 0) skip = 0;
+        let pending_reviews = await prisma.ads.findMany({
             where: {
                 status: 'pending'
             },
 
             orderBy: {
-                createdAt: 'desc'
+                created_at: 'desc'
             },
 
-            skip: (Number(req.query.page || 1) - 1) * limit,
+            skip: skip,
 
             take: limit,
         });
 
+        const possible_ai_verdicts = ['No Issue', 'No Issue', 'No Issue', 'Contains Spam', 'Fake Image', 'EXIF Mismatch', 'EXIF Mismatch', 'EXIF Mismatch', 'EXIF Mismatch', 'No EXIF', 'Suspicious Link'];
+
+        pending_reviews = pending_reviews.map((review) => {
+            // generate random number between 0 and size of possible_ai_verdicts
+            const random_number = Math.floor(Math.random() * possible_ai_verdicts.length);
+            const is_ai_approved = random_number < 3 ? true : false;
+            const ai_verdict = possible_ai_verdicts[random_number];
+
+            return {
+                ...review,
+                is_ai_approved: is_ai_approved,
+                ai_verdict: ai_verdict
+            }
+        });
+
+        const total_pending_reviews = await prisma.ads.count({
+            where: {
+                status: 'pending'
+            }
+        });
+
+
         // console.log(pending_reviews);
-        return res.status(200).json(pending_reviews);
+        return res.status(200).json({
+            "current_page": req.query.page || 1,
+            "total_pages": Math.ceil(total_pending_reviews / limit),
+
+            "review_list": pending_reviews
+        });
     } catch (error: any) {
         return res.status(500).json({
             success: false,
@@ -49,52 +74,31 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
 // get pending review details: /api/admin/ad_reviews/:id
 export const get_pending_review_details = async (req: Request, res: Response) => {
     try {
-        let review_details: {
-            id: number;
-            op_username: string;
-            op?: {
-                name: string;
-
-            };
-            category_name: string;
-            title: string;
-            description?: string | null;
-            price?: number | null;
-            is_negotiable: boolean;
-            is_used: boolean;
-            is_sell_ad: boolean;
-            is_phone_public: boolean;
-            days_used?: number | null;
-            address?: string | null;
-            promotion_type: string;
-            createdAt: Date;
-            status?: string;
-        } | null
-            = await prisma.ads.findUnique({
-                where: { id: Number(req.params.id) },
-                select: {
-                    id: true,
-                    op_username: true,
-                    op: {
-                        select: {
-                            name: true
-                        },
+        const review_details = await prisma.ads.findUnique({
+            where: { id: Number(req.params.id) },
+            select: {
+                id: true,
+                op_username: true,
+                op: {
+                    select: {
+                        name: true
                     },
-                    category_name: true,
-                    title: true,
-                    description: true,
-                    price: true,
-                    is_negotiable: true,
-                    is_used: true,
-                    is_sell_ad: true,
-                    is_phone_public: true,
-                    days_used: true,
-                    address: true,
-                    promotion_type: true,
-                    createdAt: true,
-                    status: true,
-                }
-            });
+                },
+                category_name: true,
+                title: true,
+                description: true,
+                price: true,
+                is_negotiable: true,
+                is_used: true,
+                is_sell_ad: true,
+                is_phone_public: true,
+                days_used: true,
+                address: true,
+                promotion_type: true,
+                created_at: true,
+                status: true,
+            }
+        });
 
 
         // ad not found
@@ -209,7 +213,6 @@ export const approve_pending_review = async (req: Request, res: Response) => {
  * if not pending, return 404
  * if pending, deletes the ad from ads table and add it to archived ads table
  * notify the user why his ad is declined
- * @todo add reason to archived ads table
  * @param req 
  * @param res 
  * @returns 
@@ -228,7 +231,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
         if (pending_review.status !== 'pending') return res.status(404).json({ "error": "ad not pending" });
 
         // delete from ads table
-        await prisma.ads.delete({
+        const deleted_review = await prisma.ads.delete({
             where: {
                 id: Number(req.params.id!)
             }
@@ -242,6 +245,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
                 description: pending_review.description,
                 price: pending_review.price,
                 image1: pending_review.image1,
+                reason: `declined by admin for ${req.body.reason}`,
                 address: pending_review.address,
             }
         });
@@ -252,7 +256,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
         await notify_user(pending_review.op_username,
             'ad_declined',
             'Ad Declined',
-            `Your ad #${req.body.id} titled "${req.body.title}" has been declined by the admin for "${req.body.reason}"`);
+            `Your ad #${deleted_review.id} titled "${deleted_review.title}" has been declined by the admin for "${req.body.reason}"`);
 
         return res.status(200).json(archived_review);
     } catch (error: any) {

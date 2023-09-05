@@ -7,10 +7,10 @@ import { request_to_send_opt } from "../services/twilio_phone_verification";
 import crypto from "crypto";
 
 // import prisma
-import { PrismaClient } from "@prisma/client";
+import prisma from '../../prisma/prisma_client';
 import { request } from "http";
 import { token } from "morgan";
-const prisma = new PrismaClient();
+
 
 declare global {
   namespace Express {
@@ -243,10 +243,17 @@ let loginAdmin = async (req: Request, res: Response) => {
     const token = await sign(payload, SECRET);
 
     // send the token in a HTTP-only cookie
-    return res.status(200).cookie("token", token, { httpOnly: true }).json({
-      success: true,
-      message: "Logged in successfully!",
-    });
+    return res
+      .status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+      })
+      .json({
+        success: true,
+        message: "Logged in successfully!",
+        token: token,
+      });
   } catch (error: any) {
     console.log(error);
     return res.status(500).json({

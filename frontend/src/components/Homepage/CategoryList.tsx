@@ -28,7 +28,7 @@ function CategoryList() {
         </GridItem>
         {categories?.map((p) => (
           <GridItem>
-            <CategoryCard key={p.category} {...p} />
+            <CategoryCard key={p.name} {...p} />
           </GridItem>
         ))}
       </Grid>

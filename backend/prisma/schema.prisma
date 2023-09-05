@@ -13,31 +13,31 @@ model stuffs {
   description String?
   price       Float?
   image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
 }
 
 model users {
-  username            String          @id
-  name                String
-  email               String          @unique
-  password            String
-  dob                 DateTime
-  gender              String
-  phone               String          @unique
-  email_verified      Boolean         @default(false)
-  phone_verified      Boolean         @default(false)
-  mute_end_date       DateTime        @default("1970-01-01T00:00:00.000Z")
-  profile_pic         Bytes?
+  username       String          @id
+  name           String
+  email          String          @unique
+  password       String
+  dob            DateTime
+  gender         String
+  phone          String          @unique
+  email_verified Boolean         @default(false)
+  phone_verified Boolean         @default(false)
+  mute_end_date  DateTime        @default("1970-01-01T00:00:00.000Z")
+  profile_pic    String?
   // verified            Boolean         @default(false) // do we need this?
-  createdAt           DateTime        @default(now())
-  posted_ads          ads[]           @relation("OP")
-  notifications       notifications[]
-  transactions        transactions[]
-  threads_op          threads[]       @relation("THREAD_OP")
-  threads_client      threads[]       @relation("THREAD_CLIENT")
-  text_chats_sender   text_chats[]    @relation("TEXT_CHAT_SENDER")
-  text_chats_receiver text_chats[]    @relation("TEXT_CHAT_RECEIVER")
+  created_at     DateTime        @default(now())
+  posted_ads     ads[]           @relation("OP")
+  notifications  notifications[]
+  transactions   transactions[]
+  threads_op     threads[]       @relation("THREAD_OP")
+  threads_client threads[]       @relation("THREAD_CLIENT")
+  chats_sender   chats[]         @relation("CHAT_SENDER")
+  chats_receiver chats[]         @relation("CHAT_RECEIVER")
 }
 
 model temp_emailtoken {
@@ -58,69 +58,24 @@ model ads {
   is_used         Boolean    @default(true)
   is_sell_ad      Boolean    @default(true)
   days_used       Int?
-  image1          Bytes?
-  image2          Bytes?
-  image3          Bytes?
-  image4          Bytes?
-  image5          Bytes?
-  receipt_image   Bytes?
+  image1          String?
+  image2          String?
+  image3          String?
+  image4          String?
+  image5          String?
+  receipt_image   String?
   is_phone_public Boolean    @default(false)
   address         String
+  latitude        Float?
+  longitude       Float?
   promotion       promotions @relation(fields: [promotion_type], references: [promotion_type])
   promotion_type  String
-  ticket          Int        @default(1)
+  ai_verdict      Json?
   status          String     @default("pending")
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  created_at      DateTime   @default(now())
+  updated_at      DateTime   @updatedAt
   threads         threads[]  @relation("ADS_THREAD")
 }
-
-// model sell_ads {
-//   id              Int        @id @default(autoincrement())
-//   op              users      @relation("SELL_OP", fields: [op_username], references: [username])
-//   op_username     String
-//   category        category   @relation("SELL_CAT", fields: [category_name], references: [name])
-//   category_name   String
-//   title           String
-//   description     String?
-//   price           Float
-//   is_negotiable   Boolean    @default(false)
-//   is_used         Boolean    @default(true)
-//   days_used       Int?
-//   image1          Bytes?
-//   image2          Bytes?
-//   image3          Bytes?
-//   image4          Bytes?
-//   image5          Bytes?
-//   receipt_image   Bytes?
-//   is_phone_public Boolean    @default(false)
-//   address         String
-//   promotion       promotions @relation(fields: [promotion_type], references: [promotion_type])
-//   promotion_type  String
-//   ticket          Int        @default(1)
-//   status          String     @default("pending")
-//   createdAt       DateTime   @default(now())
-//   updatedAt       DateTime   @updatedAt
-//   threads         threads[] @relation("SELL_ADS_THREAD")
-// }
-
-// model buy_ads {
-//   id                Int      @id @default(autoincrement())
-//   op                users    @relation("BUY_OP", fields: [op_username], references: [username])
-//   op_username       String
-//   category          category @relation("BUY_CAT", fields: [category_name], references: [name])
-//   category_name     String
-//   title             String
-//   description       String?
-//   price_range_start Float
-//   price_range_end   Float
-//   image1            Bytes?
-//   is_phone_public   Boolean  @default(false)
-//   address           String
-//   status            String   @default("pending")
-//   createdAt         DateTime @default(now())
-//   updatedAt         DateTime @updatedAt
-// }
 
 model archived_ads {
   id          Int      @id @default(autoincrement())
@@ -128,9 +83,10 @@ model archived_ads {
   title       String
   description String?
   price       Float?
-  image1      Bytes?
+  image1      String?
+  reason      String?
   address     String
-  createdAt   DateTime @default(now())
+  created_at  DateTime @default(now())
 }
 
 model category {
@@ -161,7 +117,7 @@ model notifications {
   type        String   @default("general")
   title       String
   description String?
-  createdAt   DateTime @default(now())
+  created_at  DateTime @default(now())
 }
 
 model transactions {
@@ -175,29 +131,32 @@ model transactions {
   method                String?
   status                String    @default("pending")
   receipt_url           String?
-  createdAt             DateTime  @default(now())
+  created_at            DateTime  @default(now())
   payment_successful_at DateTime?
 }
 
 model threads {
-  id              String       @id
-  op              users        @relation("THREAD_OP", fields: [op_username], references: [username])
+  id              String   @id
+  op              users    @relation("THREAD_OP", fields: [op_username], references: [username])
   op_username     String
-  client          users        @relation("THREAD_CLIENT", fields: [client_username], references: [username])
+  client          users    @relation("THREAD_CLIENT", fields: [client_username], references: [username])
   client_username String
-  ad              ads          @relation("ADS_THREAD", fields: [ad_id], references: [id])
+  ad              ads      @relation("ADS_THREAD", fields: [ad_id], references: [id])
   ad_id           Int
-  text_chats      text_chats[] @relation("THREADS_TEXT_CHAT")
+  chats           chats[]  @relation("THREADS_CHATS")
+  updated_at      DateTime @default(now())
 }
 
-model text_chats {
-  id                Int      @id @default(autoincrement())
-  thread            threads  @relation("THREADS_TEXT_CHAT", fields: [thread_id], references: [id])
-  thread_id         String
-  sender            users    @relation("TEXT_CHAT_SENDER", fields: [sender_username], references: [username])
-  sender_username   String
-  receiver          users    @relation("TEXT_CHAT_RECEIVER", fields: [receiver_username], references: [username])
-  receiver_username String
-  text              String
-  createdAt         DateTime @default(now())
+model chats {
+  id                  Int      @id @default(autoincrement())
+  thread              threads  @relation("THREADS_CHATS", fields: [thread_id], references: [id])
+  thread_id           String
+  sender              users    @relation("CHAT_SENDER", fields: [sender_username], references: [username])
+  sender_username     String
+  receiver            users    @relation("CHAT_RECEIVER", fields: [receiver_username], references: [username])
+  receiver_username   String
+  message             String
+  is_image            Boolean  @default(false)
+  is_read_by_receiver Boolean  @default(false)
+  created_at          DateTime @default(now())
 }

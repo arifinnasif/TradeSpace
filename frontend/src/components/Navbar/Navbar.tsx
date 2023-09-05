@@ -20,13 +20,12 @@ import {
   SunIcon,
 } from "@chakra-ui/icons";
 
-import logo from "../../../../logos/tradespace-lettermark-white-navbar.png"
+import logo from "../../../../logos/tradespace-lettermark-combined-non-fill-teal.svg";
+import logoForDarkMode from "../../../../logos/tradespace-lettermark-combined-non-fill-teal-light.svg";
 import React from "react";
 
-import { Link } from 'react-router-dom'
-
-
-
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 interface Props {
   children: React.ReactNode;
@@ -49,9 +48,9 @@ const NavLink = (props: Props) => {
         bg: useColorModeValue("gray.200", "gray.700"),
         color: useColorModeValue("black", "white"),
       }}
-      bg = {isClicked? useColorModeValue("gray.300", "gray.700") : " "}
+      bg={isClicked ? useColorModeValue("gray.300", "gray.700") : " "}
     >
-        {children}
+      {children}
     </Box>
   );
 };
@@ -59,21 +58,22 @@ const NavLink = (props: Props) => {
 // if the used id logged in or not
 // checked by this function
 // integrated with backend later
-const isLoggedIn = () => {
-  return true;
-}
+const IsLoggedIn = () => {
+  const { isAuth } = useSelector((state: any) => state.auth);
+  return isAuth;
+};
 
 // get user image if he has any.
 const userImage = () => {
   return "https://bit.ly/sage-adebayo";
-}
+};
 
 // Why is the name necessary?
 // Because the user name is displayed on the navbar
 // incase the user has no image
 const userName = () => {
   return "Sage Adebayo";
-}
+};
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -83,36 +83,39 @@ const Navbar = () => {
 
   const changeHomeClicked = () => {
     setIsHomeClicked(true);
-  }
+  };
 
   const changeAllAdsClicked = () => {
     setIsAllAdsClicked(true);
-  }
+  };
 
   const changeAccountClicked = () => {
     setIsAccountClicked(true);
-  }
+  };
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} 
-           px={4} 
-           // to make the navbar stick to the top 
-           // the next 3 parameters are necessary  
-           position="sticky" 
-           top="0" 
-           zIndex="sticky"
+      <Box
+        bg={useColorModeValue("gray.100", "gray.900")}
+        px={4}
+        // to make the navbar stick to the top
+        // the next 3 parameters are necessary
+        position="sticky"
+        top="0"
+        zIndex="sticky"
+        height={"60px"}
       >
-
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          
           <HStack spacing={8} alignItems={"center"}>
-            
             {/* company logo here. */}
             <Box>
               {/* link the image to home */}
               <Link to="/">
-              <Image width='145px' height='35px' src={logo} alt="Logo" />
+                <Image
+                  height="40px"
+                  src={useColorModeValue(logo, logoForDarkMode)}
+                  alt="Logo"
+                />
               </Link>
             </Box>
 
@@ -123,7 +126,7 @@ const Navbar = () => {
             >
               <Box onClick={changeHomeClicked}>
                 <NavLink href="/" isClicked={isHomeClicked}>
-                    Home
+                  Home
                 </NavLink>
               </Box>
 
@@ -133,15 +136,16 @@ const Navbar = () => {
                 </NavLink>
               </Box>
             </HStack>
-
           </HStack>
 
           <Flex alignItems={"center"}>
             <HStack spacing={"4"}>
               <Button onClick={toggleColorMode}>
-                {
-                  colorMode === "light" ? <MoonIcon boxSize={6}/> : <SunIcon boxSize={6}/>
-                }
+                {colorMode === "light" ? (
+                  <MoonIcon boxSize={6} />
+                ) : (
+                  <SunIcon boxSize={6} />
+                )}
               </Button>
               
               {isLoggedIn() ?
@@ -155,30 +159,32 @@ const Navbar = () => {
               }
               
               <Box onClick={changeAccountClicked}>
-                <NavLink href={isLoggedIn()? "/profile" : "/login"} isClicked={isAccountClicked}>
-                  {isLoggedIn()? "Profile" : "Login"}
+                <NavLink
+                  href={IsLoggedIn() ? "/profile" : "/login"}
+                  isClicked={isAccountClicked}
+                >
+                  {IsLoggedIn() ? "Profile" : "Login"}
                 </NavLink>
               </Box>
 
               <Button
                 as={Link}
-                to={isLoggedIn()? "/ads/post-ad" : "/login"}
+                to={IsLoggedIn() ? "/ads/post-ad" : "/login"}
                 variant="outline"
                 colorScheme={"teal"}
                 size={"sm"}
                 mr={4}
                 color={useColorModeValue("black", "white")}
-                _hover={{ 
+                _hover={{
                   color: useColorModeValue("black", "white"),
-                  bg: "teal.500"
+                  bg: "teal.500",
                 }}
                 leftIcon={<AddIcon />}
               >
                 Post Ad
               </Button>
-    
-              {
-                isLoggedIn() ?
+
+              {IsLoggedIn() ? (
                 <Avatar
                   as="a"
                   size={"md"}
@@ -186,15 +192,15 @@ const Navbar = () => {
                   showBorder={true}
                   name={userName()}
                   href="/profile"
-                  // currently commenting out. 
+                  // currently commenting out.
                   // takes a lot of time to load
                   // will handle later
-                  
+
                   // src={userImage()}
                 />
-                :
+              ) : (
                 <></>
-              }
+              )}
             </HStack>
           </Flex>
         </Flex>

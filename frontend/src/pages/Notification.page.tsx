@@ -118,7 +118,7 @@ const GetNotifications = () => {
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const notifications = await notificationService.getNotifications()
+      const notifications = await notificationService.getNotifications();
       setNotifications(notifications);
       setIsLoading(false);
     }

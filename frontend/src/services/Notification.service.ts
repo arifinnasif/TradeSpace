@@ -7,12 +7,13 @@ export interface NotificationType {
   type: string;
   description: string;
   created_at: string;
+  is_seen: boolean;
 }
 
 class NotificationService {
   async getNotifications() {
     console.log("getNotifications");
-    console.log(new Cookies().get("token"));
+    // console.log(new Cookies().get("token"));
     return ((await API.get(`profile/notifications`)).data as NotificationType[]);
   }
 }

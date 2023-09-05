@@ -13,7 +13,12 @@ import {
   Image,
 } from "@chakra-ui/react";
 
-import { AddIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  BellIcon,
+  MoonIcon,
+  SunIcon,
+} from "@chakra-ui/icons";
 
 import logo from "../../../../logos/tradespace-lettermark-combined-non-fill-teal.svg";
 import logoForDarkMode from "../../../../logos/tradespace-lettermark-combined-non-fill-teal-light.svg";
@@ -142,7 +147,17 @@ const Navbar = () => {
                   <SunIcon boxSize={6} />
                 )}
               </Button>
-
+              
+              {IsLoggedIn() ?
+                <Link to="/notifications">
+                  <Button>
+                    <BellIcon boxSize={6} />
+                  </Button>
+                </Link>
+              :
+                <></>
+              }
+              
               <Box onClick={changeAccountClicked}>
                 <NavLink
                   href={IsLoggedIn() ? "/profile" : "/login"}

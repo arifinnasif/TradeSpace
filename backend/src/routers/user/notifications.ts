@@ -4,7 +4,7 @@ import { get_user_notifications } from '../../controllers/user_notification.cont
 
 const router = Router();
 
-router.route('/notifications')
+router.route('/')
     .get(get_user_notifications);
 
 export default router;

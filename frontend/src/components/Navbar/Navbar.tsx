@@ -119,31 +119,34 @@ const Navbar = () => {
   const [isNotificationAvailable, setIsNotificationAvailable] = React.useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      // console.log("checking for new notifications");
+
+    const fetchData = async () => {
 
       if (!isAuth) {
         return;
       }
 
-      async function fetchData() {
-        const notifications = await notificationService.getNotifications()
-        if (notifications.length > 0) {
-          // iterate through the notifications. check if any of them is not seen yet
-          // if not seen, then set isNotificationAvailable to true
-          setIsNotificationAvailable(false);
-          for (let i = 0; i < notifications.length; i++) {
-            if (notifications[i].is_seen === false) {
-              // console.log("new notification available");
-              setIsNotificationAvailable(true);
-              break;
-            }
+      const notifications = await notificationService.getNotifications()
+
+      if (notifications.length > 0) {
+        // iterate through the notifications. check if any of them is not seen yet
+        // if not seen, then set isNotificationAvailable to true
+        setIsNotificationAvailable(false);
+
+        for (let i = 0; i < notifications.length; i++) {
+          if (notifications[i].is_seen === false) {
+            // console.log("new notification available");
+            setIsNotificationAvailable(true);
+            break;
           }
         }
+        
       }
+    }
 
-      fetchData();
-    }, 5000);
+    fetchData();
+
+    const interval = setInterval(fetchData, 5000);
 
     return () => clearInterval(interval);
 

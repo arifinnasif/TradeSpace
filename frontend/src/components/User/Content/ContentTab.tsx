@@ -1,9 +1,12 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 
 import ProfileInfo from "./AccountSettings";
+import { userProfileType } from "../../../services/User.service";
+import { FunctionComponent } from "react";
 
 const Content = () => {
   const tabs = ["Account Settings", "My Ads"];
+  // console.log(userinfo);
 
   return (
     <Box

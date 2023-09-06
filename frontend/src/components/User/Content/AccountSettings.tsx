@@ -9,18 +9,18 @@ import {
 } from "@chakra-ui/react";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 import { userProfileType, userService } from "../../../services/User.service";
-import { useEffect, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 
-function ProfileInfo() {
+const ProfileInfo = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [userInfo, setUserInfo] = useState<userProfileType>();
+  const [userinfo, setUserInfo] = useState<userProfileType>();
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const userInfo = await userService.getUserInfo();
-      setUserInfo(userInfo);
-      // console.log(userInfo);
+      const userinfo = await userService.getUserInfo();
+      setUserInfo(userinfo);
+      // console.log(userinfo);
       setIsLoading(false);
     }
     fetchData();
@@ -37,7 +37,7 @@ function ProfileInfo() {
       <CardBody p="0px 5px">
         <Flex direction="column">
           <Text fontSize="md" color="gray.500" fontWeight="400" mb="30px">
-            Hi, I’m {userInfo?.name} , Decisions: If you can’t decide, the
+            Hi, I’m {userinfo?.name} , Decisions: If you can’t decide, the
             answer is no. If two equally difficult paths, choose the one more
             painful in the short term (pain avoidance is creating an illusion of
             equality).
@@ -47,7 +47,7 @@ function ProfileInfo() {
               UserName:{" "}
             </Text>
             <Text fontSize="md" color="gray.500" fontWeight="400">
-              {userInfo?.username}
+              {userinfo?.username}
             </Text>
           </Flex>
           <Flex alignItems="center" mb="18px">
@@ -55,7 +55,7 @@ function ProfileInfo() {
               Full Name:{" "}
             </Text>
             <Text fontSize="md" color="gray.500" fontWeight="400">
-              {userInfo?.name}
+              {userinfo?.name}
             </Text>
           </Flex>
           <Flex alignItems="center" mb="18px">
@@ -63,7 +63,7 @@ function ProfileInfo() {
               Mobile:{" "}
             </Text>
             <Text fontSize="md" color="gray.500" fontWeight="400">
-              {userInfo?.phone}
+              {userinfo?.phone}
             </Text>
           </Flex>
           <Flex alignItems="center" mb="18px">
@@ -71,7 +71,7 @@ function ProfileInfo() {
               Email:{" "}
             </Text>
             <Text fontSize="md" color="gray.500" fontWeight="400">
-              {userInfo?.email}
+              {userinfo?.email}
             </Text>
           </Flex>
           <Flex alignItems="center" mb="18px">
@@ -80,7 +80,7 @@ function ProfileInfo() {
             </Text>
             <Text fontSize="md" color="gray.500" fontWeight="400">
               {/* show date in 5 December, 2023 format */}
-              {new Date(userInfo?.dob).toLocaleDateString("en-US", {
+              {new Date(userinfo?.dob).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -93,8 +93,8 @@ function ProfileInfo() {
             </Text>
             <Text fontSize="md" color="gray.500" fontWeight="400">
               {/* make the first letter uppercase */}
-              {userInfo?.gender.charAt(0).toUpperCase() +
-                userInfo?.gender.slice(1)}
+              {userinfo?.gender.charAt(0).toUpperCase() +
+                userinfo?.gender.slice(1)}
             </Text>
           </Flex>
           <Flex alignItems="center" mb="18px">
@@ -103,7 +103,7 @@ function ProfileInfo() {
             </Text>
             <Text fontSize="md" color="gray.500" fontWeight="400">
               {/* show date in 5 December, 2023 format */}
-              {new Date(userInfo?.created_at).toLocaleDateString("en-US", {
+              {new Date(userinfo?.created_at).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -148,6 +148,6 @@ function ProfileInfo() {
       </CardBody>
     </Card>
   );
-}
+};
 
 export default ProfileInfo;

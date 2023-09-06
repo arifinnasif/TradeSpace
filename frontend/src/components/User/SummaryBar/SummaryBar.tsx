@@ -3,8 +3,23 @@ import { Box, VStack } from "@chakra-ui/react";
 import Actions from "./Actions";
 import Data from "./Data";
 import Profile from "./Profile";
+import { useState, useEffect } from "react";
+import { userProfileType, userService } from "../../../services/User.service";
 
 function SummaryBar() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [userinfo, setUserInfo] = useState<userProfileType>();
+
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const userinfo = await userService.getUserInfo();
+      setUserInfo(userinfo);
+      // console.log(userinfo);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, []);
   return (
     <Box
       as="aside"
@@ -17,7 +32,7 @@ function SummaryBar() {
       borderColor="brand.light"
       //   style={{ transform: "translateY(-100px)" }}
     >
-      <Profile />
+      <Profile name={userinfo?.name} profile_pic={userinfo?.profile_pic} />
       <Data />
       <Actions />
     </Box>

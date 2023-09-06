@@ -18,7 +18,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-function Profile() {
+function Profile({ name, profile_pic }) {
   const [userProfile, setUserProfile] = useState(null);
 
   const { isOpen, onClose } = useDisclosure();
@@ -28,7 +28,7 @@ function Profile() {
     <VStack spacing={3} py={5} borderBottomWidth={1} borderColor="brand.light">
       <Avatar
         size="2xl"
-        name="Tim Cook"
+        name={name}
         cursor="pointer"
         // onClick={}
         src="https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/blt3125544effd09308/639f60c65d0ea95c1ee0e6c3/GettyImages-1450106798.jpg?auto=webp&format=pjpg&width=3840&quality=60"
@@ -73,11 +73,8 @@ function Profile() {
       </Modal>
       <VStack spacing={1}>
         <Heading as="h3" fontSize="xl" color="brand.dark">
-          Tim Cook
+          {name}
         </Heading>
-        <Text color="brand.gray" fontSize="sm">
-          CEO of Apple
-        </Text>
       </VStack>
     </VStack>
   );

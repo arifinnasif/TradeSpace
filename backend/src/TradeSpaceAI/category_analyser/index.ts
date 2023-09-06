@@ -1,6 +1,6 @@
 import { classifier } from './classifier';
 
-export const exif_analyser = async (image_url: string, category_str: string) => {
+export const category_analyser = async (image_url: string, category_str: string) => {
 
     const best_probability = await classifier(image_url, category_str);
 

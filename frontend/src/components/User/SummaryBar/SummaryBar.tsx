@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 
 import Actions from "./Actions";
 import Data from "./Data";
@@ -15,7 +15,7 @@ function SummaryBar() {
       rounded="md"
       borderWidth={1}
       borderColor="brand.light"
-      style={{ transform: "translateY(-100px)" }}
+      //   style={{ transform: "translateY(-100px)" }}
     >
       <Profile />
       <Data />

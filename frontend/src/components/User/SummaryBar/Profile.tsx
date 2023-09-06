@@ -31,9 +31,9 @@ function Profile() {
         name="Tim Cook"
         cursor="pointer"
         // onClick={}
-        src={userProfile ? userProfile : "/img/tim-cook.jpg"}
+        src="https://assets.goal.com/v3/assets/bltcc7a7ffd2fbf71f5/blt3125544effd09308/639f60c65d0ea95c1ee0e6c3/GettyImages-1450106798.jpg?auto=webp&format=pjpg&width=3840&quality=60"
       >
-        <AvatarBadge bg="brand.blue" boxSize="1em">
+        {/* <AvatarBadge bg="brand.blue" boxSize="1em">
           <svg width="0.4em" fill="currentColor" viewBox="0 0 20 20">
             <path
               fillRule="evenodd"
@@ -41,7 +41,7 @@ function Profile() {
               d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z"
             />
           </svg>
-        </AvatarBadge>
+        </AvatarBadge> */}
       </Avatar>
       <input
         hidden

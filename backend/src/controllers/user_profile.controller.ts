@@ -15,6 +15,7 @@ interface UserProfile {
   created_at: Date;
   posted_ads_count: number;
   sold_ads_count: number;
+  active_ads_count: number;
 }
 
 // get user profile: /api/profile
@@ -37,13 +38,15 @@ let get_user_profile = async (req: Request, res: Response) => {
       },
     });
 
-    let postedAdsCount = await prisma.ads.count({
+    let active_ads_count = await prisma.ads.count({
       where: { op_username: user.username },
     });
 
-    let soldAdsCount = await prisma.archived_ads.count({
+    let sold_ads_count = await prisma.archived_ads.count({
       where: { op_username: user.username },
     });
+
+    let posted_ads_count = active_ads_count + sold_ads_count;
 
     // create user profile object
     const userProfile: UserProfile = {
@@ -55,8 +58,9 @@ let get_user_profile = async (req: Request, res: Response) => {
       gender: userProfilefromDB?.gender,
       profile_pic: userProfilefromDB?.profile_pic,
       created_at: userProfilefromDB?.created_at,
-      posted_ads_count: postedAdsCount,
-      sold_ads_count: soldAdsCount,
+      posted_ads_count: posted_ads_count,
+      sold_ads_count: sold_ads_count,
+      active_ads_count: active_ads_count,
     };
 
     // user not found

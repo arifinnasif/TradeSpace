@@ -1,30 +1,19 @@
-import get_model from './mobilenet';
-import fs from 'fs';
-import * as tf from '@tensorflow/tfjs-node';
+import { classifier } from './classifier';
+
+export const exif_analyser = async (image_url: string, category_str: string) => {
+
+    const best_probability = await classifier(image_url, category_str);
 
 
-const img = fs.readFileSync('myImage.jpg');
 
-const test = async () => {
+    // console.log(exif_data);
 
-    const str = "motor";
-
-
-    // const b = Buffer.from(img, 'base64')
-    // get the tensor
-    const t = tf.node.decodeJpeg(img);
-
-
-    // Classify the image.
-    const predictions = await (await get_model()).classify(t, 10);
-
-    const focused_predictions = predictions.filter((p) => p.className.includes(str));
-
-    if (focused_predictions.length > 0) {
-        return true;
+    const category_verdict = {
+        specified_category_probability: best_probability
     }
 
-    return false;
-}
+    // console.log(exif_verdict);
 
-test();
+    return category_verdict;
+
+}

@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 // returns the probability of that the image belongs to a category
-const classifier = async (image_url: string, category_str: string) => {
+export const classifier = async (image_url: string, category_str: string) => {
     const response = await axios.get(image_url, { responseType: 'arraybuffer' });
     const buffer = Buffer.from(response.data, "utf-8");
 

@@ -1,4 +1,4 @@
-import * as mobilenet from '@tensorflow-models/mobilenet';
+import get_model from './mobilenet';
 import fs from 'fs';
 import * as tf from '@tensorflow/tfjs-node';
 
@@ -6,20 +6,25 @@ import * as tf from '@tensorflow/tfjs-node';
 const img = fs.readFileSync('myImage.jpg');
 
 const test = async () => {
-    // Load the model.
-    const model = await mobilenet.load();
+
+    const str = "motor";
+
 
     // const b = Buffer.from(img, 'base64')
     // get the tensor
-    console.log("loaded");
     const t = tf.node.decodeJpeg(img);
 
 
     // Classify the image.
-    const predictions = await model.classify(t);
+    const predictions = await (await get_model()).classify(t, 10);
 
-    console.log('Predictions: ');
-    console.log(predictions);
+    const focused_predictions = predictions.filter((p) => p.className.includes(str));
+
+    if (focused_predictions.length > 0) {
+        return true;
+    }
+
+    return false;
 }
 
 test();

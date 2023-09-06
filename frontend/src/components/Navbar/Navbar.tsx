@@ -22,10 +22,16 @@ import {
 
 import logo from "../../../../logos/tradespace-lettermark-combined-non-fill-teal.svg";
 import logoForDarkMode from "../../../../logos/tradespace-lettermark-combined-non-fill-teal-light.svg";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+
+import { notificationService,
+  NotificationType
+} from "../../services/Notification.service";
+
 
 interface Props {
   children: React.ReactNode;
@@ -58,10 +64,10 @@ const NavLink = (props: Props) => {
 // if the used id logged in or not
 // checked by this function
 // integrated with backend later
-const IsLoggedIn = () => {
-  const { isAuth } = useSelector((state: any) => state.auth);
-  return isAuth;
-};
+// const LoggedIn = () => {
+//   const { isAuth } = useSelector((state: any) => state.auth);
+//   return isAuth;
+// };
 
 // get user image if he has any.
 const userImage = () => {
@@ -80,6 +86,7 @@ const Navbar = () => {
   const [isHomeClicked, setIsHomeClicked] = React.useState(false);
   const [isAllAdsClicked, setIsAllAdsClicked] = React.useState(false);
   const [isAccountClicked, setIsAccountClicked] = React.useState(false);
+  const isAuth = useSelector((state: any) => state.auth.isAuth);
 
   const changeHomeClicked = () => {
     setIsHomeClicked(true);
@@ -92,6 +99,70 @@ const Navbar = () => {
   const changeAccountClicked = () => {
     setIsAccountClicked(true);
   };
+
+
+
+
+  // check if the user is logged in or not continuously
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const { isAuth } = useSelector((state: any) => state.auth);
+  //     setIsAuth(isAuth);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, []);
+
+
+
+  // check if new notifications are available for logged in user at every 5 seconds
+  // if available, then show the red dot
+  // if not, then don't show the red dot
+  const [isNotificationAvailable, setIsNotificationAvailable] = React.useState(false);
+
+
+  const resetNotificationStatus = () => {
+    // console.log("resetting notification status");
+    // set immediately to false
+    setIsNotificationAvailable(false);
+    console.log("setting seen");
+  };
+
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+
+      if (!isAuth) {
+        return;
+      }
+
+      const notifications = await notificationService.getNotifications()
+
+      if (notifications.length > 0) {
+        // iterate through the notifications. check if any of them is not seen yet
+        // if not seen, then set isNotificationAvailable to true
+        setIsNotificationAvailable(false);
+
+        for (let i = 0; i < notifications.length; i++) {
+          if (notifications[i].is_seen === false) {
+            // console.log("new notification available");
+            setIsNotificationAvailable(true);
+            break;
+          }
+        }
+
+      }
+    }
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 1000);
+
+    return () => clearInterval(interval);
+
+  }, []);
+
+
 
   return (
     <>
@@ -148,10 +219,26 @@ const Navbar = () => {
                 )}
               </Button>
               
-              {IsLoggedIn() ?
+              {isAuth ?
                 <Link to="/notifications">
-                  <Button>
+                  <Button onClick={resetNotificationStatus}>
                     <BellIcon boxSize={6} />
+                    {/* if there are new notifications, then show the red dot */}
+                    {isNotificationAvailable ?
+                    <span
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        bottom: "3px",
+                        width: "10px",
+                        height: "10px",
+                        backgroundColor: "red",
+                        borderRadius: "50%",
+                      }}
+                    ></span>
+                    :
+                    <></>
+                    }
                   </Button>
                 </Link>
               :
@@ -160,16 +247,16 @@ const Navbar = () => {
               
               <Box onClick={changeAccountClicked}>
                 <NavLink
-                  href={IsLoggedIn() ? "/profile" : "/login"}
+                  href={isAuth ? "/profile" : "/login"}
                   isClicked={isAccountClicked}
                 >
-                  {IsLoggedIn() ? "Profile" : "Login"}
+                  {isAuth ? "Profile" : "Login"}
                 </NavLink>
               </Box>
 
               <Button
                 as={Link}
-                to={IsLoggedIn() ? "/ads/post-ad" : "/login"}
+                to={isAuth ? "/ads/post-ad" : "/login"}
                 variant="outline"
                 colorScheme={"teal"}
                 size={"sm"}
@@ -184,7 +271,7 @@ const Navbar = () => {
                 Post Ad
               </Button>
 
-              {IsLoggedIn() ? (
+              {isAuth ? (
                 <Avatar
                   as="a"
                   size={"md"}

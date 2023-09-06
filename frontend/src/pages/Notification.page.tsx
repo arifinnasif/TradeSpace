@@ -44,6 +44,8 @@ import { notificationService,
 function formatTimestamp(timestamp: string) {
   const date = new Date(timestamp);
   // console.log(date);
+
+  // console.log(date);
   // const hours = date.getHours();
   // console.log(hours);
   // const minutes = date.getMinutes();
@@ -54,7 +56,7 @@ function formatTimestamp(timestamp: string) {
   // return `${formattedTime} of ${date.toDateString()}`;
 
   const formattedTime = date.toLocaleString('en-US', {
-    timeZone: 'UTC',
+    timeZone: 'Asia/Dhaka',
     weekday: 'short',
     year: 'numeric',
     month: 'short',
@@ -64,7 +66,7 @@ function formatTimestamp(timestamp: string) {
     hour12: true,
   });
 
-  console.log(formattedTime);
+
   return formattedTime;
 }
 
@@ -109,20 +111,33 @@ function formatTimestamp(timestamp: string) {
 const GetNotifications = () => {
 
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [notifications, setNotifications] = useState<NotificationType[]>();
   
   
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const notifications = await notificationService.getNotifications()
+      const notifications = await notificationService.getNotifications();
       setNotifications(notifications);
       setIsLoading(false);
     }
     fetchData();
   }
   , []);
+
+
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+    console.log("setting seen");
+    async function setSeen() {
+      await notificationService.updateNotificationSeenStatus();
+    }
+    setSeen();
+  }
+  , [isLoading]);
   
   
   
@@ -162,10 +177,35 @@ const GetNotifications = () => {
                   </CardHeader>
                 </Center> */}
 
-                <CardBody>
+                {notifications?.map((notification) => (
+                  <CardBody key={notification.id}
+                            backgroundColor={notification.is_seen ? "white" : "red.100"}
+                  >
+                    <Stack divider={<StackDivider />} spacing='4'>
+                      <Box key={notification.id}
+                          // backgroundColor={notification.is_seen ? "lightgray" : "lightgray"}
+                      >
+                        <Heading size='sm' textTransform='uppercase'>
+                          {notification.title}
+                        </Heading>
+                        <Text pt='2' fontSize='sm'>
+                          {notification.description}
+                        </Text>
+                        <Text pt='2' fontSize='xs'>
+                          {formatTimestamp(notification.created_at)}
+                        </Text>
+                      </Box>
+                    </Stack>
+                  </CardBody>
+                ))
+                }
+
+                {/* <CardBody>
                   <Stack divider={<StackDivider />} spacing='4'>
                     {notifications?.map((notification) => (
-                      <Box key={notification.id}>
+                      <Box key={notification.id}
+                           backgroundColor={notification.is_seen ? "lightgray" : "lightgray"}
+                      >
                         <Heading size='sm' textTransform='uppercase'>
                           {notification.title}
                         </Heading>
@@ -178,7 +218,7 @@ const GetNotifications = () => {
                       </Box>
                     ))}
                   </Stack>
-                </CardBody>
+                </CardBody> */}
                 
               </Card>
 

@@ -1,7 +1,7 @@
 import { detect_harmful_link } from './harmful_link_detector';
 import { detect_profanity } from './profanity_detector';
 
-export const exif_analyser = (text_to_check: string) => {
+export const nlp_analyser = (text_to_check: string) => {
 
 
     const nlp_verdict = {

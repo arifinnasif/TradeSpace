@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "dts-gen": "^0.6.1",
     "eslint": "^8.46.0"
   },
   "dependencies": {
@@ -24,6 +25,7 @@
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "@types/dotenv": "^8.2.0",
+    "@types/exif": "^0.6.3",
     "@types/express": "^4.17.17",
     "@types/express-validator": "^3.0.0",
     "@types/helmet": "^4.0.0",
@@ -40,6 +42,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "exif": "^0.6.0",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",
     "fuse.js": "^6.6.2",

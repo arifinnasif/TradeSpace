@@ -15,16 +15,3 @@ app.listen(PORT, () => {
     console.log("server started on port " + PORT);
 });
 
-import { ExifImage } from 'exif';
-
-try {
-
-    new ExifImage({ image: 'myImage.jpg' }, function (error: { message: string; }, exifData: any) {
-        if (error)
-            console.log('Error: ' + error.message);
-        else
-            console.log(exifData); // Do something with your data!
-    });
-} catch (error: any) {
-    console.log('Error: ' + error.message);
-}

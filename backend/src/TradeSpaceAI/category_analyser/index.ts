@@ -1,5 +1,7 @@
 import { classifier } from './classifier';
 
+export const threat_score_categorical_mismatch = 10;
+
 export const category_analyser = async (image_url: string, category_str: string) => {
 
     const best_probability = await classifier(image_url, category_str);
@@ -14,6 +16,9 @@ export const category_analyser = async (image_url: string, category_str: string)
 
     // console.log(exif_verdict);
 
-    return category_verdict;
+    return {
+        threat_score: threat_score_categorical_mismatch * (1 - best_probability),
+        verdict: category_verdict,
+    };
 
 }

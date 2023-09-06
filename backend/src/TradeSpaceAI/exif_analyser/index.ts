@@ -1,8 +1,8 @@
 import { extract_necessary_exif } from './exif_extractor';
 
-const threat_score_downloaded_image = 10;
-const threat_score_tampered_image = 8;
-const threat_score_stale_image = 5;
+export const threat_score_downloaded_image = 10;
+export const threat_score_tampered_image = 8;
+export const threat_score_stale_image = 5;
 
 export const exif_analyser = async (image_url: string, freshness_threshold_millis: number) => {
 

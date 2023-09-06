@@ -8,8 +8,24 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
+import { userProfileType, userService } from "../../../services/User.service";
+import { useEffect, useState } from "react";
 
 function ProfileInfo() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState<userProfileType>();
+
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const userInfo = await userService.getUserInfo();
+      setUserInfo(userInfo);
+      console.log(userInfo);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, []);
+
   const textColor = "teal";
   return (
     <Card p="1rem" my={{ sm: "24px", xl: "0px" }}>

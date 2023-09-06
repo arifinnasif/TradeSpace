@@ -13,3 +13,13 @@ export interface userProfileType {
   sold_ads_count: number;
   active_ads_count: number;
 }
+
+class UserService {
+  async getUserInfo(): Promise<userProfileType> {
+    const userInfo = (await API.get(`/profile`)).data;
+    // console.log(userInfo);
+    return userInfo;
+  }
+}
+
+export const userService = new UserService();

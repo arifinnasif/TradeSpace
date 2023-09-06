@@ -40,12 +40,14 @@ const extract_necessary_exif = async (image_url: string): Promise<NecessaryExifT
 
         console.log(exif_data.image.Make)
 
+        // const delta = to_gmt_date(exif_data.exif.CreateDate) - to_gmt_date(exif_data.image.ModifyDate);
+
         return {
             model: exif_data.image.Model,
             make: exif_data.image.Make,
             image_software: exif_data.image.Software,
-            create_date: new Date(exif_data.exif.CreateDate),
-            modify_date: new Date(exif_data.image.ModifyDate),
+            create_date: to_gmt_date(exif_data.exif.CreateDate),
+            modify_date: to_gmt_date(exif_data.image.ModifyDate),
         }
 
 
@@ -53,6 +55,24 @@ const extract_necessary_exif = async (image_url: string): Promise<NecessaryExifT
         return null;
     }
 
+}
+
+const to_gmt_date = (arg: string) => {
+    const date_string = '2023:09:06 02:22:49';
+    const [date_part, time_part] = date_string.split(' ');
+
+    // Split the date and time parts
+
+    const [year, month, day] = date_part.split(':').map(Number);
+    const [hours, minutes, seconds] = time_part.split(':').map(Number);
+
+    // Create a Date object
+
+    const date_object = new Date(year, month - 1, day, hours, minutes, seconds);
+
+    // Note: Month in JavaScript's Date object is 0-based, so we subtract 1 from the month.
+
+    return date_object;
 }
 
 export { extract_necessary_exif }

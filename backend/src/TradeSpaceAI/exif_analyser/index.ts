@@ -1,18 +1,21 @@
-const image_url = 'https://firebasestorage.googleapis.com/v0/b/tradespace-89597.appspot.com/o/uploads%2Fads%2FmyImage.jpg?alt=media&token=5be3bbd4-de3f-4094-8f52-31e48c1f2641'
-// const image_url = 'https://firebasestorage.googleapis.com/v0/b/tradespace-89597.appspot.com/o/uploads%2Fads%2F0ac14cb8-cca3-4e40-abc9-151add505e4d.jpg?alt=media&token=6828bf03-b48f-4a45-81d7-62d3d7c7f68f'
-
-
 import { extract_necessary_exif } from './exif_extractor';
 
-export const exif_analyser = async () => {
+export const exif_analyser = async (image_url: string, freshness_threshold_millis: number) => {
 
     const exif_data = await extract_necessary_exif(image_url);
 
 
 
-    console.log(exif_data);
+    // console.log(exif_data);
+
+    const exif_verdict = {
+        is_image_downloaded: exif_data.make === undefined || exif_data.model === undefined || exif_data.image_software === undefined,
+        is_image_tampered: exif_data.create_date > exif_data.modify_date || exif_data.create_date < exif_data.modify_date,
+        is_image_stale: (exif_data.create_date.getTime() - (new Date().getTime())) > freshness_threshold_millis
+    }
+
+    // console.log(exif_verdict);
+
+    return exif_verdict;
 
 }
-
-
-exif_analyser();

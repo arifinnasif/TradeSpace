@@ -1,9 +1,9 @@
 import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 
-import AccountSettings from "./AccountSettings";
+import ProfileInfo from "./AccountSettings";
 
 const Content = () => {
-  const tabs = ["Account Settings", "Company Settings", "Notifications"];
+  const tabs = ["Account Settings", "My Ads"];
 
   return (
     <Box
@@ -17,7 +17,7 @@ const Content = () => {
       rounded="md"
       borderWidth={1}
       borderColor="gray.200"
-      style={{ transform: "translateY(-100px)" }}
+      // style={{ transform: "translateY(-100px)" }}
     >
       <Tabs>
         <TabList px={5}>
@@ -40,8 +40,9 @@ const Content = () => {
 
         <TabPanels px={3} mt={5}>
           <TabPanel>
-            <AccountSettings />
+            <ProfileInfo />
           </TabPanel>
+          <TabPanel>My ads</TabPanel>
         </TabPanels>
       </Tabs>
     </Box>

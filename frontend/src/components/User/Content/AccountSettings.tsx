@@ -1,61 +1,101 @@
-import { FormControl, FormLabel, Grid, Input, Select } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  Icon,
+  Link,
+  Text,
+} from "@chakra-ui/react";
+import { FaFacebook, FaInstagram, FaTwitter } from "react-icons/fa";
 
-const AccountSettings = () => {
+function ProfileInfo() {
+  const textColor = "teal";
   return (
-    <Grid
-      templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
-      gap={6}
-    >
-      <FormControl id="firstName">
-        <FormLabel>First Name</FormLabel>
-        <Input focusBorderColor="brand.blue" type="text" placeholder="Tim" />
-      </FormControl>
-      <FormControl id="lastName">
-        <FormLabel>Last Name</FormLabel>
-        <Input focusBorderColor="brand.blue" type="text" placeholder="Cook" />
-      </FormControl>
-      <FormControl id="phoneNumber">
-        <FormLabel>Phone Number</FormLabel>
-        <Input
-          focusBorderColor="brand.blue"
-          type="tel"
-          placeholder="(408) 996–1010"
-        />
-      </FormControl>
-      <FormControl id="emailAddress">
-        <FormLabel>Email Address</FormLabel>
-        <Input
-          focusBorderColor="brand.blue"
-          type="email"
-          placeholder="tcook@apple.com"
-        />
-      </FormControl>
-      <FormControl id="city">
-        <FormLabel>City</FormLabel>
-        <Select focusBorderColor="brand.blue" placeholder="Select city">
-          <option value="california">California</option>
-          <option value="washington">Washington</option>
-          <option value="toronto">Toronto</option>
-          <option value="newyork" selected>
-            New York
-          </option>
-          <option value="london">London</option>
-          <option value="netherland">Netherland</option>
-          <option value="poland">Poland</option>
-        </Select>
-      </FormControl>
-      <FormControl id="country">
-        <FormLabel>Country</FormLabel>
-        <Select focusBorderColor="brand.blue" placeholder="Select country">
-          <option value="america" selected>
-            America
-          </option>
-          <option value="england">England</option>
-          <option value="poland">Poland</option>
-        </Select>
-      </FormControl>
-    </Grid>
+    <Card p="1rem" my={{ sm: "24px", xl: "0px" }}>
+      <CardHeader p="12px 5px" mb="12px">
+        <Text fontSize="lg" color={textColor} fontWeight="bold">
+          Profile Information
+        </Text>
+      </CardHeader>
+      <CardBody p="0px 5px">
+        <Flex direction="column">
+          <Text fontSize="md" color="gray.500" fontWeight="400" mb="30px">
+            Hi, I’m Esthera Jackson, Decisions: If you can’t decide, the answer
+            is no. If two equally difficult paths, choose the one more painful
+            in the short term (pain avoidance is creating an illusion of
+            equality).
+          </Text>
+          <Flex alignItems="center" mb="18px">
+            <Text fontSize="md" color={textColor} fontWeight="bold" me="10px">
+              Full Name:{" "}
+            </Text>
+            <Text fontSize="md" color="gray.500" fontWeight="400">
+              Esthera Jackson
+            </Text>
+          </Flex>
+          <Flex alignItems="center" mb="18px">
+            <Text fontSize="md" color={textColor} fontWeight="bold" me="10px">
+              Mobile:{" "}
+            </Text>
+            <Text fontSize="md" color="gray.500" fontWeight="400">
+              (44) 123 1234 123
+            </Text>
+          </Flex>
+          <Flex alignItems="center" mb="18px">
+            <Text fontSize="md" color={textColor} fontWeight="bold" me="10px">
+              Email:{" "}
+            </Text>
+            <Text fontSize="md" color="gray.500" fontWeight="400">
+              esthera@simmmple.com
+            </Text>
+          </Flex>
+          <Flex alignItems="center" mb="18px">
+            <Text fontSize="md" color={textColor} fontWeight="bold" me="10px">
+              Location:{" "}
+            </Text>
+            <Text fontSize="md" color="gray.500" fontWeight="400">
+              United States
+            </Text>
+          </Flex>
+          <Flex alignItems="center" mb="18px">
+            <Text fontSize="md" color={textColor} fontWeight="bold" me="10px">
+              Social Media:{" "}
+            </Text>
+            <Flex>
+              <Link
+                href="#"
+                color="teal.300"
+                fontSize="lg"
+                me="10px"
+                _hover={{ color: "teal.300" }}
+              >
+                <Icon as={FaFacebook} />
+              </Link>
+              <Link
+                href="#"
+                color="teal.300"
+                fontSize="lg"
+                me="10px"
+                _hover={{ color: "teal.300" }}
+              >
+                <Icon as={FaInstagram} />
+              </Link>
+              <Link
+                href="#"
+                color="teal.300"
+                fontSize="lg"
+                me="10px"
+                _hover={{ color: "teal.300" }}
+              >
+                <Icon as={FaTwitter} />
+              </Link>
+            </Flex>
+          </Flex>
+        </Flex>
+      </CardBody>
+    </Card>
   );
-};
+}
 
-export default AccountSettings;
+export default ProfileInfo;

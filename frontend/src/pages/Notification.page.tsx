@@ -43,7 +43,7 @@ import { notificationService,
 
 function formatTimestamp(timestamp: string) {
   const date = new Date(timestamp);
-  console.log(date);
+  // console.log(date);
 
   // console.log(date);
   // const hours = date.getHours();
@@ -131,6 +131,7 @@ const GetNotifications = () => {
     if (isLoading) {
       return;
     }
+    console.log("setting seen");
     async function setSeen() {
       await notificationService.updateNotificationSeenStatus();
     }

@@ -102,6 +102,7 @@ const Navbar = () => {
 
 
 
+
   // check if the user is logged in or not continuously
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -117,6 +118,15 @@ const Navbar = () => {
   // if available, then show the red dot
   // if not, then don't show the red dot
   const [isNotificationAvailable, setIsNotificationAvailable] = React.useState(false);
+
+
+  const resetNotificationStatus = () => {
+    // console.log("resetting notification status");
+    // set immediately to false
+    setIsNotificationAvailable(false);
+    console.log("setting seen");
+  };
+
 
   useEffect(() => {
 
@@ -146,7 +156,7 @@ const Navbar = () => {
 
     fetchData();
 
-    const interval = setInterval(fetchData, 5000);
+    const interval = setInterval(fetchData, 1000);
 
     return () => clearInterval(interval);
 
@@ -211,7 +221,7 @@ const Navbar = () => {
               
               {isAuth ?
                 <Link to="/notifications">
-                  <Button>
+                  <Button onClick={resetNotificationStatus}>
                     <BellIcon boxSize={6} />
                     {/* if there are new notifications, then show the red dot */}
                     {isNotificationAvailable ?

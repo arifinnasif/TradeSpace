@@ -21,6 +21,10 @@
   },
   "dependencies": {
     "@prisma/client": "^4.16.2",
+    "@tensorflow-models/mobilenet": "^2.1.1",
+    "@tensorflow/tfjs-converter": "^4.10.0",
+    "@tensorflow/tfjs-core": "^4.10.0",
+    "@tensorflow/tfjs-node": "^4.10.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",

@@ -3,6 +3,7 @@ import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import ProfileInfo from "./AccountSettings";
 import { userProfileType } from "../../../services/User.service";
 import { FunctionComponent } from "react";
+import UserAdsList from "./UserAds";
 
 const Content = () => {
   const tabs = ["Account Settings", "My Ads"];
@@ -22,19 +23,19 @@ const Content = () => {
       borderColor="gray.200"
       // style={{ transform: "translateY(-100px)" }}
     >
-      <Tabs>
+      <Tabs isFitted variant="soft-rounded" colorScheme="teal">
         <TabList px={5}>
           {tabs.map((tab) => (
             <Tab
               key={tab}
               mx={3}
-              px={0}
+              px={3}
               py={3}
               fontWeight="semibold"
               color="brand.cadet"
               borderBottomWidth={1}
               _active={{ bg: "transparent" }}
-              _selected={{ color: "brand.dark", borderColor: "brand.blue" }}
+              // _selected={{ color: "brand.dark", borderColor: "brand.blue" }}
             >
               {tab}
             </Tab>
@@ -45,7 +46,9 @@ const Content = () => {
           <TabPanel>
             <ProfileInfo />
           </TabPanel>
-          <TabPanel>My ads</TabPanel>
+          <TabPanel>
+            <UserAdsList />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Box>

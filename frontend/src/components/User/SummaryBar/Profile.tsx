@@ -72,7 +72,7 @@ function Profile({ name, profile_pic }) {
         </ModalContent>
       </Modal>
       <VStack spacing={1}>
-        <Heading as="h3" fontSize="xl" color="brand.dark">
+        <Heading as="h3" fontSize="xl" color="teal">
           {name}
         </Heading>
       </VStack>

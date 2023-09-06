@@ -34,10 +34,11 @@ function Data({ posted_ads_count, sold_ads_count, active_ads_count }) {
           alignItems="center"
           justifyContent="space-between"
           borderBottomWidth={1}
-          borderColor="brand.light"
+          // borderColor="brand.light"
+          borderColor="teal.200"
         >
-          <Text color="brand.dark">{item.name}</Text>
-          <Text color={`brand.${item.color}`} fontWeight="bold">
+          <Text color="teal">{item.name}</Text>
+          <Text color={"teal"} fontWeight="bold">
             {item.value}
           </Text>
         </Box>

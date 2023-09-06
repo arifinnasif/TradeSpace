@@ -1,4 +1,5 @@
 import API from "../api/axios.config";
+import { AdCardType } from "./ad.service";
 
 export interface userProfileType {
   username: string;
@@ -19,6 +20,12 @@ class UserService {
     const userInfo = (await API.get(`/profile`)).data;
     // console.log(userInfo);
     return userInfo;
+  }
+
+  async getUserOwnAds(): Promise<AdCardType[]> {
+    const userOwnAds = (await API.get(`/profile/my_ads`)).data;
+    // console.log(userOwnAds);
+    return userOwnAds;
   }
 }
 

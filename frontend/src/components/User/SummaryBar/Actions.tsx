@@ -24,18 +24,18 @@ export default function Actions() {
 
   return (
     <VStack py={8} px={5} spacing={3}>
-      <Button w="full" variant="outline">
+      <Button colorScheme="teal" w="full" variant="outline">
         View Public Profile
       </Button>
       <InputGroup>
         <Input
           //   ref={profileUrl}
           type="url"
-          color="brand.blue"
+          colorScheme="teal"
           value={value}
           userSelect="all"
           isReadOnly
-          _focus={{ borderColor: "brand.blue" }}
+          _focus={{ borderColor: "teal" }}
         />
         <InputRightAddon bg="transparent" px={0} overflow="hidden">
           <Button onClick={onCopy} variant="link">

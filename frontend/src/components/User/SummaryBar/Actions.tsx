@@ -10,7 +10,7 @@ import {
 import React from "react";
 
 export default function Actions() {
-  const value = "https://apple.com/cook";
+  const value = "https://www.facebook.com/kamruzzaman.sheam.5";
   const { hasCopied, onCopy } = useClipboard(value);
 
   //   const profileUrl = useRef(null);

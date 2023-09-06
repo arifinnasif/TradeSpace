@@ -33,7 +33,11 @@ function SummaryBar() {
       //   style={{ transform: "translateY(-100px)" }}
     >
       <Profile name={userinfo?.name} profile_pic={userinfo?.profile_pic} />
-      <Data />
+      <Data
+        posted_ads_count={userinfo?.posted_ads_count}
+        sold_ads_count={userinfo?.sold_ads_count}
+        active_ads_count={userinfo?.active_ads_count}
+      />
       <Actions />
     </Box>
   );

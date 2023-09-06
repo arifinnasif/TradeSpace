@@ -1,27 +1,26 @@
 import { Box, Text, VStack } from "@chakra-ui/react";
 
-const list = [
-  {
-    id: 1,
-    name: "Opportunities applied",
-    value: 32,
-    color: "yellow",
-  },
-  {
-    id: 2,
-    name: "Opportunities won",
-    value: 26,
-    color: "green",
-  },
-  {
-    id: 3,
-    name: "Current opportunities",
-    value: 6,
-    color: "cadet",
-  },
-];
-
-function Data() {
+function Data({ posted_ads_count, sold_ads_count, active_ads_count }) {
+  const list = [
+    {
+      id: 1,
+      name: "Posted Ads",
+      value: posted_ads_count,
+      color: "yellow",
+    },
+    {
+      id: 2,
+      name: "Sold Ads",
+      value: sold_ads_count,
+      color: "green",
+    },
+    {
+      id: 3,
+      name: "Active Ads",
+      value: active_ads_count,
+      color: "cadet",
+    },
+  ];
   return (
     <VStack as="ul" spacing={0} listStyleType="none">
       {list.map((item) => (

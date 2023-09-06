@@ -4,7 +4,7 @@ import Actions from "./Actions";
 import Data from "./Data";
 import Profile from "./Profile";
 
-function Sidebar() {
+function SummaryBar() {
   return (
     <Box
       as="aside"
@@ -24,4 +24,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default SummaryBar;

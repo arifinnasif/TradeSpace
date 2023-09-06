@@ -71,7 +71,7 @@ let get_user_profile = async (req: Request, res: Response) => {
       });
     }
 
-    console.log(userProfile);
+    // console.log(userProfile);
 
     // return user profile
     return res.status(200).json(userProfile);

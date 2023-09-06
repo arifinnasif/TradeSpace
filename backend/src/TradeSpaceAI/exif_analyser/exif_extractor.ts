@@ -58,8 +58,7 @@ const extract_necessary_exif = async (image_url: string): Promise<NecessaryExifT
 }
 
 const to_gmt_date = (arg: string) => {
-    const date_string = '2023:09:06 02:22:49';
-    const [date_part, time_part] = date_string.split(' ');
+    const [date_part, time_part] = arg.split(' ');
 
     // Split the date and time parts
 

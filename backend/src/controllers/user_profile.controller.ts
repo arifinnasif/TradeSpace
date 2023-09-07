@@ -14,8 +14,9 @@ interface UserProfile {
   profile_pic: string;
   created_at: Date;
   posted_ads_count: number;
-  sold_ads_count: number;
+  pending_ads_count: number;
   active_ads_count: number;
+  declined_ads_count: number;
 }
 
 // get user profile: /api/profile
@@ -38,15 +39,21 @@ let get_user_profile = async (req: Request, res: Response) => {
       },
     });
 
-    let active_ads_count = await prisma.ads.count({
+    let ads_in_adsTable = await prisma.ads.count({
       where: { op_username: user.username },
     });
 
-    let sold_ads_count = await prisma.archived_ads.count({
+    let declined_ads_count = await prisma.archived_ads.count({
       where: { op_username: user.username },
     });
 
-    let posted_ads_count = active_ads_count + sold_ads_count;
+    let posted_ads_count = ads_in_adsTable + declined_ads_count;
+
+    let pending_ads_count = await prisma.ads.count({
+      where: { op_username: user.username, status: "pending" },
+    });
+
+    let active_ads_count = ads_in_adsTable - pending_ads_count;
 
     // create user profile object
     const userProfile: UserProfile = {
@@ -59,8 +66,9 @@ let get_user_profile = async (req: Request, res: Response) => {
       profile_pic: userProfilefromDB?.profile_pic,
       created_at: userProfilefromDB?.created_at,
       posted_ads_count: posted_ads_count,
-      sold_ads_count: sold_ads_count,
+      pending_ads_count: pending_ads_count,
       active_ads_count: active_ads_count,
+      declined_ads_count: declined_ads_count,
     };
 
     // user not found

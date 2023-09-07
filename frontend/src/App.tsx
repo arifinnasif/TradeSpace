@@ -21,9 +21,13 @@ import GetAds from "./pages/GetAds.page";
 import Protected from "./pages/Protected.page";
 import Login from "./pages/Login.page";
 import AdminLogin from "./pages/AdminLogin.page";
+import GetNotifications from "./pages/Notification.page";
 import { useSelector } from "react-redux";
 import AdReviewPage from "./pages/AdReview.page";
 import SimpleSidebar from "./components/Sidebar/Sidebar";
+import Promotion from "./pages/Promotion.page";
+import GetChats from "./pages/Chats.page";
+import UserProfile from "./pages/UserProfile";
 
 const PrivateRoutes = () => {
   const { isAuth } = useSelector((state: any) => state.auth);
@@ -59,8 +63,11 @@ function App() {
           <Route path="/things/:id/" element={<Things />} />
 
           <Route element={<PrivateRoutes />}>
+            <Route path='/notifications' element={<GetNotifications />} />
             <Route path="/ads/post-ad/" element={<PostAd />} />
             <Route path="/protected/" element={<Protected />} />
+            <Route path="/chats/" element={<GetChats />} />
+            <Route path="/profile/" element={<UserProfile />} />
           </Route>
 
           <Route element={<RestrictedRoutes />}>
@@ -80,6 +87,7 @@ function App() {
           <Route path="/ads/" element={<GetAds />} />
 
           <Route path="/ads/:id/" element={<AdDetailsPage />} />
+          <Route path="/ads/:id/promote" element={<Promotion />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

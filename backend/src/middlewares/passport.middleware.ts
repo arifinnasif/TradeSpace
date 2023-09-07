@@ -4,8 +4,7 @@ const { SECRET } = require("../constants");
 
 // import prisma
 
-
-import prisma from '../../prisma/prisma_client';
+import prisma from "../../prisma/prisma_client";
 
 // const prisma = new PrismaClient();
 
@@ -15,14 +14,15 @@ const cookieExtractor = function (req: any) {
   let token_from_cookie = null;
   // console.log(req.headers.authorization);
 
-
   if (req && req.headers) token_from_authorization = req.headers.authorization;
   if (req && req.cookies) token_from_cookie = req.cookies.token;
+
+  // console.log(token_from_authorization);
+  // return token_from_cookie;
 
   if (token_from_authorization !== null) return token_from_authorization;
   // console.log(token);
   return token_from_cookie;
-
 };
 
 // options for passport-jwt

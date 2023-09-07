@@ -32,7 +32,7 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
   is_used,
   is_negotiable,
   is_sell_ad,
-  is_ai_approved,
+  image1,
   ai_verdict,
   refreshAction,
 }) => {
@@ -97,10 +97,9 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
               rounded="md"
               w={{ base: "100%", md: "18rem" }}
               h="auto"
+              boxSize="150px"
               objectFit="cover"
-              src={
-                "https://images.unsplash.com/photo-1502877338535-766e1452684a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb"
-              }
+              src={image1}
               alt="product image"
             />
           </Flex>
@@ -146,7 +145,6 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
                   is_sell_ad,
                   is_used,
                   is_negotiable,
-                  is_ai_approved,
                   ai_verdict,
                 }}
               />

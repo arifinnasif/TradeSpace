@@ -15,10 +15,14 @@ function AdsList() {
   // const filter = search_string.get("filter");
   // console.log(filter);
   // console.log(search_string_temp);
+  // for (const [key, value] of params) {
+  //   console.log(`${key}: ${value}`);
+  // }
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
+      console.log(params.get("cat"));
       const ads = await adService.getAds(params);
       setAdsList(ads);
       console.log(adsList);

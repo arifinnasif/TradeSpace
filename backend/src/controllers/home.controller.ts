@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 
 // import prisma client
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import prisma from "../../prisma/prisma_client";
 
 /*
 
@@ -38,6 +37,7 @@ let get_categories_with_ads_count = async (req: Request, res: Response) => {
       const ads_count = await prisma.ads.count({
         where: {
           category_name: category.name,
+          status: "approved",
         },
       });
       categories_with_ads_count.push({
@@ -51,4 +51,37 @@ let get_categories_with_ads_count = async (req: Request, res: Response) => {
   }
 };
 
-export { get_categories, get_categories_with_ads_count };
+let get_ads_by_category = async (req: Request, res: Response) => {
+  try {
+    const ads = await prisma.ads.findMany({
+      where: {
+        category_name: req.params.category_name,
+        status: "approved",
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        price: true,
+        image1: true,
+        image2: true,
+        image3: true,
+        image4: true,
+        image5: true,
+        address: true,
+        created_at: true,
+        op_username: true,
+        op: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+    res.json({ ads });
+  } catch (error) {
+    res.status(500).json({ error: "ads not found" });
+  }
+};
+
+export { get_categories, get_categories_with_ads_count, get_ads_by_category };

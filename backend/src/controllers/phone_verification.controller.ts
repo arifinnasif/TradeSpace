@@ -1,13 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../prisma/prisma_client';
 import { request_to_verify_opt } from '../services/twilio_phone_verification';
-import jwt from 'jsonwebtoken'
-import * as dotenv from "dotenv";
 
 
-dotenv.config();
-
-const prisma = new PrismaClient();
 
 export const verify_phone = async (req: Request, res: Response) => {
     // extract username from jwt token

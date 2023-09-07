@@ -9,9 +9,6 @@ import passport from "passport";
 import prisma from "../prisma/prisma_client";
 import { stripe_webhook_handler } from "./controllers/payment.controller"
 
-import * as dotenv from "dotenv";
-
-dotenv.config();
 
 const { CLIENT_URL } = require("./constants");
 
@@ -27,15 +24,36 @@ app.post("/webhook", stripe_webhook_handler);
 
 
 // import passport-middleware
-import "./middlewares/passport-middleware";
+import "./middlewares/passport.middleware";
 
 // initialize middleware
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cookieParser());
+
 // app.use(cors({ origin: true, credentials: true }));
-app.use(cors({ origin: "http://127.0.0.1:5173", credentials: true }));
+const whitelist = ["http://127.0.0.1:5173", "https://checkout.stripe.com", "http://localhost:5173"]
+// const corsOptions: CustomOrigin = {
+//     origin: function (origin, callback) {
+//         if (whitelist.indexOf(origin) !== -1) {
+//             callback(null, true)
+//         } else {
+//             callback(new Error('Not allowed by CORS'))
+//         }
+//     }
+// }
+app.use(cors({
+    origin: (origin, callback) => {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }, credentials: true
+}));
+// app.use(cors({ origin: "*", credentials: false }));
+
 app.use(passport.initialize());
 
 // initialize backend router

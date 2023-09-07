@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { get_all_transactions_admin } from "../../controllers/transactions.controller";
+import { get_all_transactions_admin } from "../../controllers/transaction.controller";
 
 const router = Router();
 

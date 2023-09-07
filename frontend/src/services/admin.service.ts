@@ -9,8 +9,8 @@ export interface ReviewCardType {
     is_negotiable: boolean;
     is_sell_ad: boolean;
     promotion_type: string;
-    is_ai_approved: boolean;
-    ai_verdict: string;
+    image1: string;
+    ai_verdict: any;
     refreshAction: () => void;
 }
 

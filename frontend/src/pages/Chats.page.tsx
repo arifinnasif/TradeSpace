@@ -9,6 +9,7 @@ import ChatHeader from "../components/Chats/ChatHeader";
 import Divider from "../components/Chats/Divider";
 import ChatBox from "../components/Chats/ChatBox";
 import InputBox from "../components/Chats/InputBox";
+import ChatSideBar from "../components/Chats/ChatSideBar";
 
 
 import { MessageType } from "../services/Chat.service";
@@ -79,21 +80,23 @@ const GetChats = () => {
               gap={4}
         >
             <GridItem colSpan={2} 
-                      bg="tomato" 
-                      height="100vh"
+                      height="90%"
             >
                 <Flex w="100%" 
-                      h="100vh" 
+                      h="100%" 
                       justify="center" 
                       align="center"
+                      overflow={"scroll"}
                 >
                     <Flex w={["100%", "100%", "40%"]}
                           h="90%" 
                           flexDir="column"
                     >
-                        <div>
+                        <ChatSideBar />
+                        
+                        {/* <div>
                             <h1>Sidebar</h1>
-                        </div>
+                        </div> */}
                     </Flex>
                 </Flex>
             </GridItem>

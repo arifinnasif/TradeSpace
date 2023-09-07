@@ -33,6 +33,9 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 
+import { userProfileType, userService } from "../../services/User.service";
+
+
 import { notificationService,
   NotificationType
 } from "../../services/Notification.service";
@@ -75,16 +78,16 @@ const NavLink = (props: Props) => {
 // };
 
 // get user image if he has any.
-const userImage = () => {
-  return "https://bit.ly/sage-adebayo";
-};
+// const userImage = () => {
+//   return "https://bit.ly/sage-adebayo";
+// };
 
 // Why is the name necessary?
 // Because the user name is displayed on the navbar
 // incase the user has no image
-const userName = () => {
-  return "Sage Adebayo";
-};
+// const userName = () => {
+//   return "Sage Adebayo";
+// };
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -92,6 +95,9 @@ const Navbar = () => {
   const [isAllAdsClicked, setIsAllAdsClicked] = React.useState(false);
   const [isAccountClicked, setIsAccountClicked] = React.useState(false);
   const isAuth = useSelector((state: any) => state.auth.isAuth);
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [userInfo, setUserInfo] = React.useState<userProfileType>();
 
   const changeHomeClicked = () => {
     setIsHomeClicked(true);
@@ -166,6 +172,19 @@ const Navbar = () => {
     return () => clearInterval(interval);
 
   }, []);
+
+  // fetch user info
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const userinfo = await userService.getUserInfo();
+      setUserInfo(userinfo);
+      // console.log(userinfo);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, []);
+
 
 
 
@@ -307,12 +326,12 @@ const Navbar = () => {
                       size={"md"}
                       colorScheme="teal"
                       showBorder={true}
-                      name={userName()}
+                      name={userInfo?.name}
                       // currently commenting out.
                       // takes a lot of time to load
                       // will handle later
 
-                      // src={userImage()}
+                      src={userInfo?.profile_pic}
                     />
                   </MenuButton>
                   <MenuList>

@@ -6,7 +6,7 @@ import { FunctionComponent } from "react";
 import UserAdsList from "./UserAds";
 
 const Content = () => {
-  const tabs = ["Profile", "My Ads"];
+  const tabs = ["Profile", "Active Ads", "Pending Ads", "Declined Ads"];
   // console.log(userinfo);
 
   return (
@@ -48,6 +48,9 @@ const Content = () => {
           </TabPanel>
           <TabPanel>
             <UserAdsList />
+          </TabPanel>
+          <TabPanel>
+            <PendingAdsList />
           </TabPanel>
         </TabPanels>
       </Tabs>

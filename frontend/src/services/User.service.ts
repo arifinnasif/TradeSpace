@@ -28,6 +28,12 @@ class UserService {
     // console.log(userOwnAds);
     return userOwnAds;
   }
+
+  async getUserPendingAds(): Promise<AdCardType[]> {
+    const userPendingAds = (await API.get(`/profile/pending_ads`)).data;
+    // console.log(userPendingAds);
+    return userPendingAds;
+  }
 }
 
 export const userService = new UserService();

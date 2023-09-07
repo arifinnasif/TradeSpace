@@ -42,7 +42,13 @@ const ChatBox = ({ messages }:
                  ) => {
 
   return (
-    <Flex w="100%" h="80%" overflowY="scroll" flexDirection="column" p="3" background={"teal.50"}>
+    <Flex w="100%" 
+          h="80%" 
+          overflowY="scroll" 
+          flexDirection="column" 
+          p="3" 
+          background={"teal.50"}
+    >
       {messages.map((item, index) => {
         if (item.is_my_message) {
           return (
@@ -65,7 +71,10 @@ const ChatBox = ({ messages }:
                 <Text>{item.message}</Text>
               </Flex>
               <Flex justifyContent="flex-start">
-                <Text fontSize="xs" color="gray.500" align={"right"}>
+                <Text fontSize="xs" 
+                      color="gray.500" 
+                      align={"right"}
+                >
                   {formatTimestamp(item.timestamp)}
                 </Text>
               </Flex>
@@ -78,7 +87,9 @@ const ChatBox = ({ messages }:
                   width={"fit-content"}
                   flexDirection={"column"} 
             >
-              <Flex justifyContent="flex-start" flexDirection={"row"}>
+              <Flex justifyContent="flex-start" 
+                    flexDirection={"row"}
+              >
                 <Avatar
                   name={item.sender_username}
                   border="2px solid green"
@@ -98,7 +109,10 @@ const ChatBox = ({ messages }:
                 </Flex>
               </Flex>
               <Flex justifyContent="flex-end">
-                <Text fontSize="xs" color="gray.500" align={"right"}>
+                <Text fontSize="xs" 
+                      color="gray.500" 
+                      align={"right"}
+                >
                   {formatTimestamp(item.timestamp)}
                 </Text>
               </Flex>

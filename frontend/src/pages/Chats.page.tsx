@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import ChatHeader from "../components/Chats/ChatHeader";
 import Divider from "../components/Chats/Divider";
 import ChatBox from "../components/Chats/ChatBox";
+import InputBox from "../components/Chats/InputBox";
 
 
 import { MessageType } from "../services/Chat.service";
@@ -103,6 +104,8 @@ const GetChats = () => {
                     <Divider />
 
                     <ChatBox messages={messages} />
+
+                    <InputBox />
 
                         {/* <div>
                             <h1>Chats</h1>

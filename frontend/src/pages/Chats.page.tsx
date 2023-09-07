@@ -1,5 +1,6 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/react";
 import ChatHeader from "../components/Chats/ChatHeader";
+import Divider from "../components/Chats/Divider";
 
 
 
@@ -41,6 +42,9 @@ const GetChats = () => {
                           padding="1rem"
                     >
                     <ChatHeader />
+
+                    <Divider />
+
                         {/* <div>
                             <h1>Chats</h1>
                         </div> */}

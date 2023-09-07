@@ -16,6 +16,10 @@ const GetChats = () => {
 
     const [messages, setMessages] = useState<MessageType[]>([]);
 
+    // const handleSendMessage = (message: MessageType) => {
+    //     setMessages([...messages, message]);
+    // };
+
     useEffect(() => {
         setMessages(
         [

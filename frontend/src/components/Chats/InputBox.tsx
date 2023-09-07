@@ -18,8 +18,17 @@ const handleSendMessage = () => {
         sender_username: "bob",
         receiver_username: "alice",
         message: inputMessage,
-        // current time
-        timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        // current time in Bangladesh
+        timestamp: new Date().toLocaleString('en-US', {
+            timeZone: 'Asia/Dhaka',
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        }),
         is_image: false,
         is_read_by_receiver: false,
         is_my_message: true,

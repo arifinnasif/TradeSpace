@@ -41,13 +41,30 @@ const ChatBox = ({ messages }:
                  { messages  : MessageType[] }
                  ) => {
 
+// const AlwaysScrollToBottom = () => {
+//   const elementRef = useRef<HTMLDivElement>(null);  
+
+//   useEffect(() => elementRef.current?.scrollIntoView());
+  
+//   return <div ref={elementRef} />;
+// };
+
+
 const AlwaysScrollToBottom = () => {
-  const elementRef = useRef<HTMLDivElement>(null);
-  useEffect(() => 
-    elementRef.current?.scrollIntoView()
-  );
+  const elementRef = useRef<HTMLDivElement>(null);  
+
+  useEffect(() => {
+    const container = elementRef.current?.parentElement;
+    
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  });
+  
   return <div ref={elementRef} />;
 };
+
+
 
   return (
     <Flex w="100%" 
@@ -56,6 +73,10 @@ const AlwaysScrollToBottom = () => {
           flexDirection="column" 
           p="3" 
           background={"teal.50"}
+          id = "chatbox"
+          scrollBehavior={"smooth"}
+          // scroll to bottom
+          ref={el => { if (el) { el.scrollIntoView({ behavior: "smooth" }); } }}
     >
       {messages.map((item, index) => {
         if (item.is_my_message) {
@@ -128,7 +149,7 @@ const AlwaysScrollToBottom = () => {
           );
         }
       })}
-      {/* <AlwaysScrollToBottom /> */}
+      <AlwaysScrollToBottom />
     </Flex>
   );
 };

@@ -81,6 +81,7 @@ let postAd = async (req: Request, res: Response) => {
         longitude: address.longitude,
         promotion_type: "normal",
         image1: images[0],
+        ai_verdict: ai_verdict,
         // image2: images[0],
         // image3: images[0],
         // image4: images[0],

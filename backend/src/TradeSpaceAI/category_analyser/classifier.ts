@@ -15,12 +15,14 @@ export const classifier = async (image_url: string, category_str: string) => {
     // check image type
     // then convert to tensor
     if (image_url.includes("jpg") || image_url.includes("jpeg")) {
-        tensor = tf.node.decodeJpeg(buffer);
+        tensor = tf.node.decodeJpeg(buffer, 3);
     } else if (image_url.includes("png")) {
-        tensor = tf.node.decodePng(buffer);
+        tensor = tf.node.decodePng(buffer, 3);
     } else {
         return 0;
     }
+
+    tensor = await tf.image.resizeBilinear(tensor, [224, 224]);
 
 
     // Classify the image.

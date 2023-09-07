@@ -1,6 +1,6 @@
 import { extract_necessary_exif } from './exif_extractor';
 
-export const threat_score_downloaded_image = 10;
+export const threat_score_downloaded_image = 30;
 export const threat_score_tampered_image = 8;
 export const threat_score_stale_image = 5;
 

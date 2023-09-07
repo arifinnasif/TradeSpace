@@ -2,6 +2,7 @@ import UserCard from "./UserCard";
 
 
 import { InboxType } from "../../services/Chat.service";
+import { Flex } from "@chakra-ui/react";
 
 
 const ChatSideBar = ({
@@ -14,15 +15,16 @@ const ChatSideBar = ({
                         setInbox: React.Dispatch<React.SetStateAction<InboxType[]>>
                     }) => {
     return(
-        <>
+        <Flex flexDirection="column" 
+              justifyContent={"space-between"}
+        >
             {inbox.map((inboxItem) => (
                 <UserCard 
                     key={inboxItem.thread_id}
                     inboxItem={inboxItem}
                 />
             ))}
-            <UserCard />
-        </>
+        </Flex>
     )
 }
 

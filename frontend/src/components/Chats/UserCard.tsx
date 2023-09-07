@@ -26,12 +26,13 @@ const UserCard = ({ inboxItem } :{inboxItem: InboxType}) => {
     return(
         <Card
             as={Link}
-            id="2"
+            id={inboxItem.thread_id}
             direction="row"
             overflow='hidden'
-            variant='outline'
+            variant='unstyled'
             width="100%"
             height="100px"
+            marginBottom={2}
             // print the id of the card when clicked
             onClick={(event) => {
                 handleOpenChat(event);
@@ -39,28 +40,30 @@ const UserCard = ({ inboxItem } :{inboxItem: InboxType}) => {
         >
             <Image
                 objectFit='cover'
-                maxW={{ base: '20%'}}
-                src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
-                alt='Caffe Latte'
+                maxW={{ base: '25%'}}
+                // src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
+                
+                src={inboxItem.receiver_profile_pic} //is product image more appropriate? UPto you
+                alt='user profile pic'
             />
-            {/* space between flex items should be justified */}
+
             <Flex flexDirection="column" justifyContent="space-between" width="fit-content"> 
                 <CardBody padding={2}>
                 <Text fontSize='xl'
                       fontWeight='bold'
                 >
-                    Kamruj Jaman Sheam
+                    {inboxItem.receiver_fullname}
                 </Text>
                 <Text fontSize="lg" fontWeight="semibold">
-                    Realme GT Master Edition
+                    {inboxItem.ad_title}
                 </Text>
                 <Flex flexDirection="row" justifyContent="space-between">
                     
-                    <Text fontSize='md'>
-                        A certain message
+                    <Text fontSize='md' marginRight={2}>
+                        {inboxItem.last_msg.message}
                     </Text>
                     <Text fontSize='md' textColor={'gray.500'}>
-                        - 2:30 PM
+                        -{inboxItem.last_msg.timestamp}
                     </Text>
                 </Flex>
                 </CardBody>

@@ -2,10 +2,31 @@ import React from "react";
 import { Flex, Input, Button } from "@chakra-ui/react";
 import { MessageType } from "../../services/Chat.service";
 
-const InputBox = () => {
+const InputBox = ({ messages,
+                    setMessages,
+                  }:{ 
+                    messages : MessageType[] ,
+                    setMessages : React.Dispatch<React.SetStateAction<MessageType[]>>,
+                 }) => {
 
 const [inputMessage, setInputMessage] = React.useState("");
 
+
+const handleSendMessage = () => {
+    if (inputMessage.trim().length <= 0) return;
+    const newMessage: MessageType = {
+        sender_username: "bob",
+        receiver_username: "alice",
+        message: inputMessage,
+        // current time
+        timestamp: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        is_image: false,
+        is_read_by_receiver: false,
+        is_my_message: true,
+    };
+    setMessages([...messages, newMessage]);
+    setInputMessage("");
+};
 
   return (
     <Flex w="100%" mt="5">
@@ -18,7 +39,7 @@ const [inputMessage, setInputMessage] = React.useState("");
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            // handleSendMessage();
+            handleSendMessage();
           }
         }}
         value={inputMessage}
@@ -35,7 +56,7 @@ const [inputMessage, setInputMessage] = React.useState("");
           border: "1px solid black",
         }}
         disabled={inputMessage.trim().length <= 0}
-        // onClick={handleSendMessage}
+        onClick={handleSendMessage}
       >
         Send
       </Button>

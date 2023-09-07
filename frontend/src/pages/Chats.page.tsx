@@ -109,7 +109,7 @@ const GetChats = () => {
 
                     <ChatBox messages={messages} />
 
-                    <InputBox />
+                    <InputBox messages={messages} setMessages={setMessages} />
 
                         {/* <div>
                             <h1>Chats</h1>

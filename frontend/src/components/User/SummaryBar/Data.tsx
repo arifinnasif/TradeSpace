@@ -1,6 +1,11 @@
 import { Box, Text, VStack } from "@chakra-ui/react";
 
-function Data({ posted_ads_count, sold_ads_count, active_ads_count }) {
+function Data({
+  posted_ads_count,
+  pending_ads_count,
+  active_ads_count,
+  declined_ads_count,
+}) {
   const list = [
     {
       id: 1,
@@ -10,8 +15,8 @@ function Data({ posted_ads_count, sold_ads_count, active_ads_count }) {
     },
     {
       id: 2,
-      name: "Sold Ads",
-      value: sold_ads_count,
+      name: "Pending Ads",
+      value: pending_ads_count,
       color: "green",
     },
     {
@@ -19,6 +24,12 @@ function Data({ posted_ads_count, sold_ads_count, active_ads_count }) {
       name: "Active Ads",
       value: active_ads_count,
       color: "cadet",
+    },
+    {
+      id: 4,
+      name: "Declined Ads",
+      value: declined_ads_count,
+      color: "red",
     },
   ];
   return (

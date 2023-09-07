@@ -1,7 +1,9 @@
 import express from "express";
 import { userAuth } from "../../middlewares/auth.middleware";
 import {
-  get_user_own_ads,
+  get_active_ads,
+  get_declined_ads,
+  get_pending_ads,
   get_user_profile,
   update_user_profile,
 } from "../../controllers/user_profile.controller";
@@ -23,7 +25,9 @@ router
     update_user_profile
   );
 
-router.route("/my_ads").get(userAuth, get_user_own_ads);
+router.route("/my_ads").get(userAuth, get_active_ads);
+router.route("/pending_ads").get(userAuth, get_pending_ads);
+router.route("/declined_ads").get(userAuth, get_declined_ads);
 
 router.use("/transactions", userAuth, user_transaction_router);
 router.use("/notifications", userAuth, user_notification_router);

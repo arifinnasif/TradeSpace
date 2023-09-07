@@ -35,8 +35,9 @@ function SummaryBar() {
       <Profile name={userinfo?.name} profile_pic={userinfo?.profile_pic} />
       <Data
         posted_ads_count={userinfo?.posted_ads_count}
-        sold_ads_count={userinfo?.sold_ads_count}
+        pending_ads_count={userinfo?.pending_ads_count}
         active_ads_count={userinfo?.active_ads_count}
+        declined_ads_count={userinfo?.declined_ads_count}
       />
       <Actions />
     </Box>

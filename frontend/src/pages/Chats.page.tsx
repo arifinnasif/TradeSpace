@@ -152,7 +152,7 @@ const GetChats = () => {
                           h="90%" 
                           flexDir="column"
                     >
-                        <ChatSideBar />
+                        <ChatSideBar inbox={inbox} setInbox={setInbox} />
                         
                         {/* <div>
                             <h1>Sidebar</h1>

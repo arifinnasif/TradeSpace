@@ -7,9 +7,14 @@ import { Card,
          Image,
          Text,
          Flex} from "@chakra-ui/react";
+
 import { Link } from "react-router-dom";
 
-const UserCard = () => {
+
+import { InboxType } from "../../services/Chat.service";
+
+
+const UserCard = ({ inboxItem } :{inboxItem: InboxType}) => {
 
     const handleOpenChat = (event: React.MouseEvent<HTMLDivElement>) => {
         console.log("Open chat");

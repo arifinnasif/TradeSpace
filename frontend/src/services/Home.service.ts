@@ -1,5 +1,6 @@
 import { Cookies } from "react-cookie";
 import API from "../api/axios.config";
+import { AdCardType } from "./ad.service";
 
 export interface CategoryType {
   name: string;
@@ -84,6 +85,12 @@ class HomeService {
   async protectedInfo() {
     console.log(new Cookies().get("token"));
     return await API.get("/auth/protected");
+  }
+
+  async getAdsByCategory<AdCardType>(category_name: string) {
+    const ads = (await API.get(`/home/category/${category_name}`)).data.ads;
+    // console.log(ads);
+    return ads;
   }
 }
 

@@ -17,25 +17,24 @@ import { AiOutlineHeart, AiOutlineExclamationCircle } from "react-icons/ai";
 import { BsTelephoneX } from "react-icons/bs";
 
 import { FunctionComponent } from "react";
-import { AdCardType } from "../../services/ad.service";
+import { declinedAdsType } from "../../../services/User.service";
 import Promotion from "./PromotionComponent";
 import { FaThList } from "react-icons/fa";
-import AdCardDetail from "./AdCardDetail";
+import AdCardDetail from "../../Ads/AdCardDetail";
 
-const AdCard: FunctionComponent<AdCardType> = ({
+const DeclinedAdCard: FunctionComponent<declinedAdsType> = ({
   id,
   title,
-  category_name,
   price,
   image1,
-  is_used,
-  is_negotiable,
-  is_sell_ad,
-  promotion_type,
-  width = "7xl",
+  op_username,
+  description,
+  reason,
+  address,
+  created_at,
 }) => {
   return (
-    <Container maxW={width} p={{ base: 5, md: 3 }} margin="0 auto">
+    <Container maxW={"7xl"} p={{ base: 5, md: 3 }} margin="0 auto">
       <Stack
         key={id}
         spacing={{ base: 0, md: 4 }}
@@ -48,7 +47,7 @@ const AdCard: FunctionComponent<AdCardType> = ({
         overflow="hidden"
         pos="relative"
       >
-        <Promotion promotion_type={promotion_type} />
+        {/* <Promotion promotion_type={promotion_type} /> */}
         <Flex ml="0 !important">
           <Image
             rounded="md"
@@ -88,13 +87,30 @@ const AdCard: FunctionComponent<AdCardType> = ({
               BUET
             </Text>
           </Box> */}
-          <HStack>
+          {/* <HStack>
             <Icon color={"teal"} as={FaThList} />
             <Text gap={"10"} py={2} color="teal">
               {category_name}
             </Text>
-          </HStack>
-          <AdCardDetail {...{ is_sell_ad, is_used, is_negotiable }} />
+          </HStack> */}
+          {/* <AdCardDetail {...{ is_sell_ad, is_used, is_negotiable }} /> */}
+
+          {/* <Box>
+            <Text fontSize="lg" fontWeight="500" color={"teal"}>
+              {description}
+            </Text>
+          </Box> */}
+
+          <Box>
+            <Text fontSize="lg" fontWeight="500" color={"teal"}>
+              Address: {address}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontSize="lg" fontWeight="500" color={"red.300"}>
+              {reason}
+            </Text>
+          </Box>
         </Stack>
       </Stack>
     </Container>
@@ -119,4 +135,4 @@ const IconButton = ({ children, ...props }: PropsWithChildren<StackProps>) => {
   );
 };
 
-export default AdCard;
+export default DeclinedAdCard;

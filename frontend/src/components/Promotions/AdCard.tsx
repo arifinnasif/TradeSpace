@@ -12,10 +12,18 @@ import {
 import { FunctionComponent } from "react";
 
 interface AdCardProps {
-  adId: number;
+  title: string;
+  price: number;
+  description: string;
+  image: string;
 }
 
-const AdCard: FunctionComponent<AdCardProps> = ({ adId }) => {
+const AdCard: FunctionComponent<AdCardProps> = ({
+  title,
+  price,
+  description,
+  image,
+}) => {
   return (
     <Card
       width={{ base: "100%" }}
@@ -29,15 +37,15 @@ const AdCard: FunctionComponent<AdCardProps> = ({ adId }) => {
       <Image
         objectFit="cover"
         maxW={{ base: "100%", sm: "400px" }}
-        src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-        alt="Caffe Latte"
+        src={image}
+        alt={title}
       />
 
       <Stack>
         <CardBody>
           <Flex w={"3xl"} justify="space-between">
-            <Heading size="xl">The perfect latte {adId}</Heading>
-            <Heading size="xl">BDT 500</Heading>
+            <Heading size="xl">{title}</Heading>
+            <Heading size="xl">BDT {price}</Heading>
           </Flex>
           <Divider />
 
@@ -48,21 +56,7 @@ const AdCard: FunctionComponent<AdCardProps> = ({ adId }) => {
             maxWidth={"xl"}
             fontSize="lg"
           >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores
-            itaque voluptatum aliquam recusandae dolorum molestiae voluptas
-            nostrum expedita eaque quam excepturi ullam amet, debitis voluptate
-            necessitatibus, autem at, deserunt reiciendis? Lorem ipsum dolor sit
-            amet, consectetur adipisicing elit. Asperiores itaque voluptatum
-            aliquam recusandae dolorum molestiae voluptas nostrum expedita eaque
-            quam excepturi ullam amet, debitis voluptate necessitatibus, autem
-            at, deserunt reiciendis? Lorem ipsum dolor sit amet, consectetur
-            adipisicing elit. Asperiores itaque voluptatum aliquam recusandae
-            dolorum molestiae voluptas nostrum expedita eaque quam excepturi
-            ullam amet, debitis voluptate necessitatibus, autem at, deserunt
-            reiciendis? Lorem ipsum dolor sit amet, consectetur adipisicing
-            elit. Asperiores itaque voluptatum aliquam recusandae dolorum
-            molestiae voluptas nostrum expedita eaque quam excepturi ullam amet,
-            debitis voluptate necessitatibus, autem at, deserunt reiciendis?
+            {description}
           </Text>
         </CardBody>
       </Stack>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { CategoryType, homeService } from "../../services/Home.service";
 import { Grid, GridItem, Heading } from "@chakra-ui/react";
 import CategoryCard from "./CategoryCard";
+import { Link } from "react-router-dom";
 
 function CategoryList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,9 +28,11 @@ function CategoryList() {
           </Heading>
         </GridItem>
         {categories?.map((p) => (
-          <GridItem>
-            <CategoryCard key={p.name} {...p} />
-          </GridItem>
+          <Link to={`/ads?cat[]=${p.name}`}>
+            <GridItem>
+              <CategoryCard key={p.name} {...p} />
+            </GridItem>
+          </Link>
         ))}
       </Grid>
     </>

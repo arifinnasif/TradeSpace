@@ -49,7 +49,7 @@ class UserService {
 
   async getUserDeclinedAds(): Promise<declinedAdsType[]> {
     const userDeclinedAds = (await API.get(`/profile/declined_ads`)).data;
-    // console.log(userDeclinedAds);
+    console.log(userDeclinedAds);
     return userDeclinedAds;
   }
 }

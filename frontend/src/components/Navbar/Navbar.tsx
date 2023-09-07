@@ -21,6 +21,7 @@ import {
 import {
   AddIcon,
   BellIcon,
+  ChatIcon,
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
@@ -242,6 +243,15 @@ const Navbar = () => {
                   <SunIcon boxSize={6} />
                 )}
               </Button>
+
+              {isAuth ? (
+                <Link to="/chats">
+                  <ChatIcon boxSize={6} />
+                </Link>
+                ) : (
+                <></>
+              )
+              }
               
               {isAuth ?
                 <Link to="/notifications">

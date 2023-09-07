@@ -29,6 +29,63 @@ const GetChats = () => {
     // };
 
     useEffect(() => {
+        
+        // fetch threads from backend
+        
+        setInbox(
+        [
+            {
+                "thread_id": "27d65122-2155-11ee-be56-0242ac120001",
+                "receiver_fullname": "alice",
+                "receiver_username": "alice123", // ei conversation or thread ta kar shathe -> oi pare ke ase
+                "receiver_profile_pic": "https://placekitten.com/600/400",
+                "ad_id": 243,
+                "ad_title": "Realme GT master-edition",
+                "ad_image": "https://placekitten.com/600/400",
+                "is_sell_ad": true,
+                "unread_messages_count": 1,
+                "am_i_op": true,
+                "last_msg":  {
+                    "sender_username": "alice", // ei message ta ke pathaise
+                    "receiver_username": "bob", // ei message ta ke pabe
+                    "timestamp": "2023-07-13 14:34:39",
+                    "message": "hello world", // would be "Sent an image" for image (it would be set by server)
+                    "is_image": false,
+                    "is_read_by_receiver": false,
+                    "is_my_message" : false
+                }
+            },
+            {
+                "thread_id": "27d65122-2155-11ee-be56-0242ac120002",
+                "receiver_fullname": "alice",
+                "receiver_username": "alice123", // ei conversation or thread ta kar shathe -> oi pare ke ase
+                "receiver_profile_pic": "https://placekitten.com/600/400",
+                "ad_id": 243,
+                "ad_title": "Realme GT master-edition",
+                "ad_image": "https://placekitten.com/600/400",
+                "is_sell_ad": true,
+                "unread_messages_count": 1,
+                "am_i_op": true,
+                "last_msg":  {
+                    "sender_username": "alice", // ei message ta ke pathaise
+                    "receiver_username": "bob", // ei message ta ke pabe
+                    "timestamp": "2023-07-13 14:34:39",
+                    "message": "hello world", // would be "Sent an image" for image (it would be set by server)
+                    "is_image": false,
+                    "is_read_by_receiver": false,
+                    "is_my_message" : false
+                }
+            }
+        ]
+        );
+    }, []);
+
+    useEffect(() => {
+
+        // How to set messages initial state?
+        // upto u. u can show an empty box if u want
+        // right now there is dummy
+
         setMessages(
         [
             {

@@ -34,6 +34,12 @@ class UserService {
     // console.log(userPendingAds);
     return userPendingAds;
   }
+
+  async getUserDeclinedAds(): Promise<AdCardType[]> {
+    const userDeclinedAds = (await API.get(`/profile/declined_ads`)).data;
+    // console.log(userDeclinedAds);
+    return userDeclinedAds;
+  }
 }
 
 export const userService = new UserService();

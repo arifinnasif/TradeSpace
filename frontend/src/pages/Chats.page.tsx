@@ -21,7 +21,7 @@ const GetChats = () => {
             {
             "sender_username": "alice",
             "receiver_username": "bob",
-            "message": "hello world",
+            "message": "hello world blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah    blah blahblah blah blah blah blah blah blah blah blah",
             "timestamp": "2023-07-13 14:28:39",
             "is_image": false,
             "is_read_by_receiver": false,
@@ -35,7 +35,26 @@ const GetChats = () => {
             "is_image": true,
             "is_read_by_receiver": true,
             "is_my_message": true
-            }
+            },
+            {
+                "sender_username": "alice",
+                "receiver_username": "bob",
+                "message": "hello world blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah    blah blahblah blah blah blah blah blah blah blah blah",
+                "timestamp": "2023-07-13 14:28:39",
+                "is_image": false,
+                "is_read_by_receiver": false,
+                "is_my_message": false
+            },
+            {
+                "sender_username": "bob",
+                "receiver_username": "alice",
+                "message": "//placekitten.com/600/400",
+                "timestamp": "2023-07-13 14:28:30",
+                "is_image": true,
+                "is_read_by_receiver": true,
+                "is_my_message": true
+            },
+
         ]
         );
     }, []);

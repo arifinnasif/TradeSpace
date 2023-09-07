@@ -7,15 +7,30 @@ import { Card,
          Image,
          Text,
          Flex} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const UserCard = () => {
+
+    const handleOpenChat = (event: React.MouseEvent<HTMLDivElement>) => {
+        console.log("Open chat");
+        const cardId = event.currentTarget.id;
+        console.log('Clicked card with id:', cardId);
+    }
+
+
     return(
         <Card
+            as={Link}
+            id="2"
             direction="row"
             overflow='hidden'
             variant='outline'
             width="100%"
             height="100px"
+            // print the id of the card when clicked
+            onClick={(event) => {
+                handleOpenChat(event);
+            }}
         >
             <Image
                 objectFit='cover'

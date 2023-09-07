@@ -67,10 +67,18 @@ const AdCard: FunctionComponent<AdCardType> = ({
           mt={{ base: "5px !important", sm: 0 }}
         >
           <Flex justify="space-between">
-            <chakra.h3 fontSize={{ base: "lg", md: "xl" }} fontWeight="bold">
+            <chakra.h3
+              color={"teal"}
+              fontSize={{ base: "lg", md: "xl" }}
+              fontWeight="bold"
+            >
               {title}
             </chakra.h3>
-            <chakra.h3 fontSize={{ base: "lg", md: "xl" }} fontWeight="bold">
+            <chakra.h3
+              color={"teal"}
+              fontSize={{ base: "lg", md: "xl" }}
+              fontWeight="bold"
+            >
               {price} BDT
             </chakra.h3>
           </Flex>
@@ -81,8 +89,8 @@ const AdCard: FunctionComponent<AdCardType> = ({
             </Text>
           </Box> */}
           <HStack>
-            <Icon as={FaThList} />
-            <Text gap={"10"} py={2}>
+            <Icon color={"teal"} as={FaThList} />
+            <Text gap={"10"} py={2} color="teal">
               {category_name}
             </Text>
           </HStack>

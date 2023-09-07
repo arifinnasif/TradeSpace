@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 import AdReviewPage from "./pages/AdReview.page";
 import SimpleSidebar from "./components/Sidebar/Sidebar";
 import Promotion from "./pages/Promotion.page";
+import UserProfile from "./pages/UserProfile";
 
 const PrivateRoutes = () => {
   const { isAuth } = useSelector((state: any) => state.auth);
@@ -64,6 +65,7 @@ function App() {
             <Route path='/notifications' element={<GetNotifications />} />
             <Route path="/ads/post-ad/" element={<PostAd />} />
             <Route path="/protected/" element={<Protected />} />
+            <Route path="/profile/" element={<UserProfile />} />
           </Route>
 
           <Route element={<RestrictedRoutes />}>

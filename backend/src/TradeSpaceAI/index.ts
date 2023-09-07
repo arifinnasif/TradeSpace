@@ -39,7 +39,7 @@ export const ai_judge = async (ad: any) => {
         + threat_score_harmful_link
         + threat_score_categorical_mismatch;
 
-    const ad_image_url = ad.image1;
+    const ad_image_url = ad.images[0];
     const ad_category = ad.category;
     const ad_description = ad.description;
     const ad_freshness_threshold_millis = 1000 * 60 * 60 * 24 * 1; // 1 day

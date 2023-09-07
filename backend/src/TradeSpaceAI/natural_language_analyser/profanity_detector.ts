@@ -10,7 +10,7 @@ export const load_words = () => {
     filter = new Filter({ placeHolder: 'x' });
     loaded_words = fs.readFileSync("./src/TradeSpaceAI/natural_language_analyser/banned_wordlist.txt").toString().split("\n");
     filter.addWords(...loaded_words);
-    console.log("active loading profanity wordlist");
+    console.log("active loaded profanity wordlist");
 }
 
 // filter singleton

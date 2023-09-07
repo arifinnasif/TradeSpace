@@ -52,6 +52,7 @@ const extract_necessary_exif = async (image_url: string): Promise<NecessaryExifT
 
 
     } catch (error: any) {
+        console.log('Error: ' + error);
         return null;
     }
 

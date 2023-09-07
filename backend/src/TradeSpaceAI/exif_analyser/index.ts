@@ -6,11 +6,29 @@ export const threat_score_stale_image = 5;
 
 export const exif_analyser = async (image_url: string, freshness_threshold_millis: number) => {
 
-    const exif_data = await extract_necessary_exif(image_url);
+    const exif_data = await extract_necessary_exif(image_url); // exif_data is nullable
 
     let threat_score = 0;
 
-    // console.log(exif_data);
+    console.log(exif_data);
+
+    // null means image is png or gif or some other format. possibly downloaded from internet
+    if (exif_data === null) {
+        threat_score += threat_score_downloaded_image;
+        threat_score += threat_score_tampered_image;
+        threat_score += threat_score_stale_image;
+
+        return {
+            threat_score: threat_score,
+            verdict: {
+                is_image_downloaded: true,
+                is_image_tampered: true,
+                is_image_stale: true
+            }
+        }
+    }
+
+
 
     const exif_verdict = {
         is_image_downloaded: exif_data.make === undefined || exif_data.model === undefined || exif_data.image_software === undefined,

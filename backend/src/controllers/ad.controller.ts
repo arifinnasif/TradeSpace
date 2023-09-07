@@ -3,6 +3,7 @@ import Fuse from "fuse.js";
 
 // import prisma client
 import prisma from '../../prisma/prisma_client';
+import { ai_judge } from "../TradeSpaceAI";
 
 // for search functionality
 const fuseOptions = {
@@ -59,7 +60,8 @@ let postAd = async (req: Request, res: Response) => {
 
   try {
     // create a new ad
-    console.log(images[0]);
+    const ai_verdict = await ai_judge(req.body);
+    console.log(ai_verdict);
     await prisma.ads.create({
       data: {
         op_username: user.username,

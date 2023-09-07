@@ -26,7 +26,7 @@ export const classifier = async (image_url: string, category_str: string) => {
     // Classify the image.
     const predictions = await (await get_model()).classify(tensor, 10);
 
-    const focused_predictions = predictions.filter((p) => p.className.includes(category_str));
+    const focused_predictions = predictions.filter((p) => p.className.includes(category_str.toLowerCase()));
 
     if (focused_predictions.length > 0) {
         return focused_predictions[0].probability;

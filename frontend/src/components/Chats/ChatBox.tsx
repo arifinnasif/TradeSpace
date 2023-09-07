@@ -41,6 +41,14 @@ const ChatBox = ({ messages }:
                  { messages  : MessageType[] }
                  ) => {
 
+const AlwaysScrollToBottom = () => {
+  const elementRef = useRef<HTMLDivElement>(null);
+  useEffect(() => 
+    elementRef.current?.scrollIntoView()
+  );
+  return <div ref={elementRef} />;
+};
+
   return (
     <Flex w="100%" 
           h="80%" 
@@ -120,6 +128,7 @@ const ChatBox = ({ messages }:
           );
         }
       })}
+      <AlwaysScrollToBottom />
     </Flex>
   );
 };

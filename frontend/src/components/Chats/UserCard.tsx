@@ -14,6 +14,36 @@ import { Link } from "react-router-dom";
 import { InboxType } from "../../services/Chat.service";
 
 
+function formatTimestamp(timestamp: string) {
+    const date = new Date(timestamp);
+    // console.log(date);
+  
+    // console.log(date);
+    // const hours = date.getHours();
+    // console.log(hours);
+    // const minutes = date.getMinutes();
+    // console.log(minutes);
+    // const ampm = hours >= 12 ? 'PM' : 'AM';
+    // const formattedTime = `${hours % 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+    
+    // return `${formattedTime} of ${date.toDateString()}`;
+  
+    const formattedTime = date.toLocaleString('en-US', {
+      timeZone: 'Asia/Dhaka',
+      weekday: 'short',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    });
+  
+  
+    return formattedTime;
+}
+
+
 const UserCard = ({ inboxItem } :{inboxItem: InboxType}) => {
 
     const handleOpenChat = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -63,7 +93,7 @@ const UserCard = ({ inboxItem } :{inboxItem: InboxType}) => {
                         {inboxItem.last_msg.message}
                     </Text>
                     <Text fontSize='md' textColor={'gray.500'}>
-                        -{inboxItem.last_msg.timestamp}
+                        -{formatTimestamp(inboxItem.last_msg.timestamp)}
                     </Text>
                 </Flex>
                 </CardBody>

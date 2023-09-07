@@ -2,6 +2,9 @@ import { Flex, Grid, GridItem } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 
+import Layout from "../layout/Layout";
+
+
 import ChatHeader from "../components/Chats/ChatHeader";
 import Divider from "../components/Chats/Divider";
 import ChatBox from "../components/Chats/ChatBox";
@@ -13,6 +16,8 @@ import { MessageType } from "../services/Chat.service";
 
 
 const GetChats = () => {
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [messages, setMessages] = useState<MessageType[]>([]);
 
@@ -68,6 +73,7 @@ const GetChats = () => {
 
 
     return(
+        <Layout title="Chats" loading={isLoading}>
         <Grid height={"100vh"}
               templateColumns="repeat(5, 1fr)" 
               gap={4}
@@ -118,6 +124,7 @@ const GetChats = () => {
                 </Flex>
             </GridItem>
         </Grid>
+        </Layout>
     )
 }
 

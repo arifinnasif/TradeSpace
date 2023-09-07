@@ -55,7 +55,7 @@ const handleSendMessage = () => {
         onChange={(e) => setInputMessage(e.target.value)}
       />
       <Button
-        bg="black"
+        bg="green.700"
         color="white"
         borderRadius="5"
         marginLeft="2"

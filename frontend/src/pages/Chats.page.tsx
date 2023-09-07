@@ -12,7 +12,7 @@ import InputBox from "../components/Chats/InputBox";
 import ChatSideBar from "../components/Chats/ChatSideBar";
 
 
-import { MessageType } from "../services/Chat.service";
+import { MessageType, InboxType } from "../services/Chat.service";
 
 
 
@@ -21,6 +21,8 @@ const GetChats = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [messages, setMessages] = useState<MessageType[]>([]);
+
+    const [inbox, setInbox] = useState<InboxType[]>([]);
 
     // const handleSendMessage = (message: MessageType) => {
     //     setMessages([...messages, message]);

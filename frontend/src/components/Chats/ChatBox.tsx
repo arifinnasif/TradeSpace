@@ -4,8 +4,8 @@ import { Avatar, Flex, Text } from "@chakra-ui/react";
 import { MessageType } from "../../services/Chat.service";
 
 
-const Messages = ({ messages }: 
-                  { messages  : MessageType[] }
+const ChatBox = ({ messages }: 
+                 { messages  : MessageType[] }
                  ) => {
 
   return (
@@ -30,17 +30,17 @@ const Messages = ({ messages }:
           return (
             <Flex key={index} w="100%">
               <Avatar
-                name="Computer"
-                src="https://avataaars.io/?avatarStyle=Transparent&topType=LongHairStraight&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
-                bg="blue.300"
+                name={item.sender_username}
+                border="2px solid green"
               ></Avatar>
               <Flex
                 bg="gray.100"
                 color="black"
                 minW="100px"
                 maxW="350px"
-                my="1"
-                p="3"
+                justifyContent="center"
+                alignItems="center"
+                marginLeft="2"
               >
                 <Text>{item.message}</Text>
               </Flex>
@@ -52,4 +52,4 @@ const Messages = ({ messages }:
   );
 };
 
-export default Messages;
+export default ChatBox;

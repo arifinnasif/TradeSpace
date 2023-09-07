@@ -4,6 +4,7 @@ import ProfileInfo from "./AccountSettings";
 import { userProfileType } from "../../../services/User.service";
 import { FunctionComponent } from "react";
 import UserAdsList from "./UserAds";
+import PendingAdsList from "./PendingAds";
 
 const Content = () => {
   const tabs = ["Profile", "Active Ads", "Pending Ads", "Declined Ads"];

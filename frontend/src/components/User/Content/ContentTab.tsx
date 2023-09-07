@@ -6,7 +6,7 @@ import { FunctionComponent } from "react";
 import UserAdsList from "./UserAds";
 
 const Content = () => {
-  const tabs = ["Account Settings", "My Ads"];
+  const tabs = ["Profile", "My Ads"];
   // console.log(userinfo);
 
   return (

@@ -127,13 +127,13 @@ let update_user_profile = async (req: Request, res: Response) => {
   }
 };
 
-let get_user_own_ads = async (req: Request, res: Response) => {
+let get_active_ads = async (req: Request, res: Response) => {
   const user: any = req.user;
 
-  // retrieve user profile from db
+  // retrieve approved ads
   try {
     const userAdsList = await prisma.ads.findMany({
-      where: { op_username: user.username },
+      where: { op_username: user.username, status: "approved" },
       select: {
         id: true,
         title: true,
@@ -160,7 +160,7 @@ let get_user_own_ads = async (req: Request, res: Response) => {
       },
     });
 
-    // send user profile
+    // send result
     res.status(200).json(userAdsList);
   } catch (error) {
     console.log(error);
@@ -168,4 +168,50 @@ let get_user_own_ads = async (req: Request, res: Response) => {
   }
 };
 
-export { get_user_profile, update_user_profile, get_user_own_ads };
+let get_pending_ads = async (req: Request, res: Response) => {
+  const user: any = req.user;
+
+  // retrieve Pending ads
+  try {
+    const userAdsList = await prisma.ads.findMany({
+      where: { op_username: user.username, status: "pending" },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        category_name: true,
+        price: true,
+        is_negotiable: true,
+        is_used: true,
+        is_sell_ad: true,
+        days_used: true,
+        image1: true,
+        // image2: true,
+        // image3: true,
+        // image4: true,
+        // image5: true,
+        // receipt_image: true,
+        is_phone_public: true,
+        address: true,
+        latitude: true,
+        longitude: true,
+        promotion_type: true,
+        status: true,
+        created_at: true,
+      },
+    });
+
+    // send result
+    res.status(200).json(userAdsList);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export {
+  get_user_profile,
+  update_user_profile,
+  get_active_ads,
+  get_pending_ads,
+};

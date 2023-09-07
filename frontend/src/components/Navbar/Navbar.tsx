@@ -11,6 +11,11 @@ import {
   useColorModeValue,
   useColorMode,
   Image,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 
 import {
@@ -26,6 +31,9 @@ import React, { useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+
+import { userProfileType, userService } from "../../services/User.service";
 
 
 import { notificationService,
@@ -70,16 +78,16 @@ const NavLink = (props: Props) => {
 // };
 
 // get user image if he has any.
-const userImage = () => {
-  return "https://bit.ly/sage-adebayo";
-};
+// const userImage = () => {
+//   return "https://bit.ly/sage-adebayo";
+// };
 
 // Why is the name necessary?
 // Because the user name is displayed on the navbar
 // incase the user has no image
-const userName = () => {
-  return "Sage Adebayo";
-};
+// const userName = () => {
+//   return "Sage Adebayo";
+// };
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -87,6 +95,9 @@ const Navbar = () => {
   const [isAllAdsClicked, setIsAllAdsClicked] = React.useState(false);
   const [isAccountClicked, setIsAccountClicked] = React.useState(false);
   const isAuth = useSelector((state: any) => state.auth.isAuth);
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [userInfo, setUserInfo] = React.useState<userProfileType>();
 
   const changeHomeClicked = () => {
     setIsHomeClicked(true);
@@ -161,6 +172,19 @@ const Navbar = () => {
     return () => clearInterval(interval);
 
   }, []);
+
+  // fetch user info
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const userinfo = await userService.getUserInfo();
+      setUserInfo(userinfo);
+      // console.log(userinfo);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, []);
+
 
 
 
@@ -272,19 +296,49 @@ const Navbar = () => {
               </Button>
 
               {isAuth ? (
-                <Avatar
-                  as="a"
-                  size={"md"}
-                  colorScheme="teal"
-                  showBorder={true}
-                  name={userName()}
-                  href="/profile"
-                  // currently commenting out.
-                  // takes a lot of time to load
-                  // will handle later
+                // <Avatar
+                //   as="a"
+                //   size={"md"}
+                //   colorScheme="teal"
+                //   showBorder={true}
+                //   name={userName()}
+                //   href="/profile"
+                //   // currently commenting out.
+                //   // takes a lot of time to load
+                //   // will handle later
 
-                  // src={userImage()}
-                />
+                //   // src={userImage()}
+                // />
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                    minW={0}>
+                    {/* <Avatar
+                      size={'sm'}
+                      src={
+                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                      }
+                    /> */}
+                    <Avatar
+                      size={"md"}
+                      colorScheme="teal"
+                      showBorder={true}
+                      name={userInfo?.name}
+                      // currently commenting out.
+                      // takes a lot of time to load
+                      // will handle later
+
+                      src={userInfo?.profile_pic}
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem as={Link} to="/profile">Profile</MenuItem>
+                    <MenuItem as={Link} to="/logout">Logout</MenuItem>
+                  </MenuList>
+                </Menu>
               ) : (
                 <></>
               )}

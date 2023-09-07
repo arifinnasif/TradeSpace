@@ -94,6 +94,23 @@ const DeclinedAdCard: FunctionComponent<declinedAdsType> = ({
             </Text>
           </HStack> */}
           {/* <AdCardDetail {...{ is_sell_ad, is_used, is_negotiable }} /> */}
+
+          {/* <Box>
+            <Text fontSize="lg" fontWeight="500" color={"teal"}>
+              {description}
+            </Text>
+          </Box> */}
+
+          <Box>
+            <Text fontSize="lg" fontWeight="500" color={"teal"}>
+              Address: {address}
+            </Text>
+          </Box>
+          <Box>
+            <Text fontSize="lg" fontWeight="500" color={"red.300"}>
+              {reason}
+            </Text>
+          </Box>
         </Stack>
       </Stack>
     </Container>

@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { AdCardType } from "../../../services/ad.service";
 import AdCard from "../../Ads/AdCard";
 import { declinedAdsType, userService } from "../../../services/User.service";
+import DeclinedAdCard from "./DeclinedAdCard";
 
 function DeclinedAdsList() {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,9 +35,7 @@ function DeclinedAdsList() {
     <Box>
       <VStack spacing={"0"}>
         {adsList?.map((p) => (
-          <Link to={`/ads/${p.id}`}>
-            <AdCard key={p.id} {...p} />
-          </Link>
+          <DeclinedAdCard key={p.id} {...p} />
         ))}
       </VStack>
     </Box>

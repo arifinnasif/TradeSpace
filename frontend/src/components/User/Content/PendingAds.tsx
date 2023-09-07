@@ -34,9 +34,7 @@ function PendingAdsList() {
     <Box>
       <VStack spacing={"0"}>
         {adsList?.map((p) => (
-          <Link to={`/ads/${p.id}`}>
-            <AdCard key={p.id} {...p} />
-          </Link>
+          <AdCard key={p.id} {...p} />
         ))}
       </VStack>
     </Box>

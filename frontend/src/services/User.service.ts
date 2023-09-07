@@ -16,6 +16,18 @@ export interface userProfileType {
   declined_ads_count: number;
 }
 
+export interface declinedAdsType {
+  id: number;
+  op_username: string;
+  title: string;
+  description: string;
+  price: number;
+  image1: string;
+  reason: string;
+  address: string;
+  created_at: string;
+}
+
 class UserService {
   async getUserInfo(): Promise<userProfileType> {
     const userInfo = (await API.get(`/profile`)).data;
@@ -35,7 +47,7 @@ class UserService {
     return userPendingAds;
   }
 
-  async getUserDeclinedAds(): Promise<AdCardType[]> {
+  async getUserDeclinedAds(): Promise<declinedAdsType[]> {
     const userDeclinedAds = (await API.get(`/profile/declined_ads`)).data;
     // console.log(userDeclinedAds);
     return userDeclinedAds;

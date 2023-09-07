@@ -3,6 +3,10 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
+// ai initialization
+import { initiate_ts_ai } from "./TradeSpaceAI";
+initiate_ts_ai();
+
 import app from "./app";
 
 const { PORT } = require("./constants")

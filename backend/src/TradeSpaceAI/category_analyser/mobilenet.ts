@@ -5,11 +5,21 @@ import * as mobilenet from '@tensorflow-models/mobilenet';
 
 let model: mobilenet.MobileNet = null;
 
+
+// active loader
+export const load_model = async () => {
+    console.log("active loading mobilenet model");
+    model = await mobilenet.load();
+    console.log("active loaded mobilenet model");
+}
+
+
+// singleton
 const get_model = async () => {
     if (model == null) {
-        console.log("loading mobilenet model");
+        console.log("lazy loading mobilenet model");
         model = await mobilenet.load();
-        console.log("loaded mobilenet model");
+        console.log("lazy loaded mobilenet model");
         console.log("caution: if you see this message twice then you are in trouble");
         return model;
     }

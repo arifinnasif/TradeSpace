@@ -16,6 +16,19 @@ import {
     threat_score_profanity
 } from "./natural_language_analyser";
 
+import { load_words } from "./natural_language_analyser/profanity_detector";
+import { load_model } from "./category_analyser/mobilenet";
+
+
+// active loader
+export const initiate_ts_ai = async () => {
+    load_model();
+    load_words();
+}
+
+
+
+// AI Verdict
 export const ai_judge = async (ad: any) => {
 
     const total_possible_threat_score =

@@ -5,6 +5,35 @@ import { MessageType } from "../../services/Chat.service";
 
 
 
+function formatTimestamp(timestamp: string) {
+  const date = new Date(timestamp);
+  // console.log(date);
+
+  // console.log(date);
+  // const hours = date.getHours();
+  // console.log(hours);
+  // const minutes = date.getMinutes();
+  // console.log(minutes);
+  // const ampm = hours >= 12 ? 'PM' : 'AM';
+  // const formattedTime = `${hours % 12}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  
+  // return `${formattedTime} of ${date.toDateString()}`;
+
+  const formattedTime = date.toLocaleString('en-US', {
+    timeZone: 'Asia/Dhaka',
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+  });
+
+
+  return formattedTime;
+}
+
 
 
 
@@ -37,7 +66,7 @@ const ChatBox = ({ messages }:
               </Flex>
               <Flex justifyContent="flex-start">
                 <Text fontSize="xs" color="gray.500" align={"right"}>
-                  {item.timestamp}
+                  {formatTimestamp(item.timestamp)}
                 </Text>
               </Flex>
             </Flex>
@@ -70,7 +99,7 @@ const ChatBox = ({ messages }:
               </Flex>
               <Flex justifyContent="flex-end">
                 <Text fontSize="xs" color="gray.500" align={"right"}>
-                  {item.timestamp}
+                  {formatTimestamp(item.timestamp)}
                 </Text>
               </Flex>
             </Flex>

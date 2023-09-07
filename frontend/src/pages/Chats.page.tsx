@@ -49,7 +49,7 @@ const GetChats = () => {
                 "sender_username": "bob",
                 "receiver_username": "alice",
                 "message": "//placekitten.com/600/400",
-                "timestamp": "2023-07-13 14:28:30",
+                "timestamp": "2023-07-13 14:29:30",
                 "is_image": true,
                 "is_read_by_receiver": true,
                 "is_my_message": true

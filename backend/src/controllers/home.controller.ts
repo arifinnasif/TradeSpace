@@ -37,6 +37,7 @@ let get_categories_with_ads_count = async (req: Request, res: Response) => {
       const ads_count = await prisma.ads.count({
         where: {
           category_name: category.name,
+          status: "approved",
         },
       });
       categories_with_ads_count.push({

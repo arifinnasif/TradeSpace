@@ -31,6 +31,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(cookieParser());
+
 // app.use(cors({ origin: true, credentials: true }));
 const whitelist = ["http://127.0.0.1:5173", "https://checkout.stripe.com", "http://localhost:5173"]
 // const corsOptions: CustomOrigin = {
@@ -52,6 +53,7 @@ app.use(cors({
     }, credentials: true
 }));
 // app.use(cors({ origin: "*", credentials: false }));
+
 app.use(passport.initialize());
 
 // initialize backend router

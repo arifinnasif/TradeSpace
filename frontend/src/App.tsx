@@ -21,6 +21,7 @@ import GetAds from "./pages/GetAds.page";
 import Protected from "./pages/Protected.page";
 import Login from "./pages/Login.page";
 import AdminLogin from "./pages/AdminLogin.page";
+import GetNotifications from "./pages/Notification.page";
 import { useSelector } from "react-redux";
 import AdReviewPage from "./pages/AdReview.page";
 import SimpleSidebar from "./components/Sidebar/Sidebar";
@@ -60,6 +61,7 @@ function App() {
           <Route path="/things/:id/" element={<Things />} />
 
           <Route element={<PrivateRoutes />}>
+            <Route path='/notifications' element={<GetNotifications />} />
             <Route path="/ads/post-ad/" element={<PostAd />} />
             <Route path="/protected/" element={<Protected />} />
           </Route>

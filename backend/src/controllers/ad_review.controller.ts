@@ -194,7 +194,8 @@ export const approve_pending_review = async (req: Request, res: Response) => {
         await notify_user(pending_review.op_username,
             'ad_approved',
             'Ad Approved',
-            `Your ad #${updated_review.id} titled "${updated_review.title}" has been approved by the admin.`);
+            // `Your ad #${updated_review.id} titled "${updated_review.title}" has been approved by the admin.`);
+            `Your ad titled "${updated_review.title}" has been approved by the admin.`);
 
         return res.status(200).json(updated_review);
     } catch (error: any) {

@@ -11,8 +11,9 @@ export interface userProfileType {
   profile_pic: string;
   created_at: string;
   posted_ads_count: number;
-  sold_ads_count: number;
+  pending_ads_count: number;
   active_ads_count: number;
+  declined_ads_count: number;
 }
 
 class UserService {

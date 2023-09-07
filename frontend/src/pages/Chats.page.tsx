@@ -81,6 +81,7 @@ const GetChats = () => {
         >
             <GridItem colSpan={2} 
                       height="90%"
+                      width="100%"
             >
                 <Flex w="100%" 
                       h="100%" 
@@ -88,7 +89,7 @@ const GetChats = () => {
                       align="center"
                       overflow={"scroll"}
                 >
-                    <Flex w={["100%", "100%", "40%"]}
+                    <Flex w="90%"
                           h="90%" 
                           flexDir="column"
                     >

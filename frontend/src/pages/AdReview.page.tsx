@@ -22,7 +22,7 @@ const AdReviewPage = () => {
 
     try {
       const response = await getAdReviews(page);
-      const reviews = response.review_list.map((r) => {
+      const reviews = response.review_list.map((r: any) => {
         r.refreshAction = () => fetchData(page);
         return r;
       });

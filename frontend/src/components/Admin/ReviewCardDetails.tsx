@@ -6,15 +6,13 @@ interface ReviewCardDetailsProps {
   is_sell_ad: boolean;
   is_used: boolean;
   is_negotiable: boolean;
-  is_ai_approved: boolean;
-  ai_verdict: string;
+  ai_verdict: any;
 }
 
 const ReviewCardDetails: FunctionComponent<ReviewCardDetailsProps> = ({
   is_sell_ad,
   is_used,
   is_negotiable,
-  is_ai_approved,
   ai_verdict,
 }) => {
   const is_sell_ad_text = is_sell_ad ? "Sell Ad" : "Buy Ad";
@@ -42,8 +40,12 @@ const ReviewCardDetails: FunctionComponent<ReviewCardDetailsProps> = ({
       </chakra.span>
       <Fragment>
         {/* <Text fontSize={{ base: "sm", sm: "md" }}>{data}</Text> */}
-        {is_ai_approved ? (
-          <Tooltip label={"AI verdict: There is no issue"}>
+        {ai_verdict.weighted_threat_score < 0.5 ? (
+          <Tooltip
+            label={`TradeSpaceAI thinks that the threat score is ${ai_verdict.weighted_threat_score.toFixed(
+              2
+            )}`}
+          >
             <Badge fontSize={"0.8em"} color={"green"}>
               <HStack>
                 <FaRobot />
@@ -52,7 +54,11 @@ const ReviewCardDetails: FunctionComponent<ReviewCardDetailsProps> = ({
             </Badge>
           </Tooltip>
         ) : (
-          <Tooltip label={`AI verdict: ${ai_verdict}`}>
+          <Tooltip
+            label={`TradeSpaceAI thinks that the threat score is ${ai_verdict.weighted_threat_score.toFixed(
+              2
+            )}`}
+          >
             <Badge fontSize={"0.8em"} color={"red"}>
               <HStack>
                 <FaRobot />

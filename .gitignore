@@ -142,3 +142,6 @@ dist
 *.njsproj
 *.sln
 *.sw?
+
+# custom
+banned_wordlist.txt*

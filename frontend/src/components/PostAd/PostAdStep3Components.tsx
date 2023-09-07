@@ -359,12 +359,16 @@ const Step3: FunctionComponent<Step3Props> = ({
             </div>
             </PopoverBody>
             
+
+            {/* Helped a lot in debugging and checking, now it's watch ended */}
+            {/* 
             {markerPosition && (
               <div>
                 <p>Current Latitude: {markerPosition.lat.toFixed(6)}</p>
                 <p>Current Longitude: {markerPosition.lng.toFixed(6)}</p>
               </div>
             )}
+            */}
           </PopoverContent>
         </Popover>
         {mapError &&

@@ -9,6 +9,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import Filter from "../components/Ads/Filter";
+import PaginationComponent from "../components/Ads/Pagination";
 
 const GetAds = () => {
   const [params, setParams] = useSearchParams();
@@ -36,9 +37,10 @@ const GetAds = () => {
     <Layout title="Ads" loading={isLoading}>
       <Grid
         templateAreas={`"SearchBar_Section SearchBar_Section"
-                        "filter_section ad_section"`}
+                        "filter_section ad_section"
+                        "filter_section page_section"`}
         gridTemplateColumns={"1fr 700px"}
-        gridTemplateRows={"80px 1fr"}
+        gridTemplateRows={"80px 1fr 50px"}
         gap={"5"}
         color={"teal.600"}
         mx={"70px"}
@@ -52,6 +54,9 @@ const GetAds = () => {
         </GridItem>
         <GridItem area={"ad_section"}>
           <AdsList />
+        </GridItem>
+        <GridItem area={"page_section"}>
+          <PaginationComponent />
         </GridItem>
       </Grid>
     </Layout>

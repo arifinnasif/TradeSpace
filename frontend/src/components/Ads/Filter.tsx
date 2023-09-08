@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   ChakraProvider,
   Box,
@@ -37,6 +37,7 @@ const Filter = () => {
   const [selectedAdType, setSelectedAdType] = useState("sell");
   const [isLoading, setIsLoading] = useState(false);
   const categoryList = React.useRef<string[]>([]);
+  const [params, setParams] = useSearchParams();
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
@@ -109,7 +110,7 @@ const Filter = () => {
       selectedAdType
     )}`;
 
-    const queryParams =
+    let queryParams =
       selectedCategoriesQueryParam +
       "&" +
       sortQueryParam +
@@ -121,7 +122,16 @@ const Filter = () => {
 
     // Construct the URL and navigate
     // console.log(queryParams);
-    navigate(`/ads?${queryParams}`);
+    // navigate(`/ads?${queryParams}`);
+
+    // if params has search_string, then append to the query params
+    if (params.has("search_string")) {
+      const search_string = params.get("search_string");
+      // add search string to the front of the query params
+      queryParams =
+        `search_string=${encodeURIComponent(search_string)}&` + queryParams;
+    }
+    setParams(queryParams);
   };
 
   return (

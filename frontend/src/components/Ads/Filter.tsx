@@ -34,6 +34,7 @@ const Filter = () => {
   const [selectedPromos, setSelectedPromos] = useState<string[]>([]);
   const [sortField, setSortField] = useState("price");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [selectedAdType, setSelectedAdType] = useState("sell");
   const [isLoading, setIsLoading] = useState(false);
   const categoryList = React.useRef<string[]>([]);
   useEffect(() => {
@@ -65,6 +66,11 @@ const Filter = () => {
     } else {
       setSelectedPromos((prevPromos) => [...prevPromos, promo]);
     }
+  };
+
+  const handleAdTypeChange = (adType: string) => {
+    // console.log(adType);
+    setSelectedAdType(adType);
   };
 
   const handleSortFieldChange = (field: React.SetStateAction<string>) => {
@@ -99,12 +105,18 @@ const Filter = () => {
       .map((promo) => `promo_types[]=${encodeURIComponent(promo)}`)
       .join("&");
 
+    const selectedAdTypeQueryParam = `ad_type=${encodeURIComponent(
+      selectedAdType
+    )}`;
+
     const queryParams =
       selectedCategoriesQueryParam +
       "&" +
       sortQueryParam +
       "&" +
-      selectedPromosQueryParam;
+      selectedPromosQueryParam +
+      "&" +
+      selectedAdTypeQueryParam;
     // const queryParams = selectedCategoriesQueryParam;
 
     // Construct the URL and navigate
@@ -141,15 +153,15 @@ const Filter = () => {
             />
           </GridItem>
 
-          <GridItem area="promo">
+          <GridItem py={6} area="promo">
             <PromoFilter handlePromoChange={handlePromoChange} />
           </GridItem>
 
-          <GridItem area="ad_type">
+          <GridItem py={6} area="ad_type">
             <FormControl>
               <FormLabel>Filter by Ad Type</FormLabel>
-              <RadioGroup defaultValue="sell">
-                <Stack direction="row">
+              <RadioGroup defaultValue="sell" onChange={handleAdTypeChange}>
+                <Stack gap={6} direction="row">
                   <Radio value="sell">Sell</Radio>
                   <Radio value="buy">Buy</Radio>
                 </Stack>

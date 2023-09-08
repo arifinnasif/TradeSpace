@@ -5,7 +5,13 @@ import * as _ from "lodash";
 import TopCard from "./TopCard";
 import InfoCard from "./InfoCard";
 import DescriptionCard from "./DesccriptionCard";
-import { FaThList, FaTag, FaUserTag, FaLeaf } from "react-icons/fa";
+import {
+  FaThList,
+  FaTag,
+  FaUserTag,
+  FaLeaf,
+  FaShoppingCart,
+} from "react-icons/fa";
 
 const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
   const stringifyUsageTime = (year: number, month: number, day: number) => {
@@ -61,9 +67,17 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
         )}
         {/* <Spacer /> */}
         {ad.is_used ? (
-          <InfoCard icon={FaLeaf} title="Used" subtitle="" />
+          <InfoCard
+            icon={FaShoppingCart}
+            title="Used"
+            subtitle={stringifyUsageTime(
+              ad.days_used!.years,
+              ad.days_used!.months,
+              ad.days_used!.days
+            )}
+          />
         ) : (
-          <InfoCard />
+          <InfoCard icon={FaLeaf} title="New" />
         )}
       </Grid>
       <Spacer height={16} />

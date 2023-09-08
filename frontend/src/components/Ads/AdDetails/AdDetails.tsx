@@ -82,7 +82,12 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
         )}
       </Grid>
       <Spacer height={16} />
-      <DescriptionCard description={ad.description} />
+      <DescriptionCard
+        description={ad.description}
+        address_latitude={ad.address!.latitude}
+        address_longitude={ad.address!.longitude}
+        address_description={ad.address!.description}
+      />
     </>
   );
 };

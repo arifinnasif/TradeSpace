@@ -18,6 +18,7 @@ import {
   PopoverCloseButton,
   PopoverHeader,
   PopoverBody,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { ChatIcon } from "@chakra-ui/icons";
@@ -27,6 +28,8 @@ import { FunctionComponent, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
+import MapModal from "./MapModal";
+import React from "react";
 
 interface DesccriptionCardProps {
   description?: string;
@@ -46,86 +49,103 @@ const DescriptionCard: FunctionComponent<DesccriptionCardProps> = ({
     setShowMap(!showMap);
   };
 
-  return (
-    <Card
-      width={{ base: "100%" }}
-      height="md"
-      //   direction={{ base: "column", sm: "row" }}
-      overflow="hidden"
-      variant={"elevated"}
-      shadow={"xl"}
-      mt={6}
-      bg={useColorModeValue("teal.50", "teal.900")}
-    >
-      <CardHeader>
-        <Heading size="xl">Description</Heading>
-        <Divider />
-      </CardHeader>
-      {description && <CardBody>{description}</CardBody>}
-      <CardFooter>
-        <Button leftIcon={<ChatIcon />} margin={2} colorScheme="teal">
-          Chat
-        </Button>
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = React.useRef(null);
+  const finalRef = React.useRef(null);
 
-        <Button leftIcon={<FaMapMarkerAlt />} margin={2} colorScheme="teal">
-          Map
-        </Button>
-        <Popover placement="bottom" closeOnBlur={false} isOpen={showMap}>
-          <PopoverTrigger>
-            {/* <Button onClick={handleShowMap}>
+  return (
+    <>
+      <Card
+        width={{ base: "100%" }}
+        height="md"
+        //   direction={{ base: "column", sm: "row" }}
+        overflow="hidden"
+        variant={"elevated"}
+        shadow={"xl"}
+        mt={6}
+        bg={useColorModeValue("teal.50", "teal.900")}
+      >
+        <CardHeader>
+          <Heading size="xl">Description</Heading>
+          <Divider />
+        </CardHeader>
+        {description && <CardBody>{description}</CardBody>}
+        <CardFooter>
+          <Button leftIcon={<ChatIcon />} margin={2} colorScheme="teal">
+            Chat
+          </Button>
+
+          <Button
+            onClick={(e) => onOpen()}
+            leftIcon={<FaMapMarkerAlt />}
+            margin={2}
+            colorScheme="teal"
+          >
+            Map
+          </Button>
+          <Popover placement="bottom" closeOnBlur={false} isOpen={showMap}>
+            <PopoverTrigger>
+              {/* <Button onClick={handleShowMap}>
                   Mark Location on Map
                 </Button> */}
-            <Button
-              onClick={handleShowMap}
-              bg={"blue.500"}
-              color={"white"}
-              _hover={{
-                bg: "blue.800",
-              }}
-            >
-              See Pickup point on Map
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent
-            style={{ width: "500px", height: "500px", overflow: "hidden" }}
-          >
-            <PopoverArrow />
-            <PopoverCloseButton onClick={() => setShowMap(false)} />
-            <PopoverHeader>Pick up address</PopoverHeader>
-            <PopoverBody
-              style={{ width: "100%", height: "100%", overflow: "hidden" }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  boxSizing: "border-box",
+              <Button
+                onClick={handleShowMap}
+                bg={"blue.500"}
+                color={"white"}
+                _hover={{
+                  bg: "blue.800",
                 }}
               >
-                <MapContainer
-                  center={[address_latitude, address_longitude]}
-                  zoom={17}
-                  scrollWheelZoom={false}
-                  style={{ width: "100%", height: "100%" }}
+                See Pickup point on Map
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent
+              style={{ width: "500px", height: "500px", overflow: "hidden" }}
+            >
+              <PopoverArrow />
+              <PopoverCloseButton onClick={() => setShowMap(false)} />
+              <PopoverHeader>Pick up address</PopoverHeader>
+              <PopoverBody
+                style={{ width: "100%", height: "100%", overflow: "hidden" }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    boxSizing: "border-box",
+                  }}
                 >
-                  <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  />
-                  <Marker
-                    position={[address_latitude, address_longitude]}
-                    draggable={false}
+                  <MapContainer
+                    center={[address_latitude, address_longitude]}
+                    zoom={17}
+                    scrollWheelZoom={false}
+                    style={{ width: "100%", height: "100%" }}
                   >
-                    {/* make the pop-up open by default */}
-                    <Popup>{address_description}</Popup>
-                  </Marker>
-                </MapContainer>
-              </div>
-            </PopoverBody>
-          </PopoverContent>
-        </Popover>
-      </CardFooter>
-    </Card>
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    <Marker
+                      position={[address_latitude, address_longitude]}
+                      draggable={false}
+                    >
+                      {/* make the pop-up open by default */}
+                      <Popup>{address_description}</Popup>
+                    </Marker>
+                  </MapContainer>
+                </div>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+        </CardFooter>
+      </Card>
+      <MapModal
+        initialRef={initialRef}
+        finalRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
+    </>
   );
 };
 

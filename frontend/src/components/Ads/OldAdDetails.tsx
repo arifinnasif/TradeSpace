@@ -223,7 +223,7 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
                     center={[ad.address!.latitude, ad.address!.longitude]}
                     zoom={17}
                     scrollWheelZoom={false}
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%", height: "100%", zIndex: -94 }}
                   >
                     <TileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

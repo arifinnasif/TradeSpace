@@ -14,6 +14,7 @@ const AdDetailsPage = () => {
       setIsLoading(true);
       const ad_details = await adService.getAdDetails(+id!);
       setAd(ad_details);
+      console.log(ad_details);
       setIsLoading(false);
     }
     fetchData();

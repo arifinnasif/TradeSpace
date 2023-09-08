@@ -19,14 +19,25 @@ import { FaUser, FaCalendarDay } from "react-icons/fa";
 
 interface TopCardProps {
   title: string;
+  price?: number;
   op_username: string;
   op_fullname: string;
   op_email: string;
-  op_phone: string;
-  op_location: string;
+  op_phone?: string;
+  image?: string;
+  address: string;
 }
 
-const TopCard = () => {
+const TopCard: FunctionComponent<TopCardProps> = ({
+  title,
+  price,
+  op_username,
+  op_fullname,
+  op_email,
+  op_phone,
+  image,
+  address,
+}) => {
   return (
     <Card
       width={{ base: "100%" }}
@@ -41,15 +52,19 @@ const TopCard = () => {
       <Image
         objectFit="cover"
         maxW={{ base: "100%", sm: "450px" }}
-        src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
-        alt="Caffe Latte"
+        src={
+          image
+            ? image
+            : "https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+        }
+        alt={title}
       />
 
       <Stack>
         <CardBody>
           <Flex w={"3xl"} justify="space-between">
-            <Heading size="xl">lorem lorem</Heading>
-            <Heading size="xl">BDT 500</Heading>
+            <Heading size="xl">{title}</Heading>
+            {price && <Heading size="xl">BDT {price}</Heading>}
           </Flex>
           <Divider />
 
@@ -59,7 +74,7 @@ const TopCard = () => {
                 Posted By
               </Heading>
               <Text pt="2" fontSize="sm">
-                @fulan (Fulan ibn Fulan)
+                @{op_username} ({op_fullname})
               </Text>
             </Box>
             <Box>
@@ -67,23 +82,25 @@ const TopCard = () => {
                 Email
               </Heading>
               <Text pt="2" fontSize="sm">
-                fulan@fulan.com
+                {op_email}
               </Text>
             </Box>
+            {op_phone && (
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  Phone
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  +8801234567890
+                </Text>
+              </Box>
+            )}
             <Box>
               <Heading size="xs" textTransform="uppercase">
-                Contact
+                Address
               </Heading>
               <Text pt="2" fontSize="sm">
-                +8801234567890
-              </Text>
-            </Box>
-            <Box>
-              <Heading size="xs" textTransform="uppercase">
-                Location
-              </Heading>
-              <Text pt="2" fontSize="sm">
-                Near Azimpur Bus Stand
+                {address}
               </Text>
             </Box>
           </Stack>

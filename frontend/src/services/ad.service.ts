@@ -17,6 +17,7 @@ export interface AdDetailsType {
     days: number;
   };
   phone?: string;
+  op_email: string;
   promotion_type?: string;
   created_at: string;
   address?: {

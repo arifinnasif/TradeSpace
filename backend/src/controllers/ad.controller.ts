@@ -275,6 +275,7 @@ let get_ad_details = async (req: Request, res: Response) => {
         op: {
           select: {
             name: true,
+            email: true,
           },
         },
         category_name: true,
@@ -330,6 +331,8 @@ let get_ad_details = async (req: Request, res: Response) => {
     // capitalize
     const op_fullname = titleCase(ad_details.op.name);
 
+    const op_email = ad_details.op.email;
+
     // remove days_used from ad_details
     delete ad_details.days_used;
 
@@ -350,6 +353,7 @@ let get_ad_details = async (req: Request, res: Response) => {
       ...ad_details,
       usage_time: usage_time,
       phone: phone,
+      op_email: op_email,
       op_fullname: op_fullname,
       address: address,
     };

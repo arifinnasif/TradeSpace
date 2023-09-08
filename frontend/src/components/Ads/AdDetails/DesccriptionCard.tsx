@@ -56,6 +56,7 @@ const DescriptionCard: FunctionComponent<DesccriptionCardProps> = ({
   return (
     <>
       <Card
+        ref={finalRef}
         width={{ base: "100%" }}
         height="md"
         //   direction={{ base: "column", sm: "row" }}
@@ -76,70 +77,22 @@ const DescriptionCard: FunctionComponent<DesccriptionCardProps> = ({
           </Button>
 
           <Button
-            onClick={(e) => onOpen()}
+            onClick={(e) => {
+              handleShowMap();
+              onOpen();
+            }}
             leftIcon={<FaMapMarkerAlt />}
             margin={2}
             colorScheme="teal"
           >
             Map
           </Button>
-          <Popover placement="bottom" closeOnBlur={false} isOpen={showMap}>
-            <PopoverTrigger>
-              {/* <Button onClick={handleShowMap}>
-                  Mark Location on Map
-                </Button> */}
-              <Button
-                onClick={handleShowMap}
-                bg={"blue.500"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.800",
-                }}
-              >
-                See Pickup point on Map
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent
-              style={{ width: "500px", height: "500px", overflow: "hidden" }}
-            >
-              <PopoverArrow />
-              <PopoverCloseButton onClick={() => setShowMap(false)} />
-              <PopoverHeader>Pick up address</PopoverHeader>
-              <PopoverBody
-                style={{ width: "100%", height: "100%", overflow: "hidden" }}
-              >
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    boxSizing: "border-box",
-                  }}
-                >
-                  <MapContainer
-                    center={[address_latitude, address_longitude]}
-                    zoom={17}
-                    scrollWheelZoom={false}
-                    style={{ width: "100%", height: "100%" }}
-                  >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <Marker
-                      position={[address_latitude, address_longitude]}
-                      draggable={false}
-                    >
-                      {/* make the pop-up open by default */}
-                      <Popup>{address_description}</Popup>
-                    </Marker>
-                  </MapContainer>
-                </div>
-              </PopoverBody>
-            </PopoverContent>
-          </Popover>
         </CardFooter>
       </Card>
       <MapModal
+        address_latitude={address_latitude}
+        address_longitude={address_longitude}
+        address_description={address_description}
         initialRef={initialRef}
         finalRef={finalRef}
         isOpen={isOpen}

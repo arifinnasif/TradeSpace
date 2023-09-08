@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   ChakraProvider,
   Box,
@@ -19,19 +19,25 @@ import {
   TagCloseButton,
   RadioGroup,
   Radio,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { CategoryType, homeService } from "../../services/Home.service";
 import SortFilter from "./SortFilter";
 import CategoryFilter from "./CategoryFilter";
+import PromoFilter from "./PromoFilter";
 
 const Filter = () => {
   const navigate = useNavigate();
   // const [categoryList, setCategoryList] = useState<CategoryType[]>();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedPromos, setSelectedPromos] = useState<string[]>([]);
   const [sortField, setSortField] = useState("price");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [selectedAdType, setSelectedAdType] = useState("sell");
   const [isLoading, setIsLoading] = useState(false);
   const categoryList = React.useRef<string[]>([]);
+  const [params, setParams] = useSearchParams();
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
@@ -53,6 +59,19 @@ const Filter = () => {
     } else {
       setSelectedCategories((prevCategories) => [...prevCategories, category]);
     }
+  };
+
+  const handlePromoChange = (promo: string) => {
+    if (selectedPromos.includes(promo)) {
+      setSelectedPromos((prevPromos) => prevPromos.filter((p) => p !== promo));
+    } else {
+      setSelectedPromos((prevPromos) => [...prevPromos, promo]);
+    }
+  };
+
+  const handleAdTypeChange = (adType: string) => {
+    // console.log(adType);
+    setSelectedAdType(adType);
   };
 
   const handleSortFieldChange = (field: React.SetStateAction<string>) => {
@@ -83,24 +102,83 @@ const Filter = () => {
       sortField
     )},${encodeURIComponent(sortOrder)}`;
 
-    const queryParams = selectedCategoriesQueryParam + "&" + sortQueryParam;
+    const selectedPromosQueryParam = selectedPromos
+      .map((promo) => `promo_types[]=${encodeURIComponent(promo)}`)
+      .join("&");
+
+    const selectedAdTypeQueryParam = `ad_type=${encodeURIComponent(
+      selectedAdType
+    )}`;
+
+    let queryParams =
+      selectedCategoriesQueryParam +
+      "&" +
+      sortQueryParam +
+      "&" +
+      selectedPromosQueryParam +
+      "&" +
+      selectedAdTypeQueryParam;
     // const queryParams = selectedCategoriesQueryParam;
 
     // Construct the URL and navigate
     // console.log(queryParams);
-    navigate(`/ads?${queryParams}`);
+    // navigate(`/ads?${queryParams}`);
+
+    // if params has search_string, then append to the query params
+    if (params.has("search_string")) {
+      const search_string = params.get("search_string");
+      // add search string to the front of the query params
+      queryParams =
+        `search_string=${encodeURIComponent(search_string)}&` + queryParams;
+    }
+    setParams(queryParams);
   };
 
   return (
     <ChakraProvider>
       <Box p={4}>
-        <Flex justify="space-between" align="center">
+        {/* <Flex justify="space-between" align="center">
           <CategoryFilter handleCategoryChange={handleCategoryChange} />
           <SortFilter
             handleSortFieldChange={handleSortFieldChange}
             handleSortOrderChange={handleSortOrderChange}
           />
-        </Flex>
+        </Flex> */}
+
+        <Grid
+          templateAreas={`"cat sort"
+                          "promo ad_type"`}
+          templateRows={`repeat(2, 1fr)`}
+          templateColumns={`repeat(2, 1fr)`}
+          gap={4}
+        >
+          <GridItem area="cat">
+            <CategoryFilter handleCategoryChange={handleCategoryChange} />
+          </GridItem>
+
+          <GridItem area="sort">
+            <SortFilter
+              handleSortFieldChange={handleSortFieldChange}
+              handleSortOrderChange={handleSortOrderChange}
+            />
+          </GridItem>
+
+          <GridItem py={6} area="promo">
+            <PromoFilter handlePromoChange={handlePromoChange} />
+          </GridItem>
+
+          <GridItem py={6} area="ad_type">
+            <FormControl>
+              <FormLabel>Filter by Ad Type</FormLabel>
+              <RadioGroup defaultValue="sell" onChange={handleAdTypeChange}>
+                <Stack gap={6} direction="row">
+                  <Radio value="sell">Sell</Radio>
+                  <Radio value="buy">Buy</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+          </GridItem>
+        </Grid>
 
         <Button
           onClick={handleFilterClick}

@@ -7,6 +7,10 @@ export interface CategoryType {
   ads_count: string;
 }
 
+export interface PromoType {
+  promotion_type: string;
+}
+
 class HomeService {
   async getCategories<CategoryType>() {
     // return API.get("/cats");
@@ -91,6 +95,12 @@ class HomeService {
     const ads = (await API.get(`/home/category/${category_name}`)).data.ads;
     // console.log(ads);
     return ads;
+  }
+
+  async getPromos<PromoType>() {
+    const promos = (await API.get(`/home/promos`)).data.promos;
+    // console.log(promos);
+    return promos;
   }
 }
 

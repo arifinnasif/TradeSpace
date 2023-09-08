@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Fuse from "fuse.js";
 
 // import prisma client
+
 import prisma from '../../prisma/prisma_client';
 import { ai_judge } from "../TradeSpaceAI";
 
@@ -47,7 +48,7 @@ let postAd = async (req: Request, res: Response) => {
     usage_time,
     is_phone_public,
     address,
-    images
+    images,
   } = req.body;
 
   console.log(req.body);
@@ -190,8 +191,8 @@ let get_ads = async (req: Request, res: Response) => {
       orderBy: {
         [sort_by]: sort_order,
       },
-      skip: page * limit,
-      take: limit,
+      // skip: page * limit,
+      // take: limit,
       select: {
         id: true,
         op_username: true,
@@ -234,6 +235,9 @@ let get_ads = async (req: Request, res: Response) => {
 
     // get total number of pages
     const total_pages = Math.ceil(total_ads / limit);
+
+    // get ads for the current page
+    ad_list = ad_list.slice(page * limit, page * limit + limit);
 
     const response = {
       success: true,

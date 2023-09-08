@@ -30,12 +30,14 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import MapModal from "./MapModal";
 import React from "react";
+import { getThread } from "../../../services/chat.service";
 
 interface DesccriptionCardProps {
   description?: string;
   address_longitude: number;
   address_latitude: number;
   address_description: string;
+  handleChatClick: () => void;
 }
 
 const DescriptionCard: FunctionComponent<DesccriptionCardProps> = ({
@@ -43,6 +45,7 @@ const DescriptionCard: FunctionComponent<DesccriptionCardProps> = ({
   address_longitude,
   address_latitude,
   address_description,
+  handleChatClick,
 }) => {
   const [showMap, setShowMap] = useState(false);
   const handleShowMap = () => {
@@ -72,7 +75,12 @@ const DescriptionCard: FunctionComponent<DesccriptionCardProps> = ({
         </CardHeader>
         {description && <CardBody>{description}</CardBody>}
         <CardFooter>
-          <Button leftIcon={<ChatIcon />} margin={2} colorScheme="teal">
+          <Button
+            leftIcon={<ChatIcon />}
+            margin={2}
+            colorScheme="teal"
+            onClick={handleChatClick}
+          >
             Chat
           </Button>
 

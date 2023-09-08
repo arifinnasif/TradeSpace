@@ -41,8 +41,10 @@ const MapModal: FunctionComponent<MapModalProps> = ({
       finalFocusRef={finalRef}
       isOpen={isOpen}
       onClose={onClose}
+      isCentered
+      motionPreset="scale"
     >
-      <ModalOverlay />
+      <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalHeader>
           <Text maxWidth={"350px"} noOfLines={1}>
@@ -54,7 +56,7 @@ const MapModal: FunctionComponent<MapModalProps> = ({
           <Box
             style={{
               width: "100%",
-              height: "300px",
+              height: "400px",
               boxSizing: "border-box",
             }}
           >

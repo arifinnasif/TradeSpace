@@ -4,7 +4,7 @@ import { Center, Flex, Grid, Heading, Spacer } from "@chakra-ui/react";
 import * as _ from "lodash";
 import TopCard from "./TopCard";
 import InfoCard from "./InfoCard";
-import DescriptionCard from "./DesccriptionCard";
+import DescriptionCard from "./DescriptionCard";
 import {
   FaThList,
   FaTag,
@@ -13,26 +13,28 @@ import {
   FaShoppingCart,
 } from "react-icons/fa";
 
-const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
+import { BiSolidBandAid } from "react-icons/bi";
+
+const AdDetails: FunctionComponent<AdDetailsType> = (ad) => {
   const stringifyUsageTime = (year: number, month: number, day: number) => {
     let str = "";
 
     if (year === 1) {
-      str += year + " year";
+      str += year + " year ";
     } else if (year > 1) {
-      str += year + " years";
+      str += year + " years ";
     }
 
     if (month === 1) {
-      str += month + " month";
+      str += month + " month ";
     } else if (month > 1) {
-      str += month + " months";
+      str += month + " months ";
     }
 
     if (day === 1) {
-      str += day + " day";
+      str += day + " day ";
     } else if (day > 1) {
-      str += day + " days";
+      str += day + " days ";
     }
 
     return str;
@@ -69,7 +71,7 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
         {/* <Spacer /> */}
         {ad.is_used ? (
           <InfoCard
-            icon={FaShoppingCart}
+            icon={BiSolidBandAid}
             title="Used"
             subtitle={stringifyUsageTime(
               ad.days_used!.years,
@@ -87,9 +89,10 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
         address_latitude={ad.address!.latitude}
         address_longitude={ad.address!.longitude}
         address_description={ad.address!.description}
+        handleChatClick={ad.handleChatClick}
       />
     </>
   );
 };
 
-export default AdDetils;
+export default AdDetails;

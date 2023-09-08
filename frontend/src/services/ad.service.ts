@@ -26,6 +26,7 @@ export interface AdDetailsType {
     latitude: number;
     longitude: number;
   };
+  handleChatClick: () => void;
 }
 
 export interface AdCardType {

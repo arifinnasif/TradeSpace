@@ -25,11 +25,13 @@ import {
 import { CategoryType, homeService } from "../../services/Home.service";
 import SortFilter from "./SortFilter";
 import CategoryFilter from "./CategoryFilter";
+import PromoFilter from "./PromoFilter";
 
 const Filter = () => {
   const navigate = useNavigate();
   // const [categoryList, setCategoryList] = useState<CategoryType[]>();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedPromos, setSelectedPromos] = useState<string[]>([]);
   const [sortField, setSortField] = useState("price");
   const [sortOrder, setSortOrder] = useState("desc");
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +56,14 @@ const Filter = () => {
       );
     } else {
       setSelectedCategories((prevCategories) => [...prevCategories, category]);
+    }
+  };
+
+  const handlePromoChange = (promo: string) => {
+    if (selectedPromos.includes(promo)) {
+      setSelectedPromos((prevPromos) => prevPromos.filter((p) => p !== promo));
+    } else {
+      setSelectedPromos((prevPromos) => [...prevPromos, promo]);
     }
   };
 
@@ -120,6 +130,10 @@ const Filter = () => {
               handleSortFieldChange={handleSortFieldChange}
               handleSortOrderChange={handleSortOrderChange}
             />
+          </GridItem>
+
+          <GridItem area="promo">
+            <PromoFilter handlePromoChange={handlePromoChange} />
           </GridItem>
         </Grid>
 

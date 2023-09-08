@@ -35,7 +35,7 @@ const PromoFilter: FunctionComponent<PromoFilterProps> = ({
       const promos = await homeService.getCategories();
       // console.log(promos);
       // assign only names to promoList
-      promoList.current = promos;
+      promoList.current = promos.map((promo: CategoryType) => promo.name);
 
       setIsLoading(false);
     }

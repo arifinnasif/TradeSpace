@@ -33,7 +33,6 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
   is_negotiable,
   is_sell_ad,
   image1,
-  is_ai_approved,
   ai_verdict,
   refreshAction,
 }) => {
@@ -146,7 +145,6 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
                   is_sell_ad,
                   is_used,
                   is_negotiable,
-                  is_ai_approved,
                   ai_verdict,
                 }}
               />

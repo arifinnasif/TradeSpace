@@ -11,16 +11,36 @@ import {
   useColorModeValue,
   useColorMode,
   Image,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 
-import { AddIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  BellIcon,
+  ChatIcon,
+  MoonIcon,
+  SunIcon,
+} from "@chakra-ui/icons";
 
 import logo from "../../../../logos/tradespace-lettermark-combined-non-fill-teal.svg";
 import logoForDarkMode from "../../../../logos/tradespace-lettermark-combined-non-fill-teal-light.svg";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+
+import { userProfileType, userService } from "../../services/User.service";
+
+
+import { notificationService,
+  NotificationType
+} from "../../services/Notification.service";
+
 
 interface Props {
   children: React.ReactNode;
@@ -53,28 +73,32 @@ const NavLink = (props: Props) => {
 // if the used id logged in or not
 // checked by this function
 // integrated with backend later
-const IsLoggedIn = () => {
-  const { isAuth } = useSelector((state: any) => state.auth);
-  return isAuth;
-};
+// const LoggedIn = () => {
+//   const { isAuth } = useSelector((state: any) => state.auth);
+//   return isAuth;
+// };
 
 // get user image if he has any.
-const userImage = () => {
-  return "https://bit.ly/sage-adebayo";
-};
+// const userImage = () => {
+//   return "https://bit.ly/sage-adebayo";
+// };
 
 // Why is the name necessary?
 // Because the user name is displayed on the navbar
 // incase the user has no image
-const userName = () => {
-  return "Sage Adebayo";
-};
+// const userName = () => {
+//   return "Sage Adebayo";
+// };
 
 const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isHomeClicked, setIsHomeClicked] = React.useState(false);
   const [isAllAdsClicked, setIsAllAdsClicked] = React.useState(false);
   const [isAccountClicked, setIsAccountClicked] = React.useState(false);
+  const isAuth = useSelector((state: any) => state.auth.isAuth);
+
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [userInfo, setUserInfo] = React.useState<userProfileType>();
 
   const changeHomeClicked = () => {
     setIsHomeClicked(true);
@@ -87,6 +111,83 @@ const Navbar = () => {
   const changeAccountClicked = () => {
     setIsAccountClicked(true);
   };
+
+
+
+
+  // check if the user is logged in or not continuously
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const { isAuth } = useSelector((state: any) => state.auth);
+  //     setIsAuth(isAuth);
+  //   }, 5000);
+  //   return () => clearInterval(interval);
+  // }, []);
+
+
+
+  // check if new notifications are available for logged in user at every 5 seconds
+  // if available, then show the red dot
+  // if not, then don't show the red dot
+  const [isNotificationAvailable, setIsNotificationAvailable] = React.useState(false);
+
+
+  const resetNotificationStatus = () => {
+    // console.log("resetting notification status");
+    // set immediately to false
+    setIsNotificationAvailable(false);
+    console.log("setting seen");
+  };
+
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+
+      if (!isAuth) {
+        return;
+      }
+
+      const notifications = await notificationService.getNotifications()
+
+      if (notifications.length > 0) {
+        // iterate through the notifications. check if any of them is not seen yet
+        // if not seen, then set isNotificationAvailable to true
+        setIsNotificationAvailable(false);
+
+        for (let i = 0; i < notifications.length; i++) {
+          if (notifications[i].is_seen === false) {
+            // console.log("new notification available");
+            setIsNotificationAvailable(true);
+            break;
+          }
+        }
+
+      }
+    }
+
+    fetchData();
+
+    const interval = setInterval(fetchData, 1000);
+
+    return () => clearInterval(interval);
+
+  }, []);
+
+  // fetch user info
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const userinfo = await userService.getUserInfo();
+      setUserInfo(userinfo);
+      // console.log(userinfo);
+      setIsLoading(false);
+    }
+    fetchData();
+  }, []);
+
+
+
 
   return (
     <>
@@ -143,18 +244,53 @@ const Navbar = () => {
                 )}
               </Button>
 
+              {isAuth ? (
+                <Link to="/chats">
+                  <ChatIcon boxSize={6} />
+                </Link>
+                ) : (
+                <></>
+              )
+              }
+              
+              {isAuth ?
+                <Link to="/notifications">
+                  <Button onClick={resetNotificationStatus}>
+                    <BellIcon boxSize={6} />
+                    {/* if there are new notifications, then show the red dot */}
+                    {isNotificationAvailable ?
+                    <span
+                      style={{
+                        position: "absolute",
+                        right: "10px",
+                        bottom: "3px",
+                        width: "10px",
+                        height: "10px",
+                        backgroundColor: "red",
+                        borderRadius: "50%",
+                      }}
+                    ></span>
+                    :
+                    <></>
+                    }
+                  </Button>
+                </Link>
+              :
+                <></>
+              }
+              
               <Box onClick={changeAccountClicked}>
                 <NavLink
-                  href={IsLoggedIn() ? "/profile" : "/login"}
+                  href={isAuth ? "/profile" : "/login"}
                   isClicked={isAccountClicked}
                 >
-                  {IsLoggedIn() ? "Profile" : "Login"}
+                  {isAuth ? "Profile" : "Login"}
                 </NavLink>
               </Box>
 
               <Button
                 as={Link}
-                to={IsLoggedIn() ? "/ads/post-ad" : "/login"}
+                to={isAuth ? "/ads/post-ad" : "/login"}
                 variant="outline"
                 colorScheme={"teal"}
                 size={"sm"}
@@ -169,20 +305,50 @@ const Navbar = () => {
                 Post Ad
               </Button>
 
-              {IsLoggedIn() ? (
-                <Avatar
-                  as="a"
-                  size={"md"}
-                  colorScheme="teal"
-                  showBorder={true}
-                  name={userName()}
-                  href="/profile"
-                  // currently commenting out.
-                  // takes a lot of time to load
-                  // will handle later
+              {isAuth ? (
+                // <Avatar
+                //   as="a"
+                //   size={"md"}
+                //   colorScheme="teal"
+                //   showBorder={true}
+                //   name={userName()}
+                //   href="/profile"
+                //   // currently commenting out.
+                //   // takes a lot of time to load
+                //   // will handle later
 
-                  // src={userImage()}
-                />
+                //   // src={userImage()}
+                // />
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                    minW={0}>
+                    {/* <Avatar
+                      size={'sm'}
+                      src={
+                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                      }
+                    /> */}
+                    <Avatar
+                      size={"md"}
+                      colorScheme="teal"
+                      showBorder={true}
+                      name={userInfo?.name}
+                      // currently commenting out.
+                      // takes a lot of time to load
+                      // will handle later
+
+                      src={userInfo?.profile_pic}
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem as={Link} to="/profile">Profile</MenuItem>
+                    <MenuItem as={Link} to="/logout">Logout</MenuItem>
+                  </MenuList>
+                </Menu>
               ) : (
                 <></>
               )}

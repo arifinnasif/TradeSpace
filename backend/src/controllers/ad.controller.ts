@@ -2,7 +2,9 @@ import { Request, Response } from "express";
 import Fuse from "fuse.js";
 
 // import prisma client
-import prisma from "../../prisma/prisma_client";
+
+import prisma from '../../prisma/prisma_client';
+import { ai_judge } from "../TradeSpaceAI";
 
 // for search functionality
 const fuseOptions = {
@@ -59,7 +61,8 @@ let postAd = async (req: Request, res: Response) => {
 
   try {
     // create a new ad
-    console.log(images[0]);
+    const ai_verdict = await ai_judge(req.body);
+    console.log(ai_verdict);
     await prisma.ads.create({
       data: {
         op_username: user.username,
@@ -79,6 +82,7 @@ let postAd = async (req: Request, res: Response) => {
         longitude: address.longitude,
         promotion_type: "normal",
         image1: images[0],
+        ai_verdict: ai_verdict,
         // image2: images[0],
         // image3: images[0],
         // image4: images[0],
@@ -275,6 +279,7 @@ let get_ad_details = async (req: Request, res: Response) => {
         op: {
           select: {
             name: true,
+            email: true,
           },
         },
         category_name: true,
@@ -330,6 +335,8 @@ let get_ad_details = async (req: Request, res: Response) => {
     // capitalize
     const op_fullname = titleCase(ad_details.op.name);
 
+    const op_email = ad_details.op.email;
+
     // remove days_used from ad_details
     delete ad_details.days_used;
 
@@ -350,6 +357,7 @@ let get_ad_details = async (req: Request, res: Response) => {
       ...ad_details,
       usage_time: usage_time,
       phone: phone,
+      op_email: op_email,
       op_fullname: op_fullname,
       address: address,
     };

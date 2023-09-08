@@ -26,8 +26,9 @@ export const create_checkout_session = async (promotion_type: string, price: num
             cancel_url: process.env.STRIPE_UPON_CANCEL_URL!,
         });
 
-        // console.log(session);
-        return [session.id, session.url];
+        console.log("printing from create checkout session");
+        console.log(session);
+        return [session.id, session.url, session.payment_intent];
     } catch (error: any) {
         // return res.status(500).json({
         //     success: false,

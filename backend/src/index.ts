@@ -1,6 +1,11 @@
+
 // https://stackoverflow.com/questions/58684642/should-i-call-dotenv-in-every-node-js-file
 import * as dotenv from "dotenv";
 dotenv.config();
+
+// ai initialization
+import { initiate_ts_ai } from "./TradeSpaceAI";
+initiate_ts_ai();
 
 import app from "./app";
 
@@ -13,3 +18,4 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
     console.log("server started on port " + PORT);
 });
+

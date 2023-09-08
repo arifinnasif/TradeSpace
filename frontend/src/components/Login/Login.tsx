@@ -40,12 +40,14 @@ export default function Login() {
         email: values.email,
         password: values.password,
       });
+      console.log(response.data.token);
       setCookie("token", response.data.token);
 
       console.log(response);
       dispatch(authenticateUser());
 
       localStorage.setItem("isAuth", "true");
+      localStorage.setItem("token", response.data.token);
       // console.log(response);
     } catch (error) {
       console.log(error);

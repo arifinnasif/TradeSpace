@@ -32,26 +32,28 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
             take: limit,
         });
 
-        const possible_ai_verdicts = ['No Issue', 'No Issue', 'No Issue', 'Contains Spam', 'Fake Image', 'EXIF Mismatch', 'EXIF Mismatch', 'EXIF Mismatch', 'EXIF Mismatch', 'No EXIF', 'Suspicious Link'];
+        // const possible_ai_verdicts = ['No Issue', 'No Issue', 'No Issue', 'Contains Spam', 'Fake Image', 'EXIF Mismatch', 'EXIF Mismatch', 'EXIF Mismatch', 'EXIF Mismatch', 'No EXIF', 'Suspicious Link'];
 
-        pending_reviews = pending_reviews.map((review) => {
-            // generate random number between 0 and size of possible_ai_verdicts
-            const random_number = Math.floor(Math.random() * possible_ai_verdicts.length);
-            const is_ai_approved = random_number < 3 ? true : false;
-            const ai_verdict = possible_ai_verdicts[random_number];
+        // pending_reviews = pending_reviews.map((review) => {
+        //     // generate random number between 0 and size of possible_ai_verdicts
+        //     const random_number = Math.floor(Math.random() * possible_ai_verdicts.length);
+        //     const is_ai_approved = random_number < 3 ? true : false;
+        //     const ai_verdict = possible_ai_verdicts[random_number];
 
-            return {
-                ...review,
-                is_ai_approved: is_ai_approved,
-                ai_verdict: ai_verdict
-            }
-        });
+        //     return {
+        //         ...review,
+        //         is_ai_approved: is_ai_approved,
+        //         ai_verdict: ai_verdict
+        //     }
+        // });
 
         const total_pending_reviews = await prisma.ads.count({
             where: {
                 status: 'pending'
             }
         });
+
+        console.log(pending_reviews);
 
 
         // console.log(pending_reviews);
@@ -194,7 +196,8 @@ export const approve_pending_review = async (req: Request, res: Response) => {
         await notify_user(pending_review.op_username,
             'ad_approved',
             'Ad Approved',
-            `Your ad #${updated_review.id} titled "${updated_review.title}" has been approved by the admin.`);
+            // `Your ad #${updated_review.id} titled "${updated_review.title}" has been approved by the admin.`);
+            `Your ad titled "${updated_review.title}" has been approved by the admin.`);
 
         return res.status(200).json(updated_review);
     } catch (error: any) {

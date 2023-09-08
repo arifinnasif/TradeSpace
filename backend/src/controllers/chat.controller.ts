@@ -185,7 +185,7 @@ export const get_messages = async (req: Request, res: Response) => {
                 thread_id: thread_id
             },
             orderBy: {
-                created_at: 'desc'
+                created_at: 'asc'
             }
         });
 
@@ -266,7 +266,7 @@ export const get_inbox = async (req: Request, res: Response) => {
             },
 
             orderBy: {
-                updated_at: 'desc'
+                updated_at: 'asc'
             }
         });
 

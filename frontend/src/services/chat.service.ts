@@ -41,3 +41,9 @@ export const getThread = async (ad_id: number) => {
         withCredentials: true,
     })).data;
 }
+
+export const getMessages = async (thread_id: string) => {
+    return (await API.get(`/chat/threads/${thread_id}`, {
+        withCredentials: true,
+    })).data;
+}

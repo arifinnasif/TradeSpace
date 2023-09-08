@@ -12,7 +12,11 @@ import {
 
 import { Link } from "react-router-dom";
 
-import { InboxType } from "../../services/chat.service";
+import {
+  InboxType,
+  MessageType,
+  getMessages,
+} from "../../services/chat.service";
 
 function formatTimestamp(timestamp: string) {
   const date = new Date(timestamp);
@@ -42,11 +46,20 @@ function formatTimestamp(timestamp: string) {
   return formattedTime;
 }
 
-const UserCard = ({ inboxItem }: { inboxItem: InboxType }) => {
-  const handleOpenChat = (event: React.MouseEvent<HTMLDivElement>) => {
+const UserCard = ({
+  inboxItem,
+  setMessages,
+}: {
+  inboxItem: InboxType;
+  setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
+}) => {
+  const handleOpenChat = async (event: React.MouseEvent<HTMLDivElement>) => {
     console.log("Open chat");
     const cardId = event.currentTarget.id;
     console.log("Clicked card with id:", cardId);
+    const respose = await getMessages(inboxItem.thread_id);
+    console.log(respose);
+    setMessages(respose);
   };
 
   console.log("Inbox item:");

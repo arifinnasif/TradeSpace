@@ -144,7 +144,11 @@ const GetChats = () => {
             overflow={"scroll"}
           >
             <Flex w="90%" h="90%" flexDir="column">
-              <ChatSideBar inbox={inbox} setInbox={setInbox} />
+              <ChatSideBar
+                inbox={inbox}
+                setInbox={setInbox}
+                setMessages={setMessages}
+              />
 
               {/* <div>
                             <h1>Sidebar</h1>

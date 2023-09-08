@@ -13,7 +13,9 @@ import {
   Divider,
 } from "@chakra-ui/react";
 
-import { FaBaby } from "react-icons/fa";
+import { ChatIcon } from "@chakra-ui/icons";
+
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 const DescriptionCard = () => {
   return (
@@ -37,6 +39,15 @@ const DescriptionCard = () => {
         consequuntur velit vel, dolor modi ipsum pariatur aut! Vitae animi modi
         praesentium optio?
       </CardBody>
+      <CardFooter>
+        <Button leftIcon={<ChatIcon />} margin={2} colorScheme="teal">
+          Chat
+        </Button>
+
+        <Button leftIcon={<FaMapMarkerAlt />} margin={2} colorScheme="teal">
+          Map
+        </Button>
+      </CardFooter>
     </Card>
   );
 };

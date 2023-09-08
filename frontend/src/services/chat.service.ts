@@ -47,3 +47,12 @@ export const getMessages = async (thread_id: string) => {
         withCredentials: true,
     })).data;
 }
+
+export const sendMessage = async (thread_id: string, message: string, is_image: boolean) => {
+    return (await API.post(`/chat/threads/${thread_id}`, {
+        message,
+        is_image,
+    }, {
+        withCredentials: true,
+    })).data;
+}

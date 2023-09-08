@@ -49,9 +49,11 @@ function formatTimestamp(timestamp: string) {
 const UserCard = ({
   inboxItem,
   setMessages,
+  setCurrentThread,
 }: {
   inboxItem: InboxType;
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
+  setCurrentThread: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const handleOpenChat = async (event: React.MouseEvent<HTMLDivElement>) => {
     console.log("Open chat");
@@ -60,6 +62,7 @@ const UserCard = ({
     const respose = await getMessages(inboxItem.thread_id);
     console.log(respose);
     setMessages(respose);
+    setCurrentThread(inboxItem.thread_id);
   };
 
   console.log("Inbox item:");

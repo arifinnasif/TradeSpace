@@ -49,6 +49,7 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
           price={ad.price}
           op_username={ad.op_username}
           op_fullname={ad.op_fullname}
+          created_at={new Date(ad.created_at).toDateString()}
           address={ad.address!.description}
           op_email={ad.op_email}
           op_phone={ad.phone}
@@ -81,7 +82,7 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
         )}
       </Grid>
       <Spacer height={16} />
-      <DescriptionCard />
+      <DescriptionCard description={ad.description} />
     </>
   );
 };

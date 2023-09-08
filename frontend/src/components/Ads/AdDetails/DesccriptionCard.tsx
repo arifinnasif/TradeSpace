@@ -16,8 +16,15 @@ import {
 import { ChatIcon } from "@chakra-ui/icons";
 
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { FunctionComponent } from "react";
 
-const DescriptionCard = () => {
+interface DesccriptionCardProps {
+  description?: string;
+}
+
+const DescriptionCard: FunctionComponent<DesccriptionCardProps> = ({
+  description,
+}) => {
   return (
     <Card
       width={{ base: "100%" }}
@@ -33,12 +40,7 @@ const DescriptionCard = () => {
         <Heading size="xl">Description</Heading>
         <Divider />
       </CardHeader>
-      <CardBody>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Optio fugiat
-        deleniti repudiandae perspiciatis, ipsam quibusdam, quaerat tempora
-        consequuntur velit vel, dolor modi ipsum pariatur aut! Vitae animi modi
-        praesentium optio?
-      </CardBody>
+      {description && <CardBody>{description}</CardBody>}
       <CardFooter>
         <Button leftIcon={<ChatIcon />} margin={2} colorScheme="teal">
           Chat

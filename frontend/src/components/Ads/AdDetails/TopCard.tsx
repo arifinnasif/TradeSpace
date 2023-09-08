@@ -22,6 +22,7 @@ interface TopCardProps {
   price?: number;
   op_username: string;
   op_fullname: string;
+  created_at: string;
   op_email: string;
   op_phone?: string;
   image?: string;
@@ -33,6 +34,7 @@ const TopCard: FunctionComponent<TopCardProps> = ({
   price,
   op_username,
   op_fullname,
+  created_at,
   op_email,
   op_phone,
   image,
@@ -75,6 +77,14 @@ const TopCard: FunctionComponent<TopCardProps> = ({
               </Heading>
               <Text pt="2" fontSize="sm">
                 @{op_username} ({op_fullname})
+              </Text>
+            </Box>
+            <Box>
+              <Heading size="xs" textTransform="uppercase">
+                Posted On
+              </Heading>
+              <Text pt="2" fontSize="sm">
+                {created_at}
               </Text>
             </Box>
             <Box>

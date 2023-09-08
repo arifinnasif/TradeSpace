@@ -144,6 +144,18 @@ const Filter = () => {
           <GridItem area="promo">
             <PromoFilter handlePromoChange={handlePromoChange} />
           </GridItem>
+
+          <GridItem area="ad_type">
+            <FormControl>
+              <FormLabel>Filter by Ad Type</FormLabel>
+              <RadioGroup defaultValue="sell">
+                <Stack direction="row">
+                  <Radio value="sell">Sell</Radio>
+                  <Radio value="buy">Buy</Radio>
+                </Stack>
+              </RadioGroup>
+            </FormControl>
+          </GridItem>
         </Grid>
 
         <Button

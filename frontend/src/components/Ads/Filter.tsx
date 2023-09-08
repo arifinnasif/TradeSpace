@@ -19,6 +19,8 @@ import {
   TagCloseButton,
   RadioGroup,
   Radio,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { CategoryType, homeService } from "../../services/Home.service";
 import SortFilter from "./SortFilter";
@@ -94,13 +96,32 @@ const Filter = () => {
   return (
     <ChakraProvider>
       <Box p={4}>
-        <Flex justify="space-between" align="center">
+        {/* <Flex justify="space-between" align="center">
           <CategoryFilter handleCategoryChange={handleCategoryChange} />
           <SortFilter
             handleSortFieldChange={handleSortFieldChange}
             handleSortOrderChange={handleSortOrderChange}
           />
-        </Flex>
+        </Flex> */}
+
+        <Grid
+          templateAreas={`"cat sort"
+                          "promo ad_type"`}
+          templateRows={`repeat(2, 1fr)`}
+          templateColumns={`repeat(2, 1fr)`}
+          gap={4}
+        >
+          <GridItem area="cat">
+            <CategoryFilter handleCategoryChange={handleCategoryChange} />
+          </GridItem>
+
+          <GridItem area="sort">
+            <SortFilter
+              handleSortFieldChange={handleSortFieldChange}
+              handleSortOrderChange={handleSortOrderChange}
+            />
+          </GridItem>
+        </Grid>
 
         <Button
           onClick={handleFilterClick}

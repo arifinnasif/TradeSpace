@@ -11,10 +11,20 @@ import {
   Center,
   AbsoluteCenter,
 } from "@chakra-ui/react";
+import { FunctionComponent } from "react";
+import { IconType } from "react-icons";
 
-import { FaBaby } from "react-icons/fa";
+interface InfoCardProps {
+  title: string;
+  subtitle?: string;
+  icon?: IconType;
+}
 
-const InfoCard = () => {
+const InfoCard: FunctionComponent<InfoCardProps> = ({
+  title,
+  subtitle,
+  icon,
+}) => {
   return (
     <Card
       variant={"elevated"}
@@ -24,9 +34,10 @@ const InfoCard = () => {
     >
       <CardBody textAlign={"center"}>
         <AbsoluteCenter>
-          <Icon as={FaBaby} w={10} h={10} alignSelf={"center"} />
+          <Icon as={icon} w={10} h={10} alignSelf={"center"} />
 
-          <Heading size="xl">Buy</Heading>
+          <Heading size="xl">{title}</Heading>
+          {subtitle && <Text fontSize="lg">{subtitle}</Text>}
         </AbsoluteCenter>
       </CardBody>
     </Card>

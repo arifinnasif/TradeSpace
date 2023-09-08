@@ -11,6 +11,7 @@ export interface AdDetailsType {
   price?: number;
   is_negotiable: boolean;
   is_sell_ad: boolean;
+  is_used: boolean;
   days_used?: {
     years: number;
     months: number;

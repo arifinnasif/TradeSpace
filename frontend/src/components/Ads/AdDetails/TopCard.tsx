@@ -35,6 +35,7 @@ const TopCard = () => {
       overflow="hidden"
       variant={"elevated"}
       shadow={"xl"}
+      mt={6}
       bg={useColorModeValue("teal.50", "teal.900")}
     >
       <Image

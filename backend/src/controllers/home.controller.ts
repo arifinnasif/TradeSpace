@@ -84,4 +84,22 @@ let get_ads_by_category = async (req: Request, res: Response) => {
   }
 };
 
-export { get_categories, get_categories_with_ads_count, get_ads_by_category };
+let get_promos = async (req: Request, res: Response) => {
+  try {
+    const promos = await prisma.promotions.findMany({
+      select: {
+        promotion_type: true,
+      },
+    });
+    res.json({ promos });
+  } catch (error) {
+    res.status(500).json({ error: "promos not found" });
+  }
+};
+
+export {
+  get_categories,
+  get_categories_with_ads_count,
+  get_ads_by_category,
+  get_promos,
+};

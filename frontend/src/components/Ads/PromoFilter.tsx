@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FunctionComponent, useEffect, useState } from "react";
-import { homeService, CategoryType } from "../../services/Home.service";
+import { homeService, PromoType } from "../../services/Home.service";
 
 interface PromoFilterProps {
   handlePromoChange: (promo: string) => void;
@@ -32,11 +32,16 @@ const PromoFilter: FunctionComponent<PromoFilterProps> = ({
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const promos = await homeService.getCategories();
-      // console.log(promos);
+      const promos = await homeService.getPromos();
+      //   console.log(promos);
       // assign only names to promoList
-      promoList.current = promos.map((promo: CategoryType) => promo.name);
+      //   promoList.current = promos.map(
+      //     (promo: PromoType) => promo.promotion_type
+      //   );
 
+      promoList.current = promos.map(
+        (promo: PromoType) => promo.promotion_type
+      );
       setIsLoading(false);
     }
     fetchData();

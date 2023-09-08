@@ -95,7 +95,16 @@ const Filter = () => {
       sortField
     )},${encodeURIComponent(sortOrder)}`;
 
-    const queryParams = selectedCategoriesQueryParam + "&" + sortQueryParam;
+    const selectedPromosQueryParam = selectedPromos
+      .map((promo) => `promo_types[]=${encodeURIComponent(promo)}`)
+      .join("&");
+
+    const queryParams =
+      selectedCategoriesQueryParam +
+      "&" +
+      sortQueryParam +
+      "&" +
+      selectedPromosQueryParam;
     // const queryParams = selectedCategoriesQueryParam;
 
     // Construct the URL and navigate

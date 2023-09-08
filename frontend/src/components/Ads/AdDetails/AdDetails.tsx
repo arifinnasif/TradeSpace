@@ -5,9 +5,33 @@ import * as _ from "lodash";
 import TopCard from "./TopCard";
 import InfoCard from "./InfoCard";
 import DescriptionCard from "./DesccriptionCard";
-import { FaThList, FaTag, FaUserTag } from "react-icons/fa";
+import { FaThList, FaTag, FaUserTag, FaLeaf } from "react-icons/fa";
 
 const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
+  const stringifyUsageTime = (year: number, month: number, day: number) => {
+    let str = "";
+
+    if (year === 1) {
+      str += year + " year";
+    } else if (year > 1) {
+      str += year + " years";
+    }
+
+    if (month === 1) {
+      str += month + " month";
+    } else if (month > 1) {
+      str += month + " months";
+    }
+
+    if (day === 1) {
+      str += day + " day";
+    } else if (day > 1) {
+      str += day + " days";
+    }
+
+    return str;
+  };
+
   return (
     <>
       <Heading size="lg" textAlign="center">
@@ -36,7 +60,11 @@ const AdDetils: FunctionComponent<AdDetailsType> = (ad) => {
           <InfoCard icon={FaTag} title="Fixed Price" />
         )}
         {/* <Spacer /> */}
-        <InfoCard />
+        {ad.is_used ? (
+          <InfoCard icon={FaLeaf} title="Used" subtitle="" />
+        ) : (
+          <InfoCard />
+        )}
       </Grid>
       <Spacer height={16} />
       <DescriptionCard />

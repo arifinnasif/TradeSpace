@@ -103,6 +103,7 @@ const ReviewCardDetails: FunctionComponent<ReviewCardDetailsProps> = ({
         </Fragment>
       </Flex>
       <AIModal
+        aiVerdict={ai_verdict}
         isOpen={isAIModalOpen}
         onClose={onAIModalClose}
         initialRef={initialAIModalRef}

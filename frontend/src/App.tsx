@@ -80,7 +80,7 @@ function App() {
           </Route>
 
           <Route element={<RestrictedRoutesAdmin />}>
-            <Route path="login" element={<AdminLogin />} />
+            <Route path="/admin/login/" element={<AdminLogin />} />
           </Route>
 
           <Route element={<PrivateRoutesAdmin />}>

@@ -12,6 +12,7 @@ import { FaThList, FaTag, FaUserTag, FaLeaf } from "react-icons/fa";
 import { BiSolidBandAid } from "react-icons/bi";
 import { useParams } from "react-router-dom";
 import AICard from "./AICard";
+import DescriptionCard from "./DescriptionCard";
 
 const AdReviewDetails = () => {
   const [ad, setAd] = useState<ReviewDetailsType>();
@@ -109,6 +110,13 @@ const AdReviewDetails = () => {
       </Grid>
       <Spacer height={16} />
       <AICard aiVerdict={ad.ai_verdict} />
+      <DescriptionCard
+        ad_id={+ad_id!}
+        description={ad!.description}
+        address_description={ad.address!.description}
+        address_latitude={ad.address!.latitude}
+        address_longitude={ad.address!.longitude}
+      />
     </Box>
   );
 };

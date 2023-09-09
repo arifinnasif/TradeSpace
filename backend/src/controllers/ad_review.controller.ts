@@ -133,6 +133,12 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
             select: { phone: true }
         });
 
+        let address = {
+            description: review_details.address,
+            latitude: review_details.latitude,
+            longitude: review_details.longitude,
+        };
+
 
 
         // capitalize
@@ -145,12 +151,22 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
         // remove op from review_details
         delete review_details.op;
 
+        // remove address from review_details
+        delete review_details.address;
+
+        // remove latitude from review_details
+        delete review_details.latitude;
+
+        // remove longitude from review_details
+        delete review_details.longitude;
+
         // add usage_time and phone to review_details
         const review_details_json = {
             ...review_details,
             usage_time: usage_time,
             phone: user?.phone,
             op_fullname: op_fullname,
+            address: address,
         }
 
 

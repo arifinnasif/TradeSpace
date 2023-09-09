@@ -110,6 +110,7 @@ const DescriptionCard: FunctionComponent<DescriptionCardProps> = ({
           <Button
             isLoading={isApproveButtonLoading}
             colorScheme="teal"
+            margin={2}
             leftIcon={<FaRegCircleCheck />}
             spinner={<Spinner size={"md"} color="white" />}
             onClick={async () => {
@@ -121,6 +122,7 @@ const DescriptionCard: FunctionComponent<DescriptionCardProps> = ({
           </Button>
           <Button
             colorScheme="teal"
+            margin={2}
             leftIcon={<FaRegCircleXmark />}
             onClick={(e) => {
               console.log(e);

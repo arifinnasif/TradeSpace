@@ -112,7 +112,7 @@ const ReviewCard: FunctionComponent<ReviewCardType> = ({
             w="100%"
             mt={{ base: "5px !important", sm: 0 }}
           >
-            <Link to={`ad_reviews/${id}`}>
+            <Link to={`/admin/ad_reviews/${id}`}>
               <Flex justify="space-between">
                 <chakra.h3
                   fontSize={{ base: "lg", md: "xl" }}

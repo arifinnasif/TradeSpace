@@ -12,6 +12,7 @@ import {
   TagCloseButton,
   HStack,
   VStack,
+  Spacer,
 } from "@chakra-ui/react";
 import { FunctionComponent, MutableRefObject } from "react";
 
@@ -46,8 +47,9 @@ const AIModal: FunctionComponent<AIModalProps> = ({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          <VStack spacing={2}>
+          {aiVerdict.exif_verdict && (
             <HStack spacing={2}>
+              <Text as="b">EXIF</Text>
               {aiVerdict.exif_verdict.is_image_downloaded && (
                 <Tag
                   size={"lg"}
@@ -79,25 +81,12 @@ const AIModal: FunctionComponent<AIModalProps> = ({
                 </Tag>
               )}
             </HStack>
+          )}
+
+          <Spacer height={2} />
+          {aiVerdict.nlp_verdict && (
             <HStack spacing={2}>
-              {aiVerdict.category_verdict.specified_category_probability && (
-                <Tag
-                  size={"lg"}
-                  borderRadius="full"
-                  variant="solid"
-                  colorScheme="orange"
-                >
-                  <TagLabel>
-                    {(
-                      aiVerdict.category_verdict
-                        .specified_category_probability * 100
-                    ).toFixed(2)}
-                    % match
-                  </TagLabel>
-                </Tag>
-              )}
-            </HStack>
-            <HStack spacing={2}>
+              <Text as="b">NLP</Text>
               {aiVerdict.nlp_verdict.has_banned_words && (
                 <Tag
                   size={"lg"}
@@ -119,7 +108,30 @@ const AIModal: FunctionComponent<AIModalProps> = ({
                 </Tag>
               )}
             </HStack>
-          </VStack>
+          )}
+
+          <Spacer height={2} />
+          {aiVerdict.category_verdict && (
+            <HStack spacing={2}>
+              <Text as="b">CNN Model</Text>
+              {aiVerdict.category_verdict.specified_category_probability && (
+                <Tag
+                  size={"lg"}
+                  borderRadius="full"
+                  variant="solid"
+                  colorScheme="orange"
+                >
+                  <TagLabel>
+                    {(
+                      aiVerdict.category_verdict
+                        .specified_category_probability * 100
+                    ).toFixed(2)}
+                    % match
+                  </TagLabel>
+                </Tag>
+              )}
+            </HStack>
+          )}
         </ModalBody>
       </ModalContent>
     </Modal>

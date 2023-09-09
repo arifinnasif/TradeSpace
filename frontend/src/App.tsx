@@ -31,6 +31,7 @@ import UserProfile from "./pages/UserProfile";
 import AdminLayout from "./layout/AdminLayout";
 import WorkingOnIt from "./components/Admin/WorkingOnIt";
 import Dashboard from "./components/Admin/Dashboard/Dashboard";
+import AdReviewDetails from "./components/Admin/AdReview/AdReviewDetails/AdReviewDetails";
 
 const PrivateRoutes = () => {
   const { isAuth } = useSelector((state: any) => state.auth);
@@ -87,6 +88,7 @@ function App() {
               <Route index element={<Navigate to={"ad_reviews"} />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="ad_reviews" element={<AdReviewPage />} />
+              <Route path="ad_reviews/:ad_id" element={<AdReviewDetails />} />
               <Route path="user_management" element={<WorkingOnIt />} />
               <Route path="transactions" element={<WorkingOnIt />} />
             </Route>

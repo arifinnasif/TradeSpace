@@ -87,6 +87,7 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
                         email: true,
                     },
                 },
+                status: true,
                 category_name: true,
                 title: true,
                 description: true,

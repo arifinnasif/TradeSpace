@@ -17,7 +17,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import { declineAReview } from "../../services/admin.service";
+import { declineAReview } from "../../../services/admin.service";
 
 interface DeclinationConfirmationModal {
   id: number;

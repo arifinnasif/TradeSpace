@@ -3,7 +3,7 @@
 import { Box, VStack } from "@chakra-ui/react";
 import ReviewCard from "./ReviewCard";
 import { FunctionComponent } from "react";
-import { ReviewCardType } from "../../services/admin.service";
+import { ReviewCardType } from "../../../services/admin.service";
 
 interface ReviewListProps {
   reviewList?: ReviewCardType[];

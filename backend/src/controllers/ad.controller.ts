@@ -230,6 +230,40 @@ let get_ads = async (req: Request, res: Response) => {
       ad_list = ad_list.map((ad: any) => ad.item);
     }
 
+    // fetch ticket from promotion table
+    // ad_list = await Promise.all(
+    //   ad_list.map(async (ad: any) => {
+    //     const promotion = await prisma.promotions.findUnique({
+    //       where: { promotion_type: ad.promotion_type },
+    //       select: { ticket: true },
+    //     });
+    //     return { ...ad, ticket: promotion!.ticket };
+    //   })
+    // );
+
+    const tickets = await prisma.promotions.findMany({
+      where: {
+        promotion_type: {
+          in: ad_list.map((ad: any) => ad.promotion_type),
+        },
+      },
+      select: {
+        promotion_type: true,
+        ticket: true,
+      },
+    });
+
+    // add ticket to ad_list
+    ad_list = ad_list.map((ad: any) => {
+      const ticket = tickets.find(
+        (ticket: any) => ticket.promotion_type === ad.promotion_type
+      );
+      return { ...ad, ticket: ticket!.ticket };
+    });
+
+    // sort by ticket
+    ad_list.sort((a: any, b: any) => b.ticket - a.ticket);
+
     // get total number of ads
     const total_ads = ad_list.length;
 

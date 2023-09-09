@@ -38,9 +38,10 @@ interface LinkItemProps {
   link: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Dashboard", icon: FiHome, link: "/admin/" },
+  { name: "Dashboard", icon: FiHome, link: "/admin/dashboard" },
   { name: "Ad Reviews", icon: FiTrendingUp, link: "/admin/ad_reviews" },
   { name: "User Management", icon: FiCompass, link: "/admin/user_management" },
+  { name: "Transactions", icon: FiCompass, link: "/admin/transactions" },
 ];
 
 export default function SimpleSidebar() {

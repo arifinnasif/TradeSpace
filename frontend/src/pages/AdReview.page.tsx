@@ -60,38 +60,24 @@ const AdReviewPage = () => {
   };
 
   return (
-    <AdminLayout title="Ad Reviews" loading={isLoading}>
-      {/* <Grid
-        templateAreas={`"filter_section review_section"`}
-        gridTemplateColumns={"1fr 700px"}
-        color={"teal.600"}
-        mx={"70px"}
-        my={"10px"}
-      >
-        <GridItem area={"filter_section"}></GridItem>
-        <GridItem area={"review_section"}>
-          <ReviewList />
-        </GridItem>
-      </Grid> */}
-      <Center>
-        {maxPage == 0 ? (
-          <Text fontSize={"3xl"} as={"b"} margin={200} color={textColor}>
-            Take a break, Young Puppet Master. There are no ads to review 😪
-          </Text>
-        ) : (
-          <VStack minH={400}>
-            <ReviewList reviewList={reviewList} />
-            <Spacer height={"4"} />
-            <Pagination
-              currentPage={Number(searchParams.get("page"))}
-              setCurrentPage={setCurrentPage}
-              maxPage={maxPage}
-              maxPageToShow={5}
-            />
-          </VStack>
-        )}
-      </Center>
-    </AdminLayout>
+    <Center>
+      {maxPage == 0 ? (
+        <Text fontSize={"3xl"} as={"b"} margin={200} color={textColor}>
+          Take a break, Young Puppet Master. There are no ads to review 😪
+        </Text>
+      ) : (
+        <VStack minH={400}>
+          <ReviewList reviewList={reviewList} />
+          <Spacer height={"4"} />
+          <Pagination
+            currentPage={Number(searchParams.get("page"))}
+            setCurrentPage={setCurrentPage}
+            maxPage={maxPage}
+            maxPageToShow={5}
+          />
+        </VStack>
+      )}
+    </Center>
   );
 };
 

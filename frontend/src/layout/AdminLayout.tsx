@@ -5,15 +5,16 @@ import { Helmet } from "react-helmet-async";
 import FooterComponent from "../components/Footer/Footer";
 import SimpleSidebar from "../components/Sidebar/Sidebar";
 import { Box, Flex, Grid, GridItem, Spacer } from "@chakra-ui/react";
+import { Outlet } from "react-router-dom";
 
 interface AdminLayoutProps {
-  children: React.ReactNode;
+  // children: React.ReactNode;
   title?: string;
   loading?: boolean;
 }
 
 const AdminLayout: FunctionComponent<AdminLayoutProps> = ({
-  children,
+  // children,
   title,
   loading,
 }) => {
@@ -55,7 +56,9 @@ const AdminLayout: FunctionComponent<AdminLayoutProps> = ({
           <Spacer />
           <Box w={"88%"}>
             <main>
-              <Box id="nasif">{children}</Box>
+              <Box id="nasif">
+                <Outlet />
+              </Box>
               <FooterComponent />
             </main>
           </Box>

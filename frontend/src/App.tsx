@@ -28,6 +28,8 @@ import SimpleSidebar from "./components/Sidebar/Sidebar";
 import Promotion from "./pages/Promotion.page";
 import GetChats from "./pages/Chats.page";
 import UserProfile from "./pages/UserProfile";
+import AdminLayout from "./layout/AdminLayout";
+import WorkingOnIt from "./components/Admin/WorkingOnIt";
 
 const PrivateRoutes = () => {
   const { isAuth } = useSelector((state: any) => state.auth);
@@ -76,12 +78,18 @@ function App() {
           </Route>
 
           <Route element={<RestrictedRoutesAdmin />}>
-            <Route path="/admin/login/" element={<AdminLogin />} />
+            <Route path="login" element={<AdminLogin />} />
           </Route>
 
           <Route element={<PrivateRoutesAdmin />}>
-            <Route path="/admin" element={<AdReviewPage />} />
-            <Route path="/admin/test/*" element={<SimpleSidebar />} />
+            <Route path="/admin" element={<AdminLayout title="Admin" />}>
+              <Route index element={<Navigate to={"ad_reviews"} />} />
+              <Route path="dashboard" element={<WorkingOnIt />} />
+              <Route path="ad_reviews" element={<AdReviewPage />} />
+              <Route path="user_management" element={<WorkingOnIt />} />
+              <Route path="transactions" element={<WorkingOnIt />} />
+            </Route>
+            {/* <Route path="/admin/test/*" element={<SimpleSidebar />} /> */}
           </Route>
 
           <Route path="/ads/" element={<GetAds />} />

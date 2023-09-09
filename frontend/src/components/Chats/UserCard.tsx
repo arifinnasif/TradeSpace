@@ -50,10 +50,20 @@ const UserCard = ({
   inboxItem,
   setMessages,
   setCurrentThread,
+  setAdTitle,
+  setAdImage,
+  setAdPrice,
+  setReceiverUsername,
+  setReceiverFullname,
 }: {
   inboxItem: InboxType;
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
   setCurrentThread: React.Dispatch<React.SetStateAction<string>>;
+  setAdTitle: React.Dispatch<React.SetStateAction<string>>;
+  setAdImage: React.Dispatch<React.SetStateAction<string>>;
+  setAdPrice: React.Dispatch<React.SetStateAction<number>>;
+  setReceiverUsername: React.Dispatch<React.SetStateAction<string>>;
+  setReceiverFullname: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const handleOpenChat = async (event: React.MouseEvent<HTMLDivElement>) => {
     console.log("Open chat");
@@ -63,6 +73,11 @@ const UserCard = ({
     console.log(respose);
     setMessages(respose);
     setCurrentThread(inboxItem.thread_id);
+    setAdTitle(inboxItem.ad_title);
+    setAdImage(inboxItem.ad_image);
+    setAdPrice(inboxItem.ad_price);
+    setReceiverUsername(inboxItem.receiver_username);
+    setReceiverFullname(inboxItem.receiver_fullname);
   };
 
   console.log("Inbox item:");

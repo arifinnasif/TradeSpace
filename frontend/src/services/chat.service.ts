@@ -20,6 +20,7 @@ export interface InboxType {
     ad_id: number;
     ad_title: string;
     ad_image: string;
+    ad_price: number;
     is_sell_ad: boolean;
     unread_messages_count: number;
     am_i_op: boolean;

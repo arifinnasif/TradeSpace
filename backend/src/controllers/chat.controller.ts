@@ -286,6 +286,7 @@ export const get_inbox = async (req: Request, res: Response) => {
                 ad_id: thread.ad_id,
                 ad_title: thread.ad.title,
                 ad_image: thread.ad.image1,
+                ad_price: thread.ad.price,
                 is_sell_ad: thread.ad.is_sell_ad,
                 unread_messages_count: thread._count.chats,
                 am_i_op: thread.op_username === req.user.username,

@@ -22,6 +22,11 @@ import { load_model } from "./category_analyser/mobilenet";
 
 // active loader
 export const initiate_ts_ai = async () => {
+    if (!process.env.ENABLE_TRADESPACE_AI) {
+        console.log('\x1b[31m%s\x1b[0m', 'TradeSpaceAI Did Not Turn On 🪫');
+        console.log('\x1b[0m', '');
+        return;
+    }
     await load_model();
     load_words();
     console.log('\x1b[36m%s\x1b[0m', 'TradeSpaceAI Turned On ⚡');
@@ -32,6 +37,14 @@ export const initiate_ts_ai = async () => {
 
 // AI Verdict
 export const ai_judge = async (ad: any) => {
+    if (!process.env.ENABLE_TRADESPACE_AI) {
+        return {
+            weighted_threat_score: -1,
+            exif_verdict: null,
+            category_verdict: null,
+            nlp_verdict: null
+        }
+    }
 
     let total_possible_threat_score = 0;
     threat_score_downloaded_image

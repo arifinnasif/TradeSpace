@@ -24,6 +24,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
 import MapModal from "../../../Ads/AdDetails/MapModal";
+import DeclinationConfirmationModal from "./DeclinationConfirmationModal";
 import React from "react";
 import { approveAReview } from "../../../../services/admin.service";
 import { FaRegCircleCheck, FaRegCircleXmark } from "react-icons/fa6";
@@ -154,6 +155,13 @@ const DescriptionCard: FunctionComponent<DescriptionCardProps> = ({
         finalRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
+      />
+      <DeclinationConfirmationModal
+        id={ad_id}
+        initialRef={initialDeclinationRef}
+        finalRef={finalRef}
+        isOpen={isDeclinationOpen}
+        onClose={onDeclinationClose}
       />
     </>
   );

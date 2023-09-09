@@ -14,6 +14,35 @@ export interface ReviewCardType {
     refreshAction: () => void;
 }
 
+export interface ReviewDetailsType {
+    ad_id: number;
+    op_username: string;
+    op_fullname: string;
+    category_name: string;
+    title: string;
+    description?: string;
+    image1: string;
+    price?: number;
+    is_negotiable: boolean;
+    is_sell_ad: boolean;
+    is_used: boolean;
+    days_used?: {
+        years: number;
+        months: number;
+        days: number;
+    };
+    phone?: string;
+    op_email: string;
+    promotion_type?: string;
+    created_at: string;
+    address?: {
+        description: string;
+        latitude: number;
+        longitude: number;
+    };
+    ai_verdict: any;
+}
+
 
 export const login = async (userinfo: any) => {
     const response = await API.post(`/admin/login`, userinfo, {
@@ -27,6 +56,12 @@ export const login = async (userinfo: any) => {
 
 export const getAdReviews = async (page?: number) => {
     return (await API.get(`/admin/ad_reviews?page=${page}`, {
+        withCredentials: true,
+    })).data;
+}
+
+export const getAnAdReview = async (ad_id: number): Promise<ReviewDetailsType> => {
+    return (await API.get(`/admin/ad_reviews/${ad_id}`, {
         withCredentials: true,
     })).data;
 }

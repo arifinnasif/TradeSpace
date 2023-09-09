@@ -83,13 +83,15 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
                 op_username: true,
                 op: {
                     select: {
-                        name: true
+                        name: true,
+                        email: true,
                     },
                 },
                 category_name: true,
                 title: true,
                 description: true,
                 price: true,
+                image1: true,
                 is_negotiable: true,
                 is_used: true,
                 is_sell_ad: true,
@@ -98,7 +100,8 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
                 address: true,
                 promotion_type: true,
                 created_at: true,
-                status: true,
+                latitude: true,
+                longitude: true,
             }
         });
 

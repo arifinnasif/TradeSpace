@@ -11,6 +11,7 @@ import { FaThList, FaTag, FaUserTag, FaLeaf } from "react-icons/fa";
 
 import { BiSolidBandAid } from "react-icons/bi";
 import { useParams } from "react-router-dom";
+import AICard from "./AICard";
 
 const AdReviewDetails = () => {
   const [ad, setAd] = useState<ReviewDetailsType>();
@@ -22,6 +23,7 @@ const AdReviewDetails = () => {
 
       try {
         const response = await getAnAdReview(+ad_id!);
+        console.log("mew", response);
         setAd(response);
       } catch (error) {
         console.log(error);
@@ -59,6 +61,8 @@ const AdReviewDetails = () => {
   };
 
   if (!ad) return <></>;
+
+  console.log("debug", ad.ai_verdict);
 
   return (
     <Box padding={6}>
@@ -104,6 +108,7 @@ const AdReviewDetails = () => {
         )}
       </Grid>
       <Spacer height={16} />
+      <AICard aiVerdict={ad.ai_verdict} />
     </Box>
   );
 };

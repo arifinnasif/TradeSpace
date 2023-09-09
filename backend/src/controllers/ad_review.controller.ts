@@ -103,6 +103,7 @@ export const get_pending_review_details = async (req: Request, res: Response) =>
                 created_at: true,
                 latitude: true,
                 longitude: true,
+                ai_verdict: true,
             }
         });
 

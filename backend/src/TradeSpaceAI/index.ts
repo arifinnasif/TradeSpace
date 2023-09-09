@@ -47,12 +47,6 @@ export const ai_judge = async (ad: any) => {
     }
 
     let total_possible_threat_score = 0;
-    threat_score_downloaded_image
-        + threat_score_stale_image
-        + threat_score_tampered_image
-        + threat_score_profanity
-        + threat_score_harmful_link
-        + threat_score_categorical_mismatch;
 
     if (ad.is_sell_ad) {
         total_possible_threat_score =

@@ -10,7 +10,7 @@ import {
 import React from "react";
 import { Fragment, FunctionComponent } from "react";
 import { FaRobot } from "react-icons/fa";
-import AIModal from "./AIModel";
+import AIModal from "./AIModal";
 
 interface ReviewCardDetailsProps {
   is_sell_ad: boolean;

@@ -6,6 +6,11 @@ import {
   ModalOverlay,
   ModalCloseButton,
   ModalBody,
+  Badge,
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  HStack,
 } from "@chakra-ui/react";
 import { FunctionComponent, MutableRefObject } from "react";
 
@@ -33,15 +38,29 @@ const AIModal: FunctionComponent<AIModalProps> = ({
       <ModalContent>
         <ModalHeader>
           <Text maxWidth={"350px"} noOfLines={1}>
-            TITLE
+            Threat Score : 0.9
           </Text>
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam vel,
-          maxime tempora voluptatibus a commodi excepturi delectus iusto odio
-          possimus voluptatum, itaque illum, alias sit nisi. Iste voluptatibus
-          laborum at!
+          <HStack spacing={2}>
+            <Tag
+              size={"lg"}
+              borderRadius="full"
+              variant="solid"
+              colorScheme="red"
+            >
+              <TagLabel>Fake Image</TagLabel>
+            </Tag>
+            <Tag
+              size={"lg"}
+              borderRadius="full"
+              variant="solid"
+              colorScheme="red"
+            >
+              <TagLabel>No Match</TagLabel>
+            </Tag>
+          </HStack>
         </ModalBody>
       </ModalContent>
     </Modal>

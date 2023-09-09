@@ -63,10 +63,10 @@ function App() {
           <Route path="/things/:id/" element={<Things />} />
 
           <Route element={<PrivateRoutes />}>
-            <Route path='/notifications' element={<GetNotifications />} />
+            <Route path="/notifications" element={<GetNotifications />} />
             <Route path="/ads/post-ad/" element={<PostAd />} />
             <Route path="/protected/" element={<Protected />} />
-            <Route path="/chats/" element={<GetChats />} />
+            <Route path="/chat/" element={<GetChats />} />
             <Route path="/profile/" element={<UserProfile />} />
           </Route>
 

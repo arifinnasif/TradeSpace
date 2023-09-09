@@ -49,6 +49,7 @@ export default function Login() {
       dispatch(authenticateUser());
 
       localStorage.setItem("isAuth", "true");
+      localStorage.setItem("token", response.data.token);
       // console.log(response);
     } catch (error) {
       console.log(error);

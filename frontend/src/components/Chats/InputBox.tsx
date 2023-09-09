@@ -1,41 +1,47 @@
 import React from "react";
 import { Flex, Input, Button } from "@chakra-ui/react";
-import { MessageType } from "../../services/Chat.service";
+import { MessageType, sendMessage } from "../../services/chat.service";
 
-const InputBox = ({ messages,
-                    setMessages,
-                  }:{ 
-                    messages : MessageType[] ,
-                    setMessages : React.Dispatch<React.SetStateAction<MessageType[]>>,
-                 }) => {
+const InputBox = ({
+  messages,
+  setMessages,
+  currentThread,
+}: {
+  messages: MessageType[];
+  setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
+  currentThread: string;
+}) => {
+  const [inputMessage, setInputMessage] = React.useState("");
 
-const [inputMessage, setInputMessage] = React.useState("");
-
-
-const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (inputMessage.trim().length <= 0) return;
     const newMessage: MessageType = {
-        sender_username: "bob",
-        receiver_username: "alice",
-        message: inputMessage,
-        // current time in Bangladesh
-        timestamp: new Date().toLocaleString('en-US', {
-            timeZone: 'Asia/Dhaka',
-            weekday: 'short',
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            hour12: true,
-        }),
-        is_image: false,
-        is_read_by_receiver: false,
-        is_my_message: true,
+      sender_username: "bob",
+      receiver_username: "alice",
+      message: inputMessage,
+      // current time in Bangladesh
+      timestamp: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Dhaka",
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      }),
+      is_image: false,
+      is_read_by_receiver: false,
+      is_my_message: true,
     };
     setMessages([...messages, newMessage]);
+    try {
+      await sendMessage(currentThread, inputMessage, false);
+    } catch (err) {
+      console.log(err);
+    }
     setInputMessage("");
-};
+  };
 
   return (
     <Flex w="100%" mt="5">

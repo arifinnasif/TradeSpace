@@ -30,6 +30,7 @@ import GetChats from "./pages/Chats.page";
 import UserProfile from "./pages/UserProfile";
 import AdminLayout from "./layout/AdminLayout";
 import WorkingOnIt from "./components/Admin/WorkingOnIt";
+import Dashboard from "./components/Admin/Dashboard/Dashboard";
 
 const PrivateRoutes = () => {
   const { isAuth } = useSelector((state: any) => state.auth);
@@ -84,7 +85,7 @@ function App() {
           <Route element={<PrivateRoutesAdmin />}>
             <Route path="/admin" element={<AdminLayout title="Admin" />}>
               <Route index element={<Navigate to={"ad_reviews"} />} />
-              <Route path="dashboard" element={<WorkingOnIt />} />
+              <Route path="dashboard" element={<Dashboard />} />
               <Route path="ad_reviews" element={<AdReviewPage />} />
               <Route path="user_management" element={<WorkingOnIt />} />
               <Route path="transactions" element={<WorkingOnIt />} />

@@ -54,7 +54,7 @@ const AdminLayout: FunctionComponent<AdminLayoutProps> = ({
           <SimpleSidebar />
           {/* <Box></Box> */}
           <Spacer />
-          <Box w={"88%"}>
+          <Box w={"86%"}>
             <main>
               <Box id="nasif">
                 <Outlet />

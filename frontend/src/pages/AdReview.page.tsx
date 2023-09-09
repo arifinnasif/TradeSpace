@@ -7,7 +7,7 @@ import {
   VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import ReviewList from "../components/Admin/ReviewList";
+import ReviewList from "../components/Admin/AdReview/ReviewList";
 import { ReviewCardType, getAdReviews } from "../services/admin.service";
 import Pagination from "../components/Pagination/Pagination";
 import { useSearchParams } from "react-router-dom";

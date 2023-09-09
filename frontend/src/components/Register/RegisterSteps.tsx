@@ -156,6 +156,10 @@ const Register = () => {
           }
         />
       )}
+
+      {/* unnecessary toast commented out. */}
+
+      {/*       
       <ButtonGroup mt="5%" w="100%">
         <Flex w="100%" justifyContent="space-between" alignItems="center">
           {step === 3 ? (
@@ -177,7 +181,8 @@ const Register = () => {
             </Button>
           ) : null}
         </Flex>
-      </ButtonGroup>
+      </ButtonGroup> 
+      */}
     </>
   );
 };

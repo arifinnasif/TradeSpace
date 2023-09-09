@@ -11,12 +11,14 @@ export interface AdDetailsType {
   price?: number;
   is_negotiable: boolean;
   is_sell_ad: boolean;
+  is_used: boolean;
   days_used?: {
     years: number;
     months: number;
     days: number;
   };
   phone?: string;
+  op_email: string;
   promotion_type?: string;
   created_at: string;
   address?: {
@@ -24,6 +26,7 @@ export interface AdDetailsType {
     latitude: number;
     longitude: number;
   };
+  handleChatClick: () => void;
 }
 
 export interface AdCardType {

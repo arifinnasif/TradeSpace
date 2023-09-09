@@ -10,8 +10,7 @@ export interface ReviewCardType {
     is_sell_ad: boolean;
     promotion_type: string;
     image1: string;
-    is_ai_approved: boolean;
-    ai_verdict: string;
+    ai_verdict: any;
     refreshAction: () => void;
 }
 

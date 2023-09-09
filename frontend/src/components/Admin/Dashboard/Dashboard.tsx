@@ -2,9 +2,9 @@ import { useState } from "react";
 
 import LineChart from "./LineChart";
 
-import { UserData, BuySellData } from "./Data";
+import { UserData, BuySellData, PromotionData } from "./Data";
 import "chart.js/auto";
-import { Box, Center } from "@chakra-ui/react";
+import { Box, Center, Spacer } from "@chakra-ui/react";
 import PieChart from "./PieChart";
 
 function Dashboard() {
@@ -25,9 +25,26 @@ function Dashboard() {
     labels: BuySellData.map((data) => data.type),
     datasets: [
       {
-        label: "Current Active Ad Types",
+        label: "count",
         data: BuySellData.map((data) => data.count),
         backgroundColor: ["rgba(255, 99, 132, 0.8)", "rgba(54, 162, 235, 0.8)"],
+        borderWidth: 0,
+      },
+    ],
+  });
+
+  const [promotionCount, setPromotionCount] = useState({
+    labels: PromotionData.map((data) => data.type),
+    datasets: [
+      {
+        label: "count",
+        data: PromotionData.map((data) => data.count),
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.8)",
+          "rgba(54, 162, 235, 0.8)",
+          "rgba(255, 206, 86, 0.8)",
+          "rgba(75, 192, 192, 0.8)",
+        ],
         borderWidth: 0,
       },
     ],
@@ -40,6 +57,10 @@ function Dashboard() {
       </Center>
       <Center padding={10} height={"md"} w="100%">
         <PieChart chartData={buySellCount} />
+        <Spacer />
+        <PieChart chartData={promotionCount} />
+        <Spacer />
+        <PieChart chartData={promotionCount} />
       </Center>
     </>
   );

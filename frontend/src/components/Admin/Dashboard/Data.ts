@@ -64,3 +64,27 @@ export const BuySellData = [
         count: 80,
     },
 ]
+
+export const PromotionData = [
+    {
+        id: 1,
+        type: "normal",
+        count: 20,
+
+    },
+    {
+        id: 2,
+        type: "silver",
+        count: 80,
+    },
+    {
+        id: 3,
+        type: "gold",
+        count: 50,
+    },
+    {
+        id: 4,
+        type: "platinum",
+        count: 10,
+    },
+]

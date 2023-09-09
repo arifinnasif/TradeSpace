@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import LineChart from "./LineChart";
 
-import { UserData, BuySellData, PromotionData } from "./Data";
+import { UserData, BuySellData, PromotionData, AIData } from "./Data";
 import "chart.js/auto";
 import { Box, Center, Spacer } from "@chakra-ui/react";
 import PieChart from "./PieChart";
@@ -50,6 +50,18 @@ function Dashboard() {
     ],
   });
 
+  const [approvableDeclinableCount, setApprovableDeclinableCount] = useState({
+    labels: AIData.map((data) => data.type),
+    datasets: [
+      {
+        label: "count",
+        data: AIData.map((data) => data.count),
+        backgroundColor: ["rgba(255, 99, 132, 0.8)", "rgba(75, 192, 192, 0.8)"],
+        borderWidth: 0,
+      },
+    ],
+  });
+
   return (
     <>
       <Center padding={10} height={"md"} w="100%">
@@ -60,7 +72,7 @@ function Dashboard() {
         <Spacer />
         <PieChart chartData={promotionCount} />
         <Spacer />
-        <PieChart chartData={promotionCount} />
+        <PieChart chartData={approvableDeclinableCount} />
       </Center>
     </>
   );

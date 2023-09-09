@@ -69,13 +69,13 @@ export const PromotionData = [
     {
         id: 1,
         type: "normal",
-        count: 20,
+        count: 80,
 
     },
     {
         id: 2,
         type: "silver",
-        count: 80,
+        count: 20,
     },
     {
         id: 3,
@@ -86,5 +86,19 @@ export const PromotionData = [
         id: 4,
         type: "platinum",
         count: 10,
+    },
+]
+
+export const AIData = [
+    {
+        id: 1,
+        type: "Declinable",
+        count: 60,
+
+    },
+    {
+        id: 2,
+        type: "Approvable",
+        count: 220,
     },
 ]

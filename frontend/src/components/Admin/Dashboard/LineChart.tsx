@@ -1,4 +1,3 @@
-import React from "react";
 import { Line } from "react-chartjs-2";
 import { ChartData, Chart as ChartJS, Point } from "chart.js/auto";
 

@@ -50,3 +50,17 @@ export const UserData = [
         revenue: 4800,
     },
 ];
+
+export const BuySellData = [
+    {
+        id: 1,
+        type: "buy",
+        count: 20,
+
+    },
+    {
+        id: 2,
+        type: "sell",
+        count: 80,
+    },
+]

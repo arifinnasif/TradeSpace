@@ -22,6 +22,13 @@ const GetChats = () => {
 
   const [currentThread, setCurrentThread] = useState<string>("");
 
+  const [adTitle, setAdTitle] = useState<string>("");
+  const [adImage, setAdImage] = useState<string>("");
+  const [adPrice, setAdPrice] = useState<number>(0);
+  const [receiverUsername, setReceiverUsername] = useState<string>("");
+  const [receiverFullname, setReceiverFullname] = useState<string>("");
+  const [adId, setAdId] = useState<number>(0);
+
   // const handleSendMessage = (message: MessageType) => {
   //     setMessages([...messages, message]);
   // };
@@ -106,6 +113,11 @@ const GetChats = () => {
                 setInbox={setInbox}
                 setMessages={setMessages}
                 setCurrentThread={setCurrentThread}
+                setAdTitle={setAdTitle}
+                setAdImage={setAdImage}
+                setAdPrice={setAdPrice}
+                setReceiverUsername={setReceiverUsername}
+                setReceiverFullname={setReceiverFullname}
               />
 
               {/* <div>
@@ -117,7 +129,13 @@ const GetChats = () => {
         <GridItem colSpan={3} height="100vh">
           <Flex w="100%" h="100vh" align="left">
             <Flex h="90%" flexDir="column" w="90%" padding="1rem">
-              <ChatHeader />
+              <ChatHeader
+                adTitle={adTitle}
+                adImage={adImage}
+                adPrice={adPrice}
+                receiverUsername={receiverUsername}
+                receiverFullname={receiverFullname}
+              />
 
               <Divider />
 

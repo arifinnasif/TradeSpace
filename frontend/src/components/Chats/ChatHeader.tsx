@@ -2,17 +2,17 @@ import React from "react";
 import { Flex, Avatar, AvatarBadge, Text, Image, Box } from "@chakra-ui/react";
 
 const ChatHeader = ({
-  ad_title,
-  ad_image,
-  op_username,
-  op_fullname,
-  price,
+  adTitle,
+  adImage,
+  receiverUsername,
+  receiverFullname,
+  adPrice,
 }: {
-  ad_title: string;
-  ad_image: string;
-  op_username: string;
-  op_fullname: string;
-  price: number;
+  adTitle: string;
+  adImage: string;
+  receiverUsername: string;
+  receiverFullname: string;
+  adPrice: number;
 }) => {
   return (
     <Flex flexDirection="column">
@@ -22,18 +22,18 @@ const ChatHeader = ({
         </Avatar> */}
 
         <Box>
-          <Image src={ad_image} alt="product-image" boxSize="120px" />
+          <Image src={adImage} alt="product-image" boxSize="120px" />
         </Box>
         {/* vertically center */}
         <Flex flexDirection="column" mx="5" justifyContent="center">
           <Text fontSize="sm" fontWeight={100}>
-            Chat with @{op_username} ({op_fullname})
+            Chat with @{receiverUsername} ({receiverFullname})
           </Text>
           <Text fontSize="2xl" fontWeight="bold">
-            {ad_title}
+            {adTitle}
           </Text>
           <Text fontSize="md" fontWeight={400}>
-            Price: ৳ {price}
+            Price: ৳ {adPrice}
           </Text>
           {/* <Text fontSize="md" 
                 fontWeight={400}

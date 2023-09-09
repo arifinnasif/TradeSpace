@@ -32,7 +32,7 @@ import MapModal from "./MapModal";
 import React from "react";
 import { getThread } from "../../../services/chat.service";
 
-interface DesccriptionCardProps {
+interface DescriptionCardProps {
   description?: string;
   address_longitude: number;
   address_latitude: number;
@@ -40,7 +40,7 @@ interface DesccriptionCardProps {
   handleChatClick: () => void;
 }
 
-const DescriptionCard: FunctionComponent<DesccriptionCardProps> = ({
+const DescriptionCard: FunctionComponent<DescriptionCardProps> = ({
   description,
   address_longitude,
   address_latitude,

@@ -231,7 +231,8 @@ export const get_inbox = async (req: Request, res: Response) => {
                     select: {
                         title: true,
                         image1: true,
-                        is_sell_ad: true
+                        is_sell_ad: true,
+                        price: true
                     }
                 },
                 op: {
@@ -266,7 +267,7 @@ export const get_inbox = async (req: Request, res: Response) => {
             },
 
             orderBy: {
-                updated_at: 'asc'
+                updated_at: 'desc'
             }
         });
 

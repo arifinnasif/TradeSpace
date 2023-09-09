@@ -1,13 +1,19 @@
 import React from "react";
-import { Flex, 
-         Avatar, 
-         AvatarBadge, 
-         Text,
-         Image,
-         Box 
-} from "@chakra-ui/react";
+import { Flex, Avatar, AvatarBadge, Text, Image, Box } from "@chakra-ui/react";
 
-const ChatHeader = () => {
+const ChatHeader = ({
+  ad_title,
+  ad_image,
+  op_username,
+  op_fullname,
+  price,
+}: {
+  ad_title: string;
+  ad_image: string;
+  op_username: string;
+  op_fullname: string;
+  price: number;
+}) => {
   return (
     <Flex flexDirection="column">
       <Flex w="100%" flexDirection="row">
@@ -16,37 +22,24 @@ const ChatHeader = () => {
         </Avatar> */}
 
         <Box>
-          <Image src="https://www.mobile-dokan.com/wp-content/uploads/2022/07/Realme-GT-Master-Explorer-Edition-500x500.jpg" 
-                alt="product-image" 
-                boxSize="120px" 
-          />
+          <Image src={ad_image} alt="product-image" boxSize="120px" />
         </Box>
         {/* vertically center */}
-        <Flex flexDirection="column" 
-              mx="5"
-              justifyContent="center"
-        >
-          <Text fontSize="sm" 
-                fontWeight={100}
-          >
-            Chat with Kamruj Jaman Sheam
+        <Flex flexDirection="column" mx="5" justifyContent="center">
+          <Text fontSize="sm" fontWeight={100}>
+            Chat with @{op_username} ({op_fullname})
           </Text>
-          <Text fontSize="2xl" 
-                fontWeight="bold"
-          >
-            Realme GT Master Edition
+          <Text fontSize="2xl" fontWeight="bold">
+            {ad_title}
           </Text>
-          <Text fontSize="md"
-                fontWeight={400}
-          >
-            Price: ৳ 35,000
+          <Text fontSize="md" fontWeight={400}>
+            Price: ৳ {price}
           </Text>
-          <Text fontSize="md" 
+          {/* <Text fontSize="md" 
                 fontWeight={400}
           >
             Price is negotiable
-          </Text>
-
+          </Text> */}
         </Flex>
       </Flex>
     </Flex>

@@ -9,7 +9,7 @@ import ChatBox from "../components/Chats/ChatBox";
 import InputBox from "../components/Chats/InputBox";
 import ChatSideBar from "../components/Chats/ChatSideBar";
 
-import { MessageType, InboxType } from "../services/chat.service";
+import { MessageType, InboxType, getMessages } from "../services/chat.service";
 import { getInbox } from "../services/chat.service";
 import { set } from "lodash";
 
@@ -36,64 +36,36 @@ const GetChats = () => {
   useEffect(() => {
     // fetch threads from backend
 
-    async function fetchData() {
+    async function fetchData(callback?: (arg: InboxType) => Promise<void>) {
       try {
         const response = await getInbox();
         console.log("Inbox");
         console.log(response);
         setInbox(response);
+
+        if (callback) await callback(response[0]);
       } catch (error) {
         console.log(error);
       }
     }
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    // How to set messages initial state?
-    // upto u. u can show an empty box if u want
-    // right now there is dummy
+    async function fetchAndLoadThread(arg: InboxType) {
+      setIsLoading(true);
+      setCurrentThread(arg.thread_id);
+      setAdTitle(arg.ad_title);
+      setAdImage(arg.ad_image);
+      setAdPrice(arg.ad_price);
+      setReceiverUsername(arg.receiver_username);
+      setReceiverFullname(arg.receiver_fullname);
+      setAdId(arg.ad_id);
+      const response = await getMessages(arg.thread_id);
+      console.log("Messages");
+      console.log(response);
+      setMessages(response);
+      setIsLoading(false);
+    }
 
-    setMessages([
-      {
-        sender_username: "alice",
-        receiver_username: "bob",
-        message:
-          "hello world blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah    blah blahblah blah blah blah blah blah blah blah blah",
-        timestamp: "2023-07-13 14:28:39",
-        is_image: false,
-        is_read_by_receiver: false,
-        is_my_message: false,
-      },
-      {
-        sender_username: "bob",
-        receiver_username: "alice",
-        message: "//placekitten.com/600/400",
-        timestamp: "2023-07-13 14:28:30",
-        is_image: true,
-        is_read_by_receiver: true,
-        is_my_message: true,
-      },
-      {
-        sender_username: "alice",
-        receiver_username: "bob",
-        message:
-          "hello world blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah    blah blahblah blah blah blah blah blah blah blah blah",
-        timestamp: "2023-07-13 14:28:39",
-        is_image: false,
-        is_read_by_receiver: false,
-        is_my_message: false,
-      },
-      {
-        sender_username: "bob",
-        receiver_username: "alice",
-        message: "//placekitten.com/600/400",
-        timestamp: "2023-07-13 14:29:30",
-        is_image: true,
-        is_read_by_receiver: true,
-        is_my_message: true,
-      },
-    ]);
+    fetchData(fetchAndLoadThread);
   }, []);
 
   return (

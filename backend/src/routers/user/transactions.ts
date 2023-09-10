@@ -4,7 +4,7 @@ import { get_user_transactions } from '../../controllers/transaction.controller'
 
 const router = Router();
 
-router.route('/transactions')
+router.route('/')
     .get(get_user_transactions);
 
 export default router;

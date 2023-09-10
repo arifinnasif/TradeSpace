@@ -94,6 +94,10 @@ export const get_user_transactions = async (req: any, res: any) => {
             }
         }
 
+        console.log(transactions);
+        console.log(transactions_with_ad_info);
+
+
 
         return res.status(200).json(transactions_with_ad_info);
     } catch (error: any) {

@@ -6,6 +6,7 @@ import { FunctionComponent } from "react";
 import UserAdsList from "./UserAds";
 import PendingAdsList from "./PendingAds";
 import DeclinedAdsList from "./DeclinedAds";
+import TransactionTable from "./TransactionTable";
 
 const Content = () => {
   const tabs = [
@@ -64,7 +65,7 @@ const Content = () => {
             <DeclinedAdsList />
           </TabPanel>
           <TabPanel>
-            <p>Transaction History</p>
+            <TransactionTable />
           </TabPanel>
         </TabPanels>
       </Tabs>

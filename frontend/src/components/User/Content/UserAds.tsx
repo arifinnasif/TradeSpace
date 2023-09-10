@@ -5,7 +5,7 @@ import { Box, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { AdCardType } from "../../../services/ad.service";
-import AdCard from "../../Ads/AdCard";
+import MyAdCard from "./MyAdCard";
 import { userService } from "../../../services/User.service";
 
 function UserAdsList() {
@@ -25,7 +25,7 @@ function UserAdsList() {
       //   const ads = await adService.getAds(params);
       const myAds = await userService.getUserOwnAds();
       setAdsList(myAds);
-      console.log(adsList);
+      console.log("baa", myAds);
       setIsLoading(false);
     }
     fetchData();
@@ -34,9 +34,7 @@ function UserAdsList() {
     <Box>
       <VStack spacing={"0"}>
         {adsList?.map((p) => (
-          <Link to={`/ads/${p.id}`}>
-            <AdCard key={p.id} {...p} />
-          </Link>
+          <MyAdCard key={p.id} {...p} />
         ))}
       </VStack>
     </Box>

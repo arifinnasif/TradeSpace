@@ -17,25 +17,25 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import { declineAReview } from "../../services/admin.service";
+import { declineAReview } from "../../../../services/admin.service";
+import { useNavigate } from "react-router-dom";
 
-interface DeclinationConfirmationModal {
+interface DeclinationConfirmationModalProps {
   id: number;
-  title: string;
   initialRef: MutableRefObject<null>;
   finalRef: MutableRefObject<null>;
   isOpen: boolean;
   onClose: () => void;
-  refreshAction: () => void;
 }
 
 const DeclinationConfirmationModal: FunctionComponent<
-  DeclinationConfirmationModal
-> = ({ id, title, initialRef, finalRef, isOpen, onClose, refreshAction }) => {
+  DeclinationConfirmationModalProps
+> = ({ id, initialRef, finalRef, isOpen, onClose }) => {
   const [isDeclineButtonLoading, setIsDeclineButtonLoading] =
     useState<boolean>(false);
 
   const toast = useToast();
+  const navigate = useNavigate();
 
   const declineButtonAction = async (review_id: number) => {
     setIsDeclineButtonLoading(true);
@@ -76,7 +76,7 @@ const DeclinationConfirmationModal: FunctionComponent<
       <ModalContent>
         <ModalHeader>
           <Text maxWidth={"350px"} noOfLines={1}>
-            {title}
+            Are you sure you want to decline this ad?
           </Text>
         </ModalHeader>
         <ModalCloseButton />
@@ -105,8 +105,8 @@ const DeclinationConfirmationModal: FunctionComponent<
             spinner={<Spinner size={"md"} color="white" />}
             onClick={async () => {
               await declineButtonAction(+id);
-              refreshAction();
               onClose();
+              navigate("/admin/ad_reviews");
             }}
           >
             Confirm Declination

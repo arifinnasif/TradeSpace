@@ -16,7 +16,7 @@ class NotificationService {
     // console.log(new Cookies().get("token"));
 
 
-    // return ((await API.get(`profile/notifications`)).data as NotificationType[]);
+    return ((await API.get(`profile/notifications`)).data as NotificationType[]);
     return [] as NotificationType[];
   }
 

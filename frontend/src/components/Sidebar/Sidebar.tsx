@@ -27,6 +27,9 @@ import {
   FiSettings,
   FiMenu,
   FiChevronRight,
+  FiClipboard,
+  FiUsers,
+  FiDollarSign,
 } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { Link, NavLink, NavLinkProps } from "react-router-dom";
@@ -38,9 +41,10 @@ interface LinkItemProps {
   link: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Dashboard", icon: FiHome, link: "/admin/" },
-  { name: "Ad Reviews", icon: FiTrendingUp, link: "/admin/ad_reviews" },
-  { name: "User Management", icon: FiCompass, link: "/admin/user_management" },
+  { name: "Dashboard", icon: FiHome, link: "/admin/dashboard" },
+  { name: "Ad Reviews", icon: FiClipboard, link: "/admin/ad_reviews" },
+  { name: "User Management", icon: FiUsers, link: "/admin/user_management" },
+  { name: "Transactions", icon: FiDollarSign, link: "/admin/transactions" },
 ];
 
 export default function SimpleSidebar() {
@@ -93,6 +97,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             <TabList>
               {LinkItems.map((link) => (
                 <Tab
+                  key={link.name}
                   margin={3}
                   _hover={{
                     bg: useColorModeValue("teal.100", "teal.900"),

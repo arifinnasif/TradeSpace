@@ -48,6 +48,7 @@ function formatTimestamp(timestamp: string) {
 
 const UserCard = ({
   inboxItem,
+  messages,
   setMessages,
   setCurrentThread,
   setAdTitle,
@@ -55,8 +56,10 @@ const UserCard = ({
   setAdPrice,
   setReceiverUsername,
   setReceiverFullname,
+  setCurrInbox,
 }: {
   inboxItem: InboxType;
+  messages: MessageType[];
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
   setCurrentThread: React.Dispatch<React.SetStateAction<string>>;
   setAdTitle: React.Dispatch<React.SetStateAction<string>>;
@@ -64,8 +67,10 @@ const UserCard = ({
   setAdPrice: React.Dispatch<React.SetStateAction<number>>;
   setReceiverUsername: React.Dispatch<React.SetStateAction<string>>;
   setReceiverFullname: React.Dispatch<React.SetStateAction<string>>;
+  setCurrInbox: React.Dispatch<React.SetStateAction<InboxType | undefined>>;
 }) => {
   const handleOpenChat = async (event: React.MouseEvent<HTMLDivElement>) => {
+    setCurrInbox(inboxItem);
     console.log("Open chat");
     const cardId = event.currentTarget.id;
     console.log("Clicked card with id:", cardId);
@@ -102,8 +107,9 @@ const UserCard = ({
         objectFit="cover"
         maxW={{ base: "25%" }}
         // src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
+        
+        src={inboxItem.receiver_profile_pic || "https://hdfs.uconn.edu/wp-content/uploads/sites/601/2020/12/person-icon-grey-e1666368313834.jpg"}
 
-        src={inboxItem.receiver_profile_pic} //is product image more appropriate? UPto you
         alt="user profile pic"
       />
 

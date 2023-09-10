@@ -1,15 +1,19 @@
 import React from "react";
 import { Flex, Input, Button } from "@chakra-ui/react";
-import { MessageType, sendMessage } from "../../services/chat.service";
+import { MessageType, InboxType, sendMessage } from "../../services/chat.service";
 
 const InputBox = ({
   messages,
   setMessages,
   currentThread,
+  currInbox,
+  setCurrInbox,
 }: {
   messages: MessageType[];
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
   currentThread: string;
+  currInbox: InboxType | undefined;
+  setCurrInbox: React.Dispatch<React.SetStateAction<InboxType | undefined>>;
 }) => {
   const [inputMessage, setInputMessage] = React.useState("");
 
@@ -35,11 +39,17 @@ const InputBox = ({
       is_my_message: true,
     };
     setMessages([...messages, newMessage]);
+    // update last message of current thread
+    if (currInbox) {
+      currInbox.last_message.message = inputMessage;
+      currInbox.last_message.timestamp = newMessage.timestamp;
+    }
     try {
       await sendMessage(currentThread, inputMessage, false);
     } catch (err) {
       console.log(err);
     }
+    
     setInputMessage("");
   };
 

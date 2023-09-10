@@ -28,6 +28,8 @@ const GetChats = () => {
   const [receiverUsername, setReceiverUsername] = useState<string>("");
   const [receiverFullname, setReceiverFullname] = useState<string>("");
   const [adId, setAdId] = useState<number>(0);
+  const [currInbox, setCurrInbox] = useState<InboxType>();
+  // const [threadChanged, setThreadChanged] = useState<boolean>(false);
 
   // const handleSendMessage = (message: MessageType) => {
   //     setMessages([...messages, message]);
@@ -42,6 +44,10 @@ const GetChats = () => {
         console.log("Inbox");
         console.log(response);
         setInbox(response);
+
+        setCurrInbox(response[0]); // required for input box to know current thread
+                                   // then input box can modify the current thread's card's last message
+                                   // no new api call required then
 
         if (callback) await callback(response[0]);
       } catch (error) {
@@ -68,6 +74,25 @@ const GetChats = () => {
     fetchData(fetchAndLoadThread);
   }, []);
 
+  // continously poll for new messages
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (currentThread) {
+        const message_response = await getMessages(currentThread);
+        // check if response is different from current messages
+        // if (Number(response.length) !== messages.length) {
+        setMessages(message_response);
+        // }
+        const inbox_response = await getInbox();
+        setInbox(inbox_response);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [currentThread]);
+  
+
+
   return (
     <Layout title="Chats" loading={isLoading}>
       <Grid height={"100vh"} templateColumns="repeat(5, 1fr)" gap={4}>
@@ -83,6 +108,7 @@ const GetChats = () => {
               <ChatSideBar
                 inbox={inbox}
                 setInbox={setInbox}
+                messages={messages}
                 setMessages={setMessages}
                 setCurrentThread={setCurrentThread}
                 setAdTitle={setAdTitle}
@@ -90,6 +116,8 @@ const GetChats = () => {
                 setAdPrice={setAdPrice}
                 setReceiverUsername={setReceiverUsername}
                 setReceiverFullname={setReceiverFullname}
+                currInbox={currInbox}
+                setCurrInbox={setCurrInbox}
               />
 
               {/* <div>
@@ -117,6 +145,8 @@ const GetChats = () => {
                 messages={messages}
                 setMessages={setMessages}
                 currentThread={currentThread}
+                currInbox={currInbox}
+                setCurrInbox={setCurrInbox}
               />
 
               {/* <div>

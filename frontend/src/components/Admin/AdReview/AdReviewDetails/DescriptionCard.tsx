@@ -11,14 +11,9 @@ import {
   Center,
   AbsoluteCenter,
   Divider,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverHeader,
-  PopoverBody,
+  Spinner,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 
 import { ChatIcon } from "@chakra-ui/icons";
@@ -28,33 +23,71 @@ import { FunctionComponent, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
-import MapModal from "./MapModal";
+import MapModal from "../../../Ads/AdDetails/MapModal";
+import DeclinationConfirmationModal from "./DeclinationConfirmationModal";
 import React from "react";
-import { getThread } from "../../../services/chat.service";
+import { approveAReview } from "../../../../services/admin.service";
+import { FaRegCircleCheck, FaRegCircleXmark } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 interface DescriptionCardProps {
+  ad_id: number;
   description?: string;
   address_longitude: number;
   address_latitude: number;
   address_description: string;
-  handleChatClick: () => void;
 }
 
 const DescriptionCard: FunctionComponent<DescriptionCardProps> = ({
+  ad_id,
   description,
   address_longitude,
   address_latitude,
   address_description,
-  handleChatClick,
 }) => {
   const [showMap, setShowMap] = useState(false);
   const handleShowMap = () => {
     setShowMap(!showMap);
   };
 
+  const toast = useToast();
+  const approveButtonAction = async (review_id: number) => {
+    setIsApproveButtonLoading(true);
+    console.log("approve button clicked", review_id);
+    try {
+      await approveAReview(review_id);
+      toast({
+        title: "Ad approved successfully",
+        status: "success",
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      // console.log(error);
+      toast({
+        title: "Cannot approve this ad",
+        description: error.message,
+        status: "error",
+      });
+    }
+    setIsApproveButtonLoading(false);
+  };
+
+  const {
+    isOpen: isDeclinationOpen,
+    onOpen: onDeclinationOpen,
+    onClose: onDeclinationClose,
+  } = useDisclosure();
+
+  const initialDeclinationRef = React.useRef(null);
+
+  const [isApproveButtonLoading, setIsApproveButtonLoading] =
+    React.useState(false);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -76,12 +109,29 @@ const DescriptionCard: FunctionComponent<DescriptionCardProps> = ({
         {description && <CardBody>{description}</CardBody>}
         <CardFooter>
           <Button
-            leftIcon={<ChatIcon />}
-            margin={2}
+            isLoading={isApproveButtonLoading}
             colorScheme="teal"
-            onClick={handleChatClick}
+            margin={2}
+            leftIcon={<FaRegCircleCheck />}
+            spinner={<Spinner size={"md"} color="white" />}
+            onClick={async () => {
+              await approveButtonAction(ad_id);
+              navigate("/admin/ad_reviews");
+            }}
           >
-            Chat
+            Approve
+          </Button>
+          <Button
+            colorScheme="teal"
+            margin={2}
+            leftIcon={<FaRegCircleXmark />}
+            onClick={(e) => {
+              console.log(e);
+              onDeclinationOpen();
+              // declineButtonAction(+id);
+            }}
+          >
+            Decline
           </Button>
 
           <Button
@@ -105,6 +155,13 @@ const DescriptionCard: FunctionComponent<DescriptionCardProps> = ({
         finalRef={finalRef}
         isOpen={isOpen}
         onClose={onClose}
+      />
+      <DeclinationConfirmationModal
+        id={ad_id}
+        initialRef={initialDeclinationRef}
+        finalRef={finalRef}
+        isOpen={isDeclinationOpen}
+        onClose={onDeclinationClose}
       />
     </>
   );

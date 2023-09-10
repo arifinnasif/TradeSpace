@@ -3,7 +3,7 @@ import { get_all_transactions_admin } from "../../controllers/transaction.contro
 
 const router = Router();
 
-router.route("/transactions")
+router.route("/")
     .get(get_all_transactions_admin);
 
 export default router;

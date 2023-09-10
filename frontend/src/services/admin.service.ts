@@ -133,3 +133,18 @@ export const getAllUsers = async (): Promise<UserType[]> => {
         withCredentials: true,
     })).data;
 }
+
+
+export const muteAUser = async (username: string, body: any) => {
+    const response = await API.put(
+        `/admin/mute_user/${username}`,
+        body,
+        {
+            withCredentials: true,
+        }
+    );
+
+    console.log("mute user admin service", response.data);
+
+    return response;
+}

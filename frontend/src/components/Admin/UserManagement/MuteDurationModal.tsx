@@ -46,8 +46,8 @@ const MuteDurationModal: FunctionComponent<MuteDurationModalProps> = ({
     setMuteHours(+tmp);
   };
 
-  const [muteDays, setMuteDays] = useState<number>();
-  const [muteHours, setMuteHours] = useState<number>();
+  const [muteDays, setMuteDays] = useState<number>(1);
+  const [muteHours, setMuteHours] = useState<number>(0);
   return (
     <Modal
       initialFocusRef={initialRef}
@@ -59,7 +59,7 @@ const MuteDurationModal: FunctionComponent<MuteDurationModalProps> = ({
       <ModalContent>
         <ModalHeader>
           <Text maxWidth={"350px"} noOfLines={1}>
-            Mute {username}
+            Mute @{username}
           </Text>
         </ModalHeader>
         <ModalCloseButton />

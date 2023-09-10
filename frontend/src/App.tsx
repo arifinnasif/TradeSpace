@@ -23,13 +23,11 @@ import Login from "./pages/Login.page";
 import AdminLogin from "./pages/AdminLogin.page";
 import GetNotifications from "./pages/Notification.page";
 import { useSelector } from "react-redux";
-import AdReviewPage from "./pages/AdReview.page";
-import SimpleSidebar from "./components/Sidebar/Sidebar";
+import AdReview from "./components/Admin/AdReview/AdReview";
 import Promotion from "./pages/Promotion.page";
 import GetChats from "./pages/Chats.page";
 import UserProfile from "./pages/UserProfile";
 import AdminLayout from "./layout/AdminLayout";
-import WorkingOnIt from "./components/Admin/WorkingOnIt";
 import Dashboard from "./components/Admin/Dashboard/Dashboard";
 import AdReviewDetails from "./components/Admin/AdReview/AdReviewDetails/AdReviewDetails";
 import TransactionTable from "./components/Admin/Transaction/TransactionTable";
@@ -89,7 +87,7 @@ function App() {
             <Route path="/admin" element={<AdminLayout title="Admin" />}>
               <Route index element={<Navigate to={"ad_reviews"} />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="ad_reviews" element={<AdReviewPage />} />
+              <Route path="ad_reviews" element={<AdReview />} />
               <Route path="ad_reviews/:ad_id" element={<AdReviewDetails />} />
               <Route path="user_management" element={<UserTable />} />
               <Route path="transactions" element={<TransactionTable />} />

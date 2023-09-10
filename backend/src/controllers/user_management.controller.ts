@@ -64,6 +64,10 @@ export const get_all_users = async (req: Request, res: Response) => {
         where: {
             email_verified: true,
             phone_verified: true,
+        },
+
+        orderBy: {
+            created_at: 'desc'
         }
     });
 

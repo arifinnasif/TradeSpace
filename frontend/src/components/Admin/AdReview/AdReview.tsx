@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import AdminLayout from "../layout/AdminLayout";
 import {
   Center,
   Spacer,
@@ -7,9 +6,9 @@ import {
   VStack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import ReviewList from "../components/Admin/AdReview/ReviewList";
-import { ReviewCardType, getAdReviews } from "../services/admin.service";
-import Pagination from "../components/Pagination/Pagination";
+import ReviewList from "./ReviewList";
+import { ReviewCardType, getAdReviews } from "../../../services/admin.service";
+import Pagination from "../../Pagination/Pagination";
 import { useSearchParams } from "react-router-dom";
 
 const AdReviewPage = () => {

@@ -93,7 +93,7 @@ export const get_all_users = async (req: Request, res: Response) => {
         users_list_response.push(user_list_item);
     }
 
-    console.log(users_list_response)
+    return res.status(200).json(users_list_response);
 
 }
 

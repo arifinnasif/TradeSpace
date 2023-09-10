@@ -59,6 +59,17 @@ export interface TransactionType {
 }
 
 
+export interface UserType {
+    username: string;
+    age: number;
+    gender: string;
+    is_muted: boolean;
+    created_at: Date;
+    approved_ads: number;
+    pending_ads: number;
+}
+
+
 export const login = async (userinfo: any) => {
     const response = await API.post(`/admin/login`, userinfo, {
         withCredentials: true,
@@ -113,6 +124,12 @@ export const declineAReview = async (review_id: number, body: any) => {
 
 export const getTransactions = async (): Promise<TransactionType[]> => {
     return (await API.get(`/admin/transactions`, {
+        withCredentials: true,
+    })).data;
+}
+
+export const getAllUsers = async (): Promise<UserType[]> => {
+    return (await API.get(`/admin/users`, {
         withCredentials: true,
     })).data;
 }

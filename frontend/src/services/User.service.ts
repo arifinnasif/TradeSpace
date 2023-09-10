@@ -28,6 +28,19 @@ export interface declinedAdsType {
   created_at: string;
 }
 
+export interface TransactionType {
+  trx_id: number;
+  ad_id: number;
+  promotion: string;
+  amount: number;
+  method: string;
+  created_at: Date;
+  ad_title: string;
+  ad_image: string;
+  ad_price: number;
+  is_active_ad: boolean;
+}
+
 class UserService {
   async getUserInfo(): Promise<userProfileType> {
     const userInfo = (await API.get(`/profile`)).data;
@@ -51,6 +64,12 @@ class UserService {
     const userDeclinedAds = (await API.get(`/profile/declined_ads`)).data;
     // console.log(userDeclinedAds);
     return userDeclinedAds;
+  }
+
+  async getUserTransactions(): Promise<TransactionType[]> {
+    const userTransactions = (await API.get(`/profile/transactions`)).data;
+    // console.log(userTransactions);
+    return userTransactions;
   }
 }
 

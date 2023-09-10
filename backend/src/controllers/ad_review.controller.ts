@@ -280,7 +280,7 @@ export const decline_pending_review = async (req: Request, res: Response) => {
         await notify_user(pending_review.op_username,
             'ad_declined',
             'Ad Declined',
-            `Your ad #${deleted_review.id} titled "${deleted_review.title}" has been declined by the admin for "${req.body.reason}"`);
+            `Your ad titled "${deleted_review.title}" has been declined by the admin for "${req.body.reason}"`);
 
         return res.status(200).json(archived_review);
     } catch (error: any) {

@@ -6,6 +6,7 @@ import { Flex } from "@chakra-ui/react";
 const ChatSideBar = ({
   inbox,
   setInbox,
+  messages,
   setMessages,
   setCurrentThread,
   setAdTitle,
@@ -13,9 +14,12 @@ const ChatSideBar = ({
   setAdPrice,
   setReceiverUsername,
   setReceiverFullname,
+  currInbox,
+  setCurrInbox,
 }: {
   inbox: InboxType[];
   setInbox: React.Dispatch<React.SetStateAction<InboxType[]>>;
+  messages: MessageType[];
   setMessages: React.Dispatch<React.SetStateAction<MessageType[]>>;
   setCurrentThread: React.Dispatch<React.SetStateAction<string>>;
   setAdTitle: React.Dispatch<React.SetStateAction<string>>;
@@ -23,6 +27,8 @@ const ChatSideBar = ({
   setAdPrice: React.Dispatch<React.SetStateAction<number>>;
   setReceiverUsername: React.Dispatch<React.SetStateAction<string>>;
   setReceiverFullname: React.Dispatch<React.SetStateAction<string>>;
+  currInbox: InboxType | undefined;
+  setCurrInbox: React.Dispatch<React.SetStateAction<InboxType | undefined>>;
 }) => {
   return (
     <Flex flexDirection="column" justifyContent={"space-between"}>
@@ -30,6 +36,7 @@ const ChatSideBar = ({
         <UserCard
           key={inboxItem.thread_id}
           inboxItem={inboxItem}
+          messages={messages}
           setMessages={setMessages}
           setCurrentThread={setCurrentThread}
           setAdTitle={setAdTitle}
@@ -37,6 +44,7 @@ const ChatSideBar = ({
           setAdPrice={setAdPrice}
           setReceiverUsername={setReceiverUsername}
           setReceiverFullname={setReceiverFullname}
+          setCurrInbox={setCurrInbox}
         />
       ))}
     </Flex>

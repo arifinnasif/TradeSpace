@@ -168,7 +168,7 @@ const Navbar = () => {
 
     fetchData();
 
-    const interval = setInterval(fetchData, 1000);
+    const interval = setInterval(fetchData, 5000);
 
     return () => clearInterval(interval);
 
@@ -245,7 +245,7 @@ const Navbar = () => {
               </Button>
 
               {isAuth ? (
-                <Link to="/chats">
+                <Link to="/chat">
                   <ChatIcon boxSize={6} />
                 </Link>
                 ) : (

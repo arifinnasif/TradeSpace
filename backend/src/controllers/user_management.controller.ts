@@ -3,6 +3,7 @@ import prisma from '../../prisma/prisma_client';
 import { notify_user } from './user_notification.controller';
 
 
+
 /**
  * checks whether the user exists or not and then sets mute_end_date to the current date + duration
  * notifies the user why he is muted
@@ -12,7 +13,7 @@ import { notify_user } from './user_notification.controller';
  */
 
 // mute user: /api/admin/mute_user/:username
-const mute_user = async (req: Request, res: Response) => {
+export const mute_user = async (req: Request, res: Response) => {
     const username = req.params.username;
 
     const target_user = await prisma.users.findUnique({
@@ -47,4 +48,54 @@ const mute_user = async (req: Request, res: Response) => {
     return res.status(200).json({ success: true, message: `User @${username} have been muted successfully.` });
 }
 
-export { mute_user };
+
+// get all users: GET /api/admin/users
+export const get_all_users = async (req: Request, res: Response) => {
+    const users = await prisma.users.findMany({
+        select: {
+            username: true,
+            dob: true,
+            gender: true,
+            mute_end_date: true,
+            created_at: true,
+            posted_ads: true,
+        },
+
+        where: {
+            email_verified: true,
+            phone_verified: true,
+        }
+    });
+
+    let users_list_response = [];
+
+    for (let user of users) {
+        let pending_ads = 0;
+        let approved_ads = 0;
+        for (let ad of user.posted_ads) {
+            if (ad.status === 'pending') {
+                pending_ads++;
+            } else if (ad.status === 'approved') {
+                approved_ads++;
+            }
+        }
+
+        let user_list_item = {
+            username: user.username,
+            age: (new Date().getFullYear() - user.dob.getFullYear()),
+            gender: user.gender,
+            is_muted: user.mute_end_date > new Date(),
+            created_at: user.created_at,
+            approved_ads: approved_ads,
+            pending_ads: pending_ads,
+        }
+
+        users_list_response.push(user_list_item);
+    }
+
+    console.log(users_list_response)
+
+}
+
+
+

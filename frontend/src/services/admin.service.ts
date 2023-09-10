@@ -44,6 +44,21 @@ export interface ReviewDetailsType {
 }
 
 
+export interface TransactionType {
+    trx_id: number;
+    stripe_checkout_id: string;
+    stripe_payment_intent: string;
+    username: string;
+    ad_id: number;
+    promotion: string;
+    amount: number;
+    method: string;
+    status: string;
+    receipt_url: string;
+    created_at: Date;
+}
+
+
 export const login = async (userinfo: any) => {
     const response = await API.post(`/admin/login`, userinfo, {
         withCredentials: true,
@@ -94,4 +109,10 @@ export const declineAReview = async (review_id: number, body: any) => {
     console.log(response.data);
 
     return response;
+}
+
+export const getTransactions = async (): Promise<TransactionType[]> => {
+    return (await API.get(`/admin/transactions`, {
+        withCredentials: true,
+    })).data;
 }

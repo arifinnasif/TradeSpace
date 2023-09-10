@@ -7,8 +7,8 @@ interface UserTableEntryProps {
   username: string;
   age: number;
   gender: string;
-  created_at: string;
-  active_ads: number;
+  created_at: Date;
+  approved_ads: number;
   pending_ads: number;
   is_muted: boolean;
 }
@@ -18,7 +18,7 @@ const UserTableEntry: FunctionComponent<UserTableEntryProps> = ({
   age,
   gender,
   created_at,
-  active_ads,
+  approved_ads,
   pending_ads,
   is_muted,
 }) => {
@@ -28,7 +28,7 @@ const UserTableEntry: FunctionComponent<UserTableEntryProps> = ({
       <Td isNumeric>{age}</Td>
       <Td>{_.startCase(gender)}</Td>
       <Td>{new Date(created_at).toLocaleString()}</Td>
-      <Td isNumeric>{active_ads}</Td>
+      <Td isNumeric>{approved_ads}</Td>
       <Td isNumeric>{pending_ads}</Td>
       <Td>
         {is_muted ? (

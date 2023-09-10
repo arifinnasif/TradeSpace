@@ -8,14 +8,36 @@ import {
   TableContainer,
   Tbody,
   Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { FaVolumeMute, FaVolumeUp } from "react-icons/fa";
+import { UserType, getAllUsers } from "../../../services/admin.service";
+import UserTableEntry from "./UserTableEntry";
 
 const UserTable = () => {
+  const [userList, setUserList] = useState<UserType[]>();
+  useEffect(() => {
+    console.log("fetching data");
+
+    async function fetchData() {
+      try {
+        const response = await getAllUsers();
+        console.log("moo", response);
+
+        setUserList(response!);
+      } catch (error) {
+        console.log(error);
+        setTimeout(() => {
+          fetchData();
+        }, 5000);
+      }
+    }
+
+    fetchData();
+  }, []);
   return (
     <Box padding={6}>
       <Center>
@@ -36,28 +58,9 @@ const UserTable = () => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>arifinnasif</Td>
-              <Td isNumeric>44</Td>
-              <Td>Male</Td>
-              <Td>2023-12-12</Td>
-              <Td isNumeric>4</Td>
-              <Td isNumeric>56</Td>
-              <Td>
-                <Button leftIcon={<FaVolumeMute />} colorScheme="red"></Button>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>fulan</Td>
-              <Td isNumeric>23</Td>
-              <Td>Male</Td>
-              <Td>2023-12-12</Td>
-              <Td isNumeric>4</Td>
-              <Td isNumeric>5</Td>
-              <Td>
-                <Button leftIcon={<FaVolumeUp />} colorScheme="green"></Button>
-              </Td>
-            </Tr>
+            {userList?.map((user) => (
+              <UserTableEntry {...user} />
+            ))}
           </Tbody>
         </Table>
       </TableContainer>

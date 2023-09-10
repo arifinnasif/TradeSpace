@@ -13,6 +13,7 @@ interface UserTableEntryProps {
   approved_ads: number;
   pending_ads: number;
   is_muted: boolean;
+  refreshAction?: () => void;
 }
 
 const UserTableEntry: FunctionComponent<UserTableEntryProps> = ({
@@ -23,6 +24,7 @@ const UserTableEntry: FunctionComponent<UserTableEntryProps> = ({
   approved_ads,
   pending_ads,
   is_muted,
+  refreshAction,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialMuteRef = React.useRef(null);
@@ -55,6 +57,7 @@ const UserTableEntry: FunctionComponent<UserTableEntryProps> = ({
         onClose={onClose}
         initialRef={initialMuteRef}
         finalRef={finalRef}
+        refreshAction={refreshAction}
       />
     </>
   );

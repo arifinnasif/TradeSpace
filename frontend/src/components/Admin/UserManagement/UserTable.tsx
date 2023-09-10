@@ -19,22 +19,23 @@ import UserTableEntry from "./UserTableEntry";
 
 const UserTable = () => {
   const [userList, setUserList] = useState<UserType[]>();
+
+  async function fetchData() {
+    try {
+      const response = await getAllUsers();
+      console.log("moo", response);
+
+      setUserList(response!);
+    } catch (error) {
+      console.log(error);
+      setTimeout(() => {
+        fetchData();
+      }, 5000);
+    }
+  }
+
   useEffect(() => {
     console.log("fetching data");
-
-    async function fetchData() {
-      try {
-        const response = await getAllUsers();
-        console.log("moo", response);
-
-        setUserList(response!);
-      } catch (error) {
-        console.log(error);
-        setTimeout(() => {
-          fetchData();
-        }, 5000);
-      }
-    }
 
     fetchData();
   }, []);
@@ -59,7 +60,7 @@ const UserTable = () => {
           </Thead>
           <Tbody>
             {userList?.map((user) => (
-              <UserTableEntry {...user} />
+              <UserTableEntry {...user} refreshAction={fetchData} />
             ))}
           </Tbody>
         </Table>

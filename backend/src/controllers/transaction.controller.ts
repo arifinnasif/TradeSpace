@@ -94,8 +94,8 @@ export const get_user_transactions = async (req: any, res: any) => {
             }
         }
 
-        console.log(transactions);
-        console.log(transactions_with_ad_info);
+        // console.log(transactions);
+        // console.log(transactions_with_ad_info);
 
 
 

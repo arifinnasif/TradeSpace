@@ -59,6 +59,16 @@ export const get_chat_thread = async (req: Request, res: Response) => {
                 }
             });
 
+            await prisma.chats.create({
+                data: {
+                    thread_id: new_thread.id,
+                    sender_username: req.user.username,
+                    receiver_username: ad.op_username,
+                    message: " ",
+                    is_image: false
+                }
+            });
+
             return res.status(201).json({
                 success: true,
                 thread_id: new_thread.id
@@ -186,7 +196,9 @@ export const get_messages = async (req: Request, res: Response) => {
             },
             orderBy: {
                 created_at: 'asc'
-            }
+            },
+            // exclude the dummy message
+            skip: 1
         });
 
         const messages_to_send = messages_from_db.map(msg => {
@@ -271,7 +283,7 @@ export const get_inbox = async (req: Request, res: Response) => {
             }
         });
 
-        console.log(threads_from_db);
+        // console.log(threads_from_db);
 
         let threads_to_send = threads_from_db.map(thread => {
 
@@ -296,7 +308,7 @@ export const get_inbox = async (req: Request, res: Response) => {
                     message: last_message.is_image ? "sent an image" : last_message.message,
                     timestamp: last_message.created_at,
                     is_read_by_receiver: last_message.is_read_by_receiver,
-                    is_my_msg: last_message.sender_username === req.user.username
+                    is_my_message: last_message.sender_username === req.user.username
                 } : null
             }
         });

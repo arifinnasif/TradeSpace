@@ -93,23 +93,28 @@ const UserCard = ({
       as={Link}
       id={inboxItem.thread_id}
       direction="row"
-      overflow="hidden"
+      // overflow="hidden"
       variant="unstyled"
       width="100%"
-      height="100px"
+      height="fit-content"
       marginBottom={2}
       // print the id of the card when clicked
       onClick={(event) => {
         handleOpenChat(event);
       }}
+      backgroundColor={
+        inboxItem.unread_messages_count > 0 ? "gray.200" : "white"
+      }
     >
       <Image
         objectFit="cover"
         maxW={{ base: "25%" }}
         // src='https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60'
-        
-        src={inboxItem.receiver_profile_pic || "https://hdfs.uconn.edu/wp-content/uploads/sites/601/2020/12/person-icon-grey-e1666368313834.jpg"}
 
+        src={
+          inboxItem.receiver_profile_pic ||
+          "https://hdfs.uconn.edu/wp-content/uploads/sites/601/2020/12/person-icon-grey-e1666368313834.jpg"
+        }
         alt="user profile pic"
       />
 

@@ -46,8 +46,8 @@ const GetChats = () => {
         setInbox(response);
 
         setCurrInbox(response[0]); // required for input box to know current thread
-                                   // then input box can modify the current thread's card's last message
-                                   // no new api call required then
+        // then input box can modify the current thread's card's last message
+        // no new api call required then
 
         if (callback) await callback(response[0]);
       } catch (error) {
@@ -86,12 +86,10 @@ const GetChats = () => {
         const inbox_response = await getInbox();
         setInbox(inbox_response);
       }
-    }, 1000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [currentThread]);
-  
-
 
   return (
     <Layout title="Chats" loading={isLoading}>

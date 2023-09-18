@@ -44,7 +44,7 @@ export let get_all_things = async (req: Request, res: Response) => {
         },
     ];
     const { filterBy = [] } = req.query;
-    console.log(Array.isArray(filterBy)); // true
+    // console.log(Array.isArray(filterBy)); // true
 
     const filteredApples = apples.filter((apple) =>
         filterBy.includes(apple.type)
@@ -58,7 +58,7 @@ export let get_a_thing = async (req: Request, res: Response) => {
     const thing = await prisma.stuffs.findUnique({
         where: { id: target_id },
     });
-    console.log(thing);
+    // console.log(thing);
     res.json(thing);
 }
 

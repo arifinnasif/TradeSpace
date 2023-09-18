@@ -31,7 +31,7 @@ const AdDetailsPage = () => {
     try {
       const { thread_id } = await getThread(+id!);
       console.log(thread_id);
-      navigate(`/chat/`);
+      navigate(`/chat`);
     } catch (error) {
       // show toast
       console.log(error);

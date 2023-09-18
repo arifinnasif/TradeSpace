@@ -38,7 +38,7 @@ const extract_necessary_exif = async (image_url: string): Promise<NecessaryExifT
     try {
         const exif_data = await ExifImageWrapper(buffer);
 
-        console.log(exif_data.image.Make)
+        // console.log(exif_data.image.Make)
 
         // const delta = to_gmt_date(exif_data.exif.CreateDate) - to_gmt_date(exif_data.image.ModifyDate);
 

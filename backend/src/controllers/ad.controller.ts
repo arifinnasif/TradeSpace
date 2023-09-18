@@ -62,6 +62,7 @@ let postAd = async (req: Request, res: Response) => {
   try {
     // create a new ad
     const ai_verdict = await ai_judge(req.body);
+    console.log(`AI verdict for ${req.body.title}`);
     console.log(ai_verdict);
     await prisma.ads.create({
       data: {
@@ -127,7 +128,7 @@ let postAd = async (req: Request, res: Response) => {
  */
 
 let get_ads = async (req: Request, res: Response) => {
-  console.log(req.query);
+  // console.log(req.query);
   const page = Number(req.query.page) - 1 || 0;
   const limit = Number(req.query.limit) || 5;
 

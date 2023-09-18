@@ -6,6 +6,7 @@ import admin_login_router from "./login";
 import transactionsRouter from "./transaction";
 import { adminAuth } from "../../middlewares/auth.middleware";
 import { get_all_users } from "../../controllers/user_management.controller";
+import { get_dashboard_data } from "../../controllers/dashboard.controller";
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use("/transactions", adminAuth, transactionsRouter);
 router.use("/login", admin_login_router)
 
 router.get("/users", adminAuth, get_all_users);
+router.get("/dashboard", adminAuth, get_dashboard_data);
 
 export default router;

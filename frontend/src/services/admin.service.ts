@@ -69,6 +69,12 @@ export interface UserType {
     pending_ads: number;
 }
 
+export interface DashboardDataType {
+    id: number;
+    type: string;
+    count: number;
+}
+
 
 export const login = async (userinfo: any) => {
     const response = await API.post(`/admin/login`, userinfo, {
@@ -147,4 +153,10 @@ export const muteAUser = async (username: string, body: any) => {
     console.log("mute user admin service", response.data);
 
     return response;
+}
+
+export const getDashboardData = async (): Promise<{ buy_sell_data: DashboardDataType[]; promotion_data: DashboardDataType[]; ai_data: DashboardDataType[]; }> => {
+    return (await API.get(`/admin/dashboard`, {
+        withCredentials: true,
+    })).data;
 }

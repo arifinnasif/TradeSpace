@@ -7,8 +7,10 @@ let filter: Filter = null;
 // active loader
 export const load_words = () => {
     console.log("active loading profanity wordlist");
-    filter = new Filter({ emptyList: true });
+    filter = new Filter({ emptyList: false });
     loaded_words = fs.readFileSync("./src/TradeSpaceAI/natural_language_analyser/banned_wordlist.txt").toString().split("\n");
+    loaded_words = loaded_words.filter((word) => word && word.length > 0);
+    // console.log(loaded_words);
     filter.addWords(...loaded_words);
     console.log("active loaded profanity wordlist");
 }
@@ -16,8 +18,9 @@ export const load_words = () => {
 // filter singleton
 const get_filter = () => {
     if (filter == null) {
-        filter = new Filter({ placeHolder: 'x' });
+        filter = new Filter({ emptyList: false });
         loaded_words = fs.readFileSync("./src/TradeSpaceAI/natural_language_analyser/banned_wordlist.txt").toString().split("\n");
+        loaded_words = loaded_words.filter((word) => word && word.length > 0);
         filter.addWords(...loaded_words);
     }
     return filter;

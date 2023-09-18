@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import LineChart from "./LineChart";
 
 import { UserData, BuySellData, PromotionData, AIData } from "./Data";
 import "chart.js/auto";
-import { Box, Center, Spacer } from "@chakra-ui/react";
+import { Center, Spacer } from "@chakra-ui/react";
 import PieChart from "./PieChart";
+import { getDashboardData } from "../../../services/admin.service";
 
 function Dashboard() {
   const [revenueData, setRevenueData] = useState({
@@ -20,7 +21,6 @@ function Dashboard() {
       },
     ],
   });
-
   const [buySellCount, setBuySellCount] = useState({
     labels: BuySellData.map((data) => data.type),
     datasets: [
@@ -32,7 +32,6 @@ function Dashboard() {
       },
     ],
   });
-
   const [promotionCount, setPromotionCount] = useState({
     labels: PromotionData.map((data) => data.type),
     datasets: [
@@ -49,7 +48,6 @@ function Dashboard() {
       },
     ],
   });
-
   const [approvableDeclinableCount, setApprovableDeclinableCount] = useState({
     labels: AIData.map((data) => data.type),
     datasets: [
@@ -61,6 +59,68 @@ function Dashboard() {
       },
     ],
   });
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setIsLoading(true);
+    getDashboardData().then((res) => {
+      console.log(res);
+
+      setBuySellCount({
+        labels: res.buy_sell_data.map((data) => data.type),
+        datasets: [
+          {
+            label: "count",
+            data: res.buy_sell_data.map((data) => data.count),
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.8)",
+              "rgba(54, 162, 235, 0.8)",
+            ],
+            borderWidth: 0,
+          },
+        ],
+      });
+
+      setPromotionCount({
+        labels: res.promotion_data.map((data) => data.type),
+        datasets: [
+          {
+            label: "count",
+            data: res.promotion_data.map((data) => data.count),
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.8)",
+              "rgba(54, 162, 235, 0.8)",
+              "rgba(255, 206, 86, 0.8)",
+              "rgba(75, 192, 192, 0.8)",
+            ],
+            borderWidth: 0,
+          },
+        ],
+      });
+
+      setApprovableDeclinableCount({
+        labels: res.ai_data.map((data) => data.type),
+        datasets: [
+          {
+            label: "count",
+            data: res.ai_data.map((data) => data.count),
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.8)",
+              "rgba(75, 192, 192, 0.8)",
+            ],
+            borderWidth: 0,
+          },
+        ],
+      });
+    });
+
+    setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

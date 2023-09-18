@@ -215,7 +215,7 @@ export const stripe_webhook_handler = async (req: any, res: any) => {
             // add receipt to transaction table
             const session: any = event.data.object;
             console.log("printing from charge succeed")
-            console.log(session);
+            // console.log(session);
 
             const transaction = await prisma.transactions.updateMany({
                 where: {
@@ -229,7 +229,7 @@ export const stripe_webhook_handler = async (req: any, res: any) => {
         case 'checkout.session.completed': {
             const session: any = event.data.object;
             console.log("printing from checkout session completed")
-            console.log(session);
+            // console.log(session);
             // Save an order in your database, marked as 'awaiting payment'
             create_order(session);
 
@@ -248,7 +248,7 @@ export const stripe_webhook_handler = async (req: any, res: any) => {
         case 'checkout.session.async_payment_succeeded': {
             const session = event.data.object;
             console.log("printing from checkout session async payment succeeded")
-            console.log(session);
+            // console.log(session);
 
             // Fulfill the purchase...
             fulfill_order(session);

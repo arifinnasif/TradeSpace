@@ -43,7 +43,7 @@ const TopCard: FunctionComponent<TopCardProps> = ({
   return (
     <Card
       width={{ base: "100%" }}
-      height="md"
+      height="lg"
       direction={{ base: "column", sm: "row" }}
       overflow="hidden"
       variant={"elevated"}

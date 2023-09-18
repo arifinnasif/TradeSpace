@@ -4,6 +4,7 @@ import { postAdValidation } from "../../middlewares/validators/ad.validator.midd
 import { validationMiddleware } from "../../middlewares/validation.middleware";
 import { get_ad_details, get_ads, postAd } from "../../controllers/ad.controller";
 import { handle_payment_initialization } from "../../controllers/payment.controller";
+import { check_mute } from "../../middlewares/check_mute.middleware";
 
 const router = Router();
 
@@ -29,7 +30,7 @@ const router = Router();
 router
   .route("/")
   .get(get_ads)
-  .post(userAuth, postAdValidation, validationMiddleware, postAd);
+  .post(userAuth, postAdValidation, validationMiddleware, check_mute, postAd);
 
 // ad-details
 router

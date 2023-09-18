@@ -10,7 +10,7 @@ export const exif_analyser = async (image_url: string, freshness_threshold_milli
 
     let threat_score = 0;
 
-    console.log(exif_data);
+    // console.log(exif_data);
 
     // null means image is png or gif or some other format. possibly downloaded from internet
     if (exif_data === null) {

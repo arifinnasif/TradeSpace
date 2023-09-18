@@ -33,14 +33,12 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-
 import { userProfileType, userService } from "../../services/User.service";
 
-
-import { notificationService,
-  NotificationType
+import {
+  notificationService,
+  NotificationType,
 } from "../../services/Notification.service";
-
 
 interface Props {
   children: React.ReactNode;
@@ -112,9 +110,6 @@ const Navbar = () => {
     setIsAccountClicked(true);
   };
 
-
-
-
   // check if the user is logged in or not continuously
   // useEffect(() => {
   //   const interval = setInterval(() => {
@@ -124,13 +119,11 @@ const Navbar = () => {
   //   return () => clearInterval(interval);
   // }, []);
 
-
-
   // check if new notifications are available for logged in user at every 5 seconds
   // if available, then show the red dot
   // if not, then don't show the red dot
-  const [isNotificationAvailable, setIsNotificationAvailable] = React.useState(false);
-
+  const [isNotificationAvailable, setIsNotificationAvailable] =
+    React.useState(false);
 
   const resetNotificationStatus = () => {
     // console.log("resetting notification status");
@@ -139,16 +132,13 @@ const Navbar = () => {
     console.log("setting seen");
   };
 
-
   useEffect(() => {
-
     const fetchData = async () => {
-
       if (!isAuth) {
         return;
       }
 
-      const notifications = await notificationService.getNotifications()
+      const notifications = await notificationService.getNotifications();
 
       if (notifications.length > 0) {
         // iterate through the notifications. check if any of them is not seen yet
@@ -162,16 +152,14 @@ const Navbar = () => {
             break;
           }
         }
-
       }
-    }
+    };
 
     fetchData();
 
-    const interval = setInterval(fetchData, 5000);
+    const interval = setInterval(fetchData, 100000);
 
     return () => clearInterval(interval);
-
   }, []);
 
   // fetch user info
@@ -185,9 +173,6 @@ const Navbar = () => {
     }
     fetchData();
   }, []);
-
-
-
 
   return (
     <>
@@ -248,37 +233,36 @@ const Navbar = () => {
                 <Link to="/chat">
                   <ChatIcon boxSize={6} />
                 </Link>
-                ) : (
+              ) : (
                 <></>
-              )
-              }
-              
-              {isAuth ?
+              )}
+
+              {isAuth ? (
                 <Link to="/notifications">
                   <Button onClick={resetNotificationStatus}>
                     <BellIcon boxSize={6} />
                     {/* if there are new notifications, then show the red dot */}
-                    {isNotificationAvailable ?
-                    <span
-                      style={{
-                        position: "absolute",
-                        right: "10px",
-                        bottom: "3px",
-                        width: "10px",
-                        height: "10px",
-                        backgroundColor: "red",
-                        borderRadius: "50%",
-                      }}
-                    ></span>
-                    :
-                    <></>
-                    }
+                    {isNotificationAvailable ? (
+                      <span
+                        style={{
+                          position: "absolute",
+                          right: "10px",
+                          bottom: "3px",
+                          width: "10px",
+                          height: "10px",
+                          backgroundColor: "red",
+                          borderRadius: "50%",
+                        }}
+                      ></span>
+                    ) : (
+                      <></>
+                    )}
                   </Button>
                 </Link>
-              :
+              ) : (
                 <></>
-              }
-              
+              )}
+
               <Box onClick={changeAccountClicked}>
                 <NavLink
                   href={isAuth ? "/profile" : "/login"}
@@ -322,10 +306,11 @@ const Navbar = () => {
                 <Menu>
                   <MenuButton
                     as={Button}
-                    rounded={'full'}
-                    variant={'link'}
-                    cursor={'pointer'}
-                    minW={0}>
+                    rounded={"full"}
+                    variant={"link"}
+                    cursor={"pointer"}
+                    minW={0}
+                  >
                     {/* <Avatar
                       size={'sm'}
                       src={
@@ -345,8 +330,12 @@ const Navbar = () => {
                     />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem as={Link} to="/profile">Profile</MenuItem>
-                    <MenuItem as={Link} to="/logout">Logout</MenuItem>
+                    <MenuItem as={Link} to="/profile">
+                      Profile
+                    </MenuItem>
+                    <MenuItem as={Link} to="/logout">
+                      Logout
+                    </MenuItem>
                   </MenuList>
                 </Menu>
               ) : (

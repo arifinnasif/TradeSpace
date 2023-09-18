@@ -53,7 +53,7 @@ export const get_all_pending_reviews = async (req: Request, res: Response) => {
             }
         });
 
-        console.log(pending_reviews);
+        // console.log(pending_reviews);
 
 
         // console.log(pending_reviews);

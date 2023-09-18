@@ -12,7 +12,7 @@ export interface AdDetailsType {
   is_negotiable: boolean;
   is_sell_ad: boolean;
   is_used: boolean;
-  days_used?: {
+  usage_time?: {
     years: number;
     months: number;
     days: number;

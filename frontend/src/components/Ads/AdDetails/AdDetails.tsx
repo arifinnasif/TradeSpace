@@ -74,9 +74,9 @@ const AdDetails: FunctionComponent<AdDetailsType> = (ad) => {
             icon={BiSolidBandAid}
             title="Used"
             subtitle={stringifyUsageTime(
-              ad.days_used!.years,
-              ad.days_used!.months,
-              ad.days_used!.days
+              ad.usage_time!.years,
+              ad.usage_time!.months,
+              ad.usage_time!.days
             )}
           />
         ) : (
